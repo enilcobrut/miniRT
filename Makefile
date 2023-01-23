@@ -1,3 +1,9 @@
+HEADER = 		libs/includes/miniRT.h \
+				libs/includes/ft_printf_fd.h \
+				libs/includes/get_next_line.h \
+				libs/includes/libft.h
+
+
 SRCS =			src/linked_lists/cylinder.c \
 				src/linked_lists/obj.c \
 				src/linked_lists/plane.c \
@@ -16,6 +22,7 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/display_scene.c \
 				src/get_buffer.c \
 				src/main.c \
+				src/maths_tools.c \
 				src/tools.c \
 				src/vector_tools.c \
 
@@ -40,7 +47,7 @@ endif
 
 NAME =			miniRT
 
-%.o:			%.c
+%.o:			%.c $(HEADER)
 				@printf '\033[1m\033[38;95;13;64m'"\r\033[KCompiling miniRT objects... ⏳ "'\033[1m\033[38;217;0;83m'"<$<>"'\033[0m'
 				@$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $< 
 
@@ -51,11 +58,11 @@ bonus: 			$(NAME)_bonus
 mlx:			
 				@make -C ./libs/mlx
 
-$(NAME): 		$(OBJS)
+$(NAME): 		$(OBJS) $(HEADER)
 				@make all -C ./libs
 				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME) 
 					
-$(NAME)_bonus: 	$(OBJS_BONUS)
+$(NAME)_bonus: 	$(OBJS_BONUS) $(HEADER)
 				@make all -C ./libs
 				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME)_bonus
 

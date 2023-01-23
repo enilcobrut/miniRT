@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 16:32:36 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/20 11:39:55 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/01/21 11:36:29 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int		ft_tolower(int c);
 int		ft_toupper(int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_char(char const *s1, char const s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);

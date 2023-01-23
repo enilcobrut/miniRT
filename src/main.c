@@ -85,68 +85,11 @@ void	print_params(t_minirt *s)
 }
 
 
-void	get_keyboard(t_minirt *s)
-{
-	s->k[0] = "a";
-	s->k[1] = "s";
-	s->k[2] = "d";
-	s->k[3] = "f";
-	s->k[4] = "h";
-	s->k[5] = "g";
-	s->k[6] = "z";
-	s->k[7] = "x";
-	s->k[8] = "c";
-	s->k[9] = "v";
-	s->k[10] = "";
-	s->k[11] = "b";
-	s->k[12] = "q";
-	s->k[13] = "w";
-	s->k[14] = "e";
-	s->k[15] = "r";
-	s->k[16] = "y";
-	s->k[17] = "t";
-	s->k[18] = "1";
-	s->k[19] = "2";
-	s->k[20] = "3";
-	s->k[21] = "4";
-	s->k[22] = "6";
-	s->k[23] = "5";
-	s->k[24] = "+";
-	s->k[25] = "9";
-	s->k[26] = "7";
-	s->k[27] = "-";
-	s->k[28] = "8";
-	s->k[29] = "0";
-	s->k[30] = "]";
-	s->k[31] = "o";
-	s->k[32] = "u";
-	s->k[33] = "[";
-	s->k[34] = "i";
-	s->k[35] = "p";
-	s->k[36] = ""; // enter
-	s->k[37] = "l";
-	s->k[38] = "j";
-	s->k[39] = "'";
-	s->k[40] = "k";
-	s->k[41] = ";";
-	s->k[42] = "\\";
-	s->k[43] = ",";
-	s->k[44] = "/";
-	s->k[45] = "n";
-	s->k[46] = "m";
-	s->k[47] = ".";
-	s->k[48] = ""; //tab
-	s->k[49] = " ";
-	s->k[50] = "`";
-	s->k[51] = "";//backspace
-	// CAPS 264/*
-	// - pav*/e 78
-}
-
 int	main(int argc, char **argv)
 {
 	t_minirt	*s;
 
+	srand(time(NULL));
 	s = ft_calloc(sizeof(t_minirt), 1);
 	if (!s)
 		exit_error(s, 0, 0);
@@ -161,7 +104,6 @@ int	main(int argc, char **argv)
 	init_set(s);
 	get_params(s);
 	get_identifiers(s, 0, 0, 0);
-	get_keyboard(s);
 	if (PRINT == 1)
 		print_params(s);
 	if (EXEC == 1)

@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:50:23 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/20 11:37:13 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/01/21 11:38:50 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_set(t_minirt *s)
 	s->img.img = ft_calloc(2, sizeof(void *));
 	s->img.add_r = ft_calloc(2, sizeof(char *));
 	s->title = ft_strdup("miniRT");
+	s->k = "asdfhgzxcv\0bqweryt123465+97-80]ou[ip\0lj'k;\\,/nm.\0 `\0";
 }
 
 void	free_split(char ***str)

@@ -1,14 +1,6 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# define MAX_PATH 1024
-# define PARSING 0
-# define LEAKS 0
-# define PRINT 1
-# define EXEC 1
-# define PI 3.14
-# define fov (60 * PI / 180)
-
 # include "libft.h"
 # include "ft_printf_fd.h"
 # include "get_next_line.h"
@@ -16,12 +8,24 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <limits.h>
+# include <time.h>
 # include <math.h>
 # include <float.h>
 # include <pthread.h>
 
-#define HEIGHT 704
-#define WIDTH 800
+# define MAX_PATH 1024
+# define PARSING 0
+# define LEAKS 0
+# define PRINT 1
+# define EXEC 1
+# define PI 3.1415926535897932385
+# define fov (60 * PI / 180)
+# define INF DBL_MAX
+
+
+
+#define HEIGHT 800
+#define WIDTH 900
 
 enum e_keyboard_keys
 {
@@ -111,7 +115,7 @@ typedef struct s_cylinder
 
 typedef struct s_obj
 {
-	int type;
+	t_id type;
 	int n;
 	union
 	{
@@ -128,7 +132,7 @@ typedef struct s_minirt
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;
 	t_list				*params;
-	char				*k[52];
+	char				*k;
 	float				f[3];
 	char				*prompt;
 	float				amb_light_ratio;
@@ -236,11 +240,14 @@ t_vector	mul_(t_vector v, double n);
 t_vector	vector_director(t_minirt *s, int *x, int *y);
 float			dot(t_vector u, t_vector v);
 void			normalize_vector(t_vector v);
-
+t_color			ray_color(const t_rayon *r, t_minirt *s, int depth);
+t_vector random_in_unit_sphere();
 float		intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n);
 void 			show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
 int				push_img_to_win(t_minirt *s, int opt);
-
+int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
+int	write_color(t_color	 pixel_color, int sample_per_pixel);
 /* TOOLS ******************************************************************** */
 int			red_cross(t_minirt *s);
 void		put_str(t_minirt *s, int x, int y, char *str);
@@ -255,6 +262,12 @@ t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
 t_color get_rgb(int color);
 float	get_norme_vector(t_vector v);
+
+/* MATHS TOOLS *************************************************************** */
+double degrees_to_radians(double degrees);
+double random_double_2(double min, double max);
+double	random_double();
+double clamp(double x, double min, double max);
 /* LINKEDLISTS *************************************************************** */
 
 /* -- CYLINDER -- */

@@ -38,14 +38,11 @@ int	key_enter(t_minirt *s, char *tmp)
 void	type_key(t_minirt *s, char *tmp, int key)
 {
 	if (!s->prompt)
-			s->prompt = ft_strdup(s->k[key]);
-	else if (s->prompt)
-	{
-		tmp = ft_strjoin(s->prompt, s->k[key]);
-		ft_free(&s->prompt);
-		s->prompt = ft_strdup(tmp);
-		ft_free(&tmp);
-	}
+			s->prompt = ft_strdup("");
+	tmp = ft_strjoin_char(s->prompt, s->k[key]);
+	ft_free(&s->prompt);
+	s->prompt = ft_strdup(tmp);
+	ft_free(&tmp);
 }
 
 int	key_press(int key, t_minirt *s)

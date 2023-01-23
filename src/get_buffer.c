@@ -1,157 +1,263 @@
+
+
+
+
+
 #include "miniRT.h"
 
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
-static inline void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
-
-
-/****************************************************************************************************/
-
-double	vec3_length(t_vector a) {
-    return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+int	rgb_to_int(unsigned char r, unsigned char g, unsigned char b)
+{
+	return (r << 16) | (g << 8) | b;
 }
 
-t_vector	vec3_unit_vector(t_vector a) 
+float max(float t1, float t2)
 {
-    double length = vec3_length(a);
-
-    return (t_vector) { a.x / length, a.y / length, a.z / length };
+	if (t2 < t1)
+		return (t1);
+	return (t2);
 }
 
-t_color color_add_(t_color a, t_color b)
+float min(float t1, float t2)
 {
-	return ((t_color){a.r + b.r, a.g + b.g, a.b + b.b});
+	if (t2 > t1)
+		return (t1);
+	return (t2);
 }
 
-t_color	color_mul_scalar(t_color a, double b)
+t_vector 	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue)
 {
-	return ((t_color){a.r * b, a.g * b, a.b * b});
+	t_vector v_color;
+
+	*red = (hexa >> 16) & 0xff;
+	*green = (hexa >> 8) & 0xff;
+	*blue = hexa & 0xff;
+	v_color.x = *red;
+	v_color.y = *green;
+	v_color.z = *blue;
+	return (v_color);
 }
 
-t_color	ray_color(const t_rayon *r, t_minirt *s)
+	// p.x = *x - (WIDTH) / 2;
+	// p.y = *y - (HEIGHT + 32) / 2;
+	// p.z = - ((WIDTH) / 2) / tan((s->cam_hor_field_view * PI / 180) / 2);
+/*
+
+t_vector	vector_director(t_minirt *s, int *x, int *y)
 {
-	t_vector unit_dir;
-	t_hit_record rec;
-
-
-	if (hit(r, 0, 10000, &rec, s->obj))
-	{
-		double light = dot(get_normalize_vector(sub_(s->light_axis, rec.p)), get_normalize_vector(rec.normal));
-		if (light < 0) light = 0;
-		// t_vector N = rec.normal;
-		// /*t_color color;
-		//  = {color.r, a.g + b.g, a.b + b.b};*/
-		// const t_color test = (t_color) {N.x + 1, N.y + 1, N.z + 1};
-		return (color_mul_scalar(rec.color, light * .5 + .5));
-	}
-	unit_dir = vec3_unit_vector(r->direction);
-	double t = 0.5 * (unit_dir.y + 1.0);
-	t_color white = (t_color) {1.0, 1, 1};
-	t_color blue = (t_color) {0.5, 0.7, 1};
-	return (color_add_(color_mul_scalar(white, 1.0 - t), color_mul_scalar(blue, t)));
-}
-
-static inline double length_squared(t_vector v)
-{
-	return (v.x*v.x + v.y*v.y + v.z*v.z);
-}
-
-static inline void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal)
-{
-	rec->front_face = dot(r->direction, outward_normal) < 0;
-	if (rec->front_face)
-		rec->normal = outward_normal;
-	else
-		rec->normal = mul_(outward_normal, -1);
-}
-
-
-t_color map_color(t_color color)
-{
-	return ((t_color) {color.r / 255, color.g / 255, color.b / 255});
-
-}
-
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj)
-{
-	t_hit_record temp_rec;
-	int	hit_anything = 0;
-	double closest_so_far = t_max;
-
-	while (obj)
-	{
-		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, t_min, t_max))
-		{
-			hit_anything = 1;
-			closest_so_far = temp_rec.t;
-			*rec = temp_rec;
-			rec->color = map_color(obj->u.sp.color);
-		}
-		/*else if (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, t_min, t_max))
-		else if (obj->type == CYLINDER && hit_plane(&obj->u.cy, r, &temp_rec, t_min, t_max))*/
-		obj = obj->next;
-	}
-	return (hit_anything);
-}
-
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-{
-	t_vector oc = sub_(r->origine, sp->center_axis);
-	double a = length_squared(r->direction);
-	double half_b = dot(oc, r->direction);
-	double c = length_squared(oc) - sp->radius*sp->radius;
-	double delta = half_b*half_b - a*c;
-	if (delta < 0)
-		return (0);
-	double sqrtd = sqrt(delta);
-	double root = (-half_b - sqrtd) / a;
-	if (root < t_min || t_max < root)
-	{
-		root = (-half_b + sqrtd) / a;
-		if (root < t_min || t_max < root)
-			return (0);
-	}
-	rec->t = root;
-	rec->p = add_(r->origine, mul_(r->direction, rec->t));
-	set_face_normal(r, rec, div_(sub_(rec->p, sp->center_axis), sp->radius));
-	//rec->normal = div_(sub_(rec->p, sp->center_axis), sp->radius);
-	return (1);
-}
-
-void	get_buffer(t_minirt *s, int opt)
-{
-	t_vector horizon;
-	t_vector vertical;
-	t_vector lower_left_corner;
-	t_vector origin; //camera
-	t_vector vec3;
-	double mul_t_u;
-	double mul_t_v;
-	t_rayon		r;
-	t_color	 pixel_color;
-	double viewport_height = 2.0;
-	double viewport_width = ((double)WIDTH/HEIGHT) * viewport_height;
-	horizon.x = viewport_width;
-	horizon.y = 0;
-	horizon.z = 0;
-	vertical.x = 0;
-	vertical.y = viewport_height;
-	vertical.z = 0;
-
-	origin.x = s->cam_view_point_axis.x;
-	origin.y = s->cam_view_point_axis.y;
-	origin.z = s->cam_view_point_axis.z;
-	lower_left_corner = sub_(sub_(origin, div_(horizon, 2)), sub_(div_(vertical, 2), init_vector(0, 0, 1)));
+	t_vector	p;
+	int			y2;
+	float		a;
+	float		b;
 	
-	for (int y = HEIGHT - 1; y >= 0; --y)
-	{
-		for (int x = 0; x < WIDTH; ++x)
-		{
-			mul_t_u = (double)x / (WIDTH - 1);
-			mul_t_v = (double)y / (HEIGHT - 1);
-			r = init_rayon(origin, add_(add_(lower_left_corner, mul_(horizon, mul_t_u)), sub_(mul_(vertical, mul_t_v), origin)));
-			pixel_color = ray_color(&r, s);
-			s->buf[HEIGHT - y - 1][x] = create_trgb(0, pixel_color.r * 255, pixel_color.g * 255, pixel_color.b * 255);
-		}
-	}
+	// s->cam_norm_or_vector_axis;
+	// s->cam_view_point_axis;
+
+	// p.x = *x - (WIDTH) / 2;
+	// p.y = *y - (HEIGHT + 32) / 2;
+	// p.z = ((WIDTH) / 2);
+
+	x2 = - *x + (WIDTH) / 2;
+	y2 = *y - (HEIGHT + 32) / 2;
+	a = (WIDTH) / (2 * (tan((s->cam_hor_field_view * PI / 180) / 2)));
+
+	p.x = s->cam_view_point_axis.x + s->cam_norm_or_vector_axis.z * x2 + s->cam_norm_or_vector_axis.x * (a + y2 * s->cam_norm_or_vector_axis.y);
+	p.y = s->cam_view_point_axis.y + a * s->cam_norm_or_vector_axis.y + y2 * \
+			(s->cam_norm_or_vector_axis.z * s->cam_norm_or_vector_axis.z - s->cam_norm_or_vector_axis.x * s->cam_norm_or_vector_axis.x);
+
+	p.z = s->cam_view_point_axis.z + x2 * s->cam_norm_or_vector_axis.x + s->cam_norm_or_vector_axis.z * (a - y2 * s->cam_norm_or_vector_axis.y);
+	// printf("(%f) - (%f) - (%f)\n", p.x, p.y, p.z);
+	// exit (0);
+	return (p);
+}*/
+
+
+/*
+float	intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n)
+{
+	t_vector	tmp;
+	float		a;
+	float		b;
+	float		delta;
+	float		t1;
+	float		t2;
+
+	tmp = sub_(r->origine, sp->center_axis);
+	a = 1;
+	b = 2 * dot(r->direction, tmp);
+	delta = b * b - 4 * a * (get_norme_vector(tmp) - sp->radius * sp->radius);
+	if (delta < 0)
+		return (-1);
+	t2 = (-b + sqrt(delta)) / (2 * a);
+	if (t2 < 0)
+		return (-1);
+	t1 = (-b - sqrt(delta)) / (2 * a);
+	if (t1 > 0)
+		*p = add_(r->origine, mul_(r->direction, t1));
+	else
+		*p = add_(r->origine, mul_(r->direction, t2));
+	*n = get_normalize_vector(sub_(*p, sp->center_axis));
+	if (t1 > 0)
+		return (t1);
+	return (t2);
 }
+
+float	intersection_cylinder(t_minirt *s, t_rayon *r, t_cylinder *cy, t_vector *p, t_vector *n)
+{
+	t_vector	tmp;
+	float		a;
+	float		b;
+	float		delta;
+	float		t1;
+	float		t2;
+	float		rayon = cy->diameter / 2;
+
+	tmp = cy->axis;
+	tmp.y = (cy->axis.z - rayon) * (r->direction.y / r->direction.z);
+	//printf("%f - %f - %f\n", tmp.x, tmp.y, tmp.z);
+	mlx_pixel_put(s->mlx, s->win, tmp.x + (WIDTH) / 2 , tmp.y + 360, 0xff0000);
+	return (-1);
+	// printf("tmp.y:%f\n", tmp.y);
+	// exit (0);
+	tmp = sub_(r->origine, tmp);
+	a = 1;
+	b = 2 * dot(r->direction, tmp);
+	delta = b * b - 4 * a * (get_norme_vector(tmp) - rayon * rayon);
+	if (delta < 0)
+		return (-1);
+	t2 = (-b + sqrt(delta)) / (2 * a);
+	if (t2 < 0)
+		return (-1);
+	t1 = (-b - sqrt(delta)) / (2 * a);
+	if (t1 > 0)
+		*p = add_(r->origine, mul_(r->direction, t1));
+	else
+		*p = add_(r->origine, mul_(r->direction, t2));
+	tmp = cy->axis;
+	tmp.y = cy->axis.z * (r->direction.y / r->direction.z);
+	*n = get_normalize_vector(sub_(*p, tmp));
+	if (t1 > 0)
+		return (t1);
+	return (t2);
+}
+
+float	intersection_plane(t_rayon *r, t_cylinder *pl, t_vector *p, t_vector *n)
+{
+	float t;
+
+	t = dot(sub_(pl->axis, r->origine), pl->norm_or_vector) 
+										/ dot(r->direction, pl->norm_or_vector);
+	if (!t || t < 0)
+		return (-1);
+	*p = add_(r->origine, mul_(r->direction, t));
+	*n = get_normalize_vector(sub_(*p, pl->axis));
+	return (t);
+}
+
+float	intersection_scene(t_minirt *s, t_rayon *r, t_vector *p, t_vector *n)
+{
+	t_type		obj_type;
+	t_vector	p2;
+	t_vector	n2;
+	float		t1;
+	float		t;
+
+	obj_type.sp = s->sp;
+	t = FLT_MAX;
+	while (obj_type.sp)
+	{
+		t1 = intersection_sphere(r, obj_type.sp, &p2, &n2);
+		if (t1 != -1 && t1 < t)
+		{
+			s->obj_type.sp = obj_type.sp;
+			if (p)
+				*p = p2;
+			if (n)
+				*n = n2;
+			t = t1;
+		}
+		obj_type.sp = obj_type.sp->next;
+	}
+	obj_type.cy = s->cy;
+	while (obj_type.cy)
+	{
+		t1 = intersection_cylinder(s, r, obj_type.cy, &p2, &n2);
+		if (t1 != -1 && t1 < t)
+		{
+			s->obj_type.cy = obj_type.cy;
+			if (p)
+				*p = p2;
+			if (n)
+				*n = n2;
+			t = t1;
+		}
+		obj_type.cy = obj_type.cy->next;
+	}
+	obj_type.pl = s->pl;
+	while (obj_type.pl)
+	{
+		t1 = intersection_plane(r, obj_type.cy, &p2, &n2);
+		if (t1 != -1 && t1 < t)
+		{
+			s->obj_type.pl = obj_type.pl;
+			if (p)
+				*p = p2;
+			if (n)
+				*n = n2;
+			t = t1;
+		}
+		obj_type.pl = obj_type.pl->next;
+	}
+	if (t == FLT_MAX)
+		return (-1);
+	return (t);
+}
+
+t_vector	show_light(t_minirt *s, t_type obj_type, t_vector *p, t_vector *n)
+{
+	t_rayon		r;
+	t_vector	color_pixel;
+	float		d_light;
+	float		t_light;
+	int 		intensite_lumiere;
+
+	r = init_rayon(add_(*p, mul_(*n, 0.01)), get_normalize_vector(sub_(s->light_axis, *p)));
+	d_light = get_norme_vector(sub_(s->light_axis, *p));
+	t_vector p2, n2;
+	t_light = intersection_scene(s, &r, NULL, NULL);
+	if (s->light_brightness_ratio > s->amb_light_ratio && t_light != -1 && t_light * t_light < d_light)
+		intensite_lumiere = 100000000 * s->amb_light_ratio;
+	else
+		intensite_lumiere = 100000000 * s->light_brightness_ratio;
+	if (obj_type.sp->id == sphere)
+		color_pixel = hexa_to_rgb(obj_type.sp->color, &obj_type.sp->red, &obj_type.sp->green, &obj_type.sp->blue);
+	else if (obj_type.pl->id == plane)
+		color_pixel = hexa_to_rgb(obj_type.pl->color, &obj_type.pl->red, &obj_type.pl->green, &obj_type.pl->blue);
+	else if (obj_type.cy->id == cylinder)
+		color_pixel = hexa_to_rgb(obj_type.cy->color, &obj_type.cy->red, &obj_type.cy->green, &obj_type.cy->blue);
+	color_pixel = mul_(div_(color_pixel, 255), intensite_lumiere \
+		* max(0, dot(get_normalize_vector(sub_(s->light_axis, *p)), *n)) \
+		/ d_light);
+	// color_pixel = interpolation_color(color_pixel, hexa_to_rgb(s->light_color));
+	color_pixel.x = min(255, max(obj_type.sp->red * s->amb_light_ratio, pow(color_pixel.x, 1/2.2)));
+	color_pixel.y = min(255, max(obj_type.sp->red * s->amb_light_ratio, pow(color_pixel.y, 1/2.2)));
+	color_pixel.z = min(255, max(obj_type.sp->red * s->amb_light_ratio, pow(color_pixel.z, 1/2.2)));
+
+	// unsigned char test, test1, test2;
+	// t_vector	min_color = hexa_to_rgb(s->light_color, &test, &test1, &test2);
+	// float flow = intensite_lumiere \
+		// * max(0, dot(get_normalize_vector(sub_(s->light_axis, *p)), *n)) \
+		// / d_light;
+
+	// short delta = 255;
+	// d_light /= 1;
+
+	// color_pixel = add_(mul_(color_pixel, min(delta, 0 + d_light) / delta), mul_(min_color, max(0, delta - d_light) / delta));
+	return (init_vector(min(255, color_pixel.x), 
+						min(255, color_pixel.y), 
+						min(255, color_pixel.z)));
+}
+
+
+// hexa_to_rgb(s->light_color, (unsigned char *)&intensite_lumiere, (unsigned char *)&intensite_lumiere, (unsigned char *)&intensite_lumiere)
+
+*/

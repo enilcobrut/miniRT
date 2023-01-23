@@ -6,7 +6,7 @@
 #    By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/23 14:42:57 by flemaitr          #+#    #+#              #
-#    Updated: 2023/01/20 11:39:55 by cjunker          ###   ########.fr        #
+#    Updated: 2023/01/21 11:37:04 by cjunker          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS =		src/ft_printf_fd.c \
 			src/ft_strdup.c \
 			src/ft_striteri.c \
 			src/ft_strjoin.c \
+			src/ft_strjoin_char.c \
 			src/ft_strlcat.c \
 			src/ft_strlcpy.c \
 			src/ft_strlen.c \
