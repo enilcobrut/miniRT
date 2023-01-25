@@ -19,15 +19,15 @@
 # define PRINT 1
 # define EXEC 1
 # define PI 3.1415926535897932385
-# define fov (60 * PI / 180)
 # define INF DBL_MAX
 
 
 
-#define HEIGHT 800
-#define WIDTH 900
+#define HEIGHT 400
+#define WIDTH 500
+typedef struct s_material t_material;
 
-enum e_keyboard_keys
+enum e_keyboard_key
 {
 	SPACE = 49,
 	ESCAPE = 53,
@@ -80,7 +80,18 @@ typedef struct s_hit_record
 	double		t;
 	int			front_face;
 	t_color		color;
+	t_material	*mat_ptr;
 }		t_hit_record;
+
+
+typedef struct s_material
+{
+	int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+	t_color	albedo;
+	double	fuzz;
+	double	ir;
+} t_material;
+
 
 typedef struct s_sphere
 {
@@ -88,7 +99,6 @@ typedef struct s_sphere
 	float				diameter;
 	double				radius;
 	float				rayon;
-	t_color				color;
 	struct s_sphere		*next;
 	struct s_sphere		*prev;
 }						t_sphere;
@@ -97,7 +107,6 @@ typedef struct s_plane
 {
 	t_vector			axis;
 	t_vector			norm_or_vector;
-	t_color				color;
 	struct s_plane		*next;
 	struct s_plane		*prev;
 }						t_plane;
@@ -108,7 +117,6 @@ typedef struct s_cylinder
 	t_vector			norm_or_vector;
 	float				diameter;
 	float				height;
-	t_color				color;
 	struct s_cylinder	*next;
 	struct s_cylinder	*prev;
 }						t_cylinder;
@@ -117,6 +125,8 @@ typedef struct s_obj
 {
 	t_id type;
 	int n;
+	t_material			mat;
+
 	union
 	{
 		t_cylinder cy;
@@ -137,7 +147,7 @@ typedef struct s_minirt
 	char				*prompt;
 	float				amb_light_ratio;
 	t_color				amb_light_color;
-	t_vector			cam_view_point_axis;
+	t_vector			cam_origin;
 	t_vector			cam_norm_or_vector_axis;
 	int					cam_hor_field_view;
 	t_vector			light_axis;
@@ -238,7 +248,6 @@ t_vector	add_(t_vector v1, t_vector v2);
 t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
 t_vector	vector_director(t_minirt *s, int *x, int *y);
-float			dot(t_vector u, t_vector v);
 void			normalize_vector(t_vector v);
 t_color			ray_color(const t_rayon *r, t_minirt *s, int depth);
 t_vector random_in_unit_sphere();
@@ -248,11 +257,16 @@ int				push_img_to_win(t_minirt *s, int opt);
 int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
 int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
 int	write_color(t_color	 pixel_color, int sample_per_pixel);
+void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
+int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+t_vector	reflect(const t_vector v, const t_vector n);
+
 /* TOOLS ******************************************************************** */
 int			red_cross(t_minirt *s);
 void		put_str(t_minirt *s, int x, int y, char *str);
 t_color get_rgb(int color);
-float	dot(t_vector u, t_vector v);
+double	dot(t_vector u, t_vector v);
 t_vector	get_normalize_vector(t_vector v);
 t_vector init_vector(float x, float y, float z);
 t_rayon	init_rayon(t_vector origine, t_vector direction);
@@ -262,12 +276,29 @@ t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
 t_color get_rgb(int color);
 float	get_norme_vector(t_vector v);
+int	near_zero(const t_vector *vec);
+t_color map_color(t_color color);
+/* VECTOR TOOLS *************************************************************** */
+t_vector random_in_unit_vector();
+void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
+t_color get_rgb(int color);
+double	vec3_length(t_vector a);
+t_vector	vec3_unit_vector(t_vector a);
+t_vector vec_random();
+t_vector vec_random_2(double min, double max);
+t_vector random_in_unit_sphere();
+t_vector random_in_unit_vector();
+double length_squared(t_vector v);
+int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 
 /* MATHS TOOLS *************************************************************** */
 double degrees_to_radians(double degrees);
 double random_double_2(double min, double max);
 double	random_double();
 double clamp(double x, double min, double max);
+double	degrees_to_radians(double degree);
+double ft_sqrt(double number);
+t_vector vec_cross(const t_vector u, const t_vector v);
 /* LINKEDLISTS *************************************************************** */
 
 /* -- CYLINDER -- */

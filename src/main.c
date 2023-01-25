@@ -14,7 +14,7 @@ void print_sphere(t_sphere *sp, int nb)
 	printf("[%0.1f]", sp->center_axis.y);
 	printf("[%0.1f]\n", sp->center_axis.z);
 	printf("\033[35m Diameter \033[0m[%0.1f]           ", sp->diameter);
-	printf("\033[35m Color \033[0m[%x]\n\n", print_color(sp->color));
+	// printf("\033[35m Color \033[0m[%x]\n\n", print_color(sp->color));
 }
 
 void print_plane(t_plane *pl, int nb)
@@ -28,7 +28,7 @@ void print_plane(t_plane *pl, int nb)
 	printf("[%0.1f]", pl->norm_or_vector.x);
 	printf("[%0.1f]", pl->norm_or_vector.y);
 	printf("[%0.1f]\n", pl->norm_or_vector.z);
-	printf("\033[35m Color                            \033[0m[%x]\n\n", print_color(pl->color));
+	// printf("\033[35m Color                            \033[0m[%x]\n\n", print_color(pl->color));
 }
 
 void	print_cylinder(t_cylinder *cy, int nb)
@@ -44,7 +44,7 @@ void	print_cylinder(t_cylinder *cy, int nb)
 	printf("[%0.1f]\n", cy->norm_or_vector.z);
 	printf("\033[35m Diameter \033[0m[%0.1f]", cy->diameter);
 	printf("\033[35m Height \033[0m[%0.2f]", cy->height);
-	printf("\033[35m Color \033[0m[%x]\n\n", print_color(cy->color));
+	// printf("\033[35m Color \033[0m[%x]\n\n", print_color(cy->color));
 }
 
 void	print_params(t_minirt *s)
@@ -54,9 +54,9 @@ void	print_params(t_minirt *s)
 	printf("\033[35mColor\033[0m [%x]\n\n", print_color(s->amb_light_color));
 	printf("\033[45m 🎥 Camera  \033[0m\n");
 	printf("\033[35m View point\033[0m                    ");
-	printf("[%0.1f]", s->cam_view_point_axis.x);
-	printf("[%0.1f]", s->cam_view_point_axis.y);
-	printf("[%0.1f]\n", s->cam_view_point_axis.z);
+	printf("[%0.1f]", s->cam_origin.x);
+	printf("[%0.1f]", s->cam_origin.y);
+	printf("[%0.1f]\n", s->cam_origin.z);
 	printf("\033[35m Normalized orientation vector \033[0m");
 	printf("[%0.1f]", s->cam_norm_or_vector_axis.x);
 	printf("[%0.1f]", s->cam_norm_or_vector_axis.y);
@@ -80,6 +80,7 @@ void	print_params(t_minirt *s)
 			print_plane(&obj->u.pl, obj->n);
 		else if (obj->type == CYLINDER)
 			print_cylinder(&obj->u.cy, obj->n);
+		printf("\033[35m Color \033[0m[%x]\n\n", print_color(obj->mat.albedo));
 		obj = obj->next;
 	}
 }

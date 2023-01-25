@@ -1,6 +1,11 @@
 #include "miniRT.h"
 
-float	dot(t_vector u, t_vector v)
+double length_squared(t_vector v)
+{
+	return (v.x*v.x + v.y*v.y + v.z*v.z);
+}
+
+double	dot(t_vector u, t_vector v)
 {
 	return (u.x * v.x + u.y * v.y + u.z * v.z);
 }
@@ -77,7 +82,48 @@ t_vector	mul_(t_vector v, double n)
 	return (new_v);
 }
 
+
 t_color get_rgb(int color)
 {
 	return ((t_color){get_r(color)/255.0, get_g(color)/255.0, get_b(color)/255.0});
+}
+
+
+double	vec3_length(t_vector a) {
+    return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+}
+
+t_vector	vec3_unit_vector(t_vector a) 
+{
+    double length = vec3_length(a);
+
+    return (t_vector) { a.x / length, a.y / length, a.z / length };
+}
+
+t_vector vec_random()
+{
+	return ((t_vector){(double)random_double(), (double)random_double(), (double)random_double()});
+}
+
+
+t_vector vec_random_2(double min, double max)
+{
+	return ((t_vector){random_double_2(min, max), random_double_2(min, max), random_double_2(min, max)});
+}
+
+t_vector random_in_unit_sphere()
+{
+	while (1)
+	{
+		t_vector p = vec_random_2(-1, 1);
+		double len = length_squared(p);
+		if (len <= 1 && len > 0)
+			continue ;
+		return (get_normalize_vector(p));
+	}
+}
+
+t_vector random_in_unit_vector()
+{
+	return (vec3_unit_vector(random_in_unit_sphere()));
 }

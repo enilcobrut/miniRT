@@ -6,11 +6,18 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:52:12 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/20 11:37:13 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/01/25 16:47:41 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+int gi = 0;
+#define MATERIAL(obj) (gi++ % 2 ? &scatter_dielectric : &scatter_lambertian)
+#define FUZZ 1
+#define IR 1.5
+//#define MATERIAL scatter_metal
+
 
 int	get_sphere(t_minirt *s, t_list *p)
 {
@@ -25,7 +32,12 @@ int	get_sphere(t_minirt *s, t_list *p)
 	get_axis(s, &sp->center_axis, p->content[1], 0);
 	sp->diameter = ft_atof(s, p->content[2], 0, 0);
 	sp->radius = sp->diameter / 2;
-	sp->color = get_rgb_str_to_color(s, p->content[3], 0); 
+	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
+	new_obj->mat.scatter = MATERIAL(new_obj);
+	new_obj->mat.fuzz = FUZZ;
+	new_obj->mat.ir = IR;
+	if (new_obj->mat.fuzz > 1)
+		new_obj->mat.fuzz = 1;
 	return (1);
 }
 
@@ -42,7 +54,8 @@ int	get_plane(t_minirt *s, t_list *p)
 	get_axis(s, &pl->axis, p->content[1], 0);
 	get_axis(s, &pl->norm_or_vector, p->content[2], 0);
 	check_vector_range(s, &pl->norm_or_vector);
-	pl->color = get_rgb_str_to_color(s, p->content[3], 0);
+	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
+	new_obj->mat.scatter = MATERIAL(new_obj);
 	return (1);
 }
 
@@ -63,6 +76,7 @@ int	get_cylinder(t_minirt *s, t_list *p)
 	cy->diameter = ft_atof(s, p->content[3], 0, 0);
 	check_float_format(s, p->content[4]);
 	cy->height = ft_atof(s, p->content[4], 0, 0);
-	cy->color = get_rgb_str_to_color(s, p->content[5], 0);
+	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
+	new_obj->mat.scatter = MATERIAL(new_obj);
 	return (1);
 }

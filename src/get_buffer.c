@@ -50,7 +50,7 @@ t_vector	vector_director(t_minirt *s, int *x, int *y)
 	float		b;
 	
 	// s->cam_norm_or_vector_axis;
-	// s->cam_view_point_axis;
+	// s->cam_origin;
 
 	// p.x = *x - (WIDTH) / 2;
 	// p.y = *y - (HEIGHT + 32) / 2;
@@ -60,11 +60,11 @@ t_vector	vector_director(t_minirt *s, int *x, int *y)
 	y2 = *y - (HEIGHT + 32) / 2;
 	a = (WIDTH) / (2 * (tan((s->cam_hor_field_view * PI / 180) / 2)));
 
-	p.x = s->cam_view_point_axis.x + s->cam_norm_or_vector_axis.z * x2 + s->cam_norm_or_vector_axis.x * (a + y2 * s->cam_norm_or_vector_axis.y);
-	p.y = s->cam_view_point_axis.y + a * s->cam_norm_or_vector_axis.y + y2 * \
+	p.x = s->cam_origin.x + s->cam_norm_or_vector_axis.z * x2 + s->cam_norm_or_vector_axis.x * (a + y2 * s->cam_norm_or_vector_axis.y);
+	p.y = s->cam_origin.y + a * s->cam_norm_or_vector_axis.y + y2 * \
 			(s->cam_norm_or_vector_axis.z * s->cam_norm_or_vector_axis.z - s->cam_norm_or_vector_axis.x * s->cam_norm_or_vector_axis.x);
 
-	p.z = s->cam_view_point_axis.z + x2 * s->cam_norm_or_vector_axis.x + s->cam_norm_or_vector_axis.z * (a - y2 * s->cam_norm_or_vector_axis.y);
+	p.z = s->cam_origin.z + x2 * s->cam_norm_or_vector_axis.x + s->cam_norm_or_vector_axis.z * (a - y2 * s->cam_norm_or_vector_axis.y);
 	// printf("(%f) - (%f) - (%f)\n", p.x, p.y, p.z);
 	// exit (0);
 	return (p);

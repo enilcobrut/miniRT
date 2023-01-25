@@ -73,7 +73,7 @@ int	button_press(int i, int y, int x, t_minirt *s)
 	float		t;
 	float		t1;
 	(void ) i;
-	r = init_rayon(s->cam_view_point_axis, get_normalize_vector(vector_director(s, &x, &y)));
+	r = init_rayon(s->cam_origin, get_normalize_vector(vector_director(s, &x, &y)));
 	sphere = s->sp;
 	t = FLT_MAX;
 	sphere_tmp = NULL;

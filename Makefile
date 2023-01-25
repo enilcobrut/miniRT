@@ -41,7 +41,7 @@ ifeq ($(USER), aroard)
 	FLAGS = 		-Imlx -g -I ./libs/mlx -O3 #-Wall -Wextra -Werror
 	FLAGS_MLX =		-I ./libs/mlx -L ./libs/mlx -lmlx -lXext -lX11 -lm
 else
-	FLAGS =		 	-g #-Wall -Wextra -Werror -g
+	FLAGS =		 	-Wall -Wextra -Werror -g -O3
 	FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -fsanitize=address
 endif
 

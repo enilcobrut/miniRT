@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_id.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:53:04 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/04 18:53:05 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:12:38 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ int	get_camera_par(t_minirt *s, t_list *p)
 {
 	if (nb_arg_tab(p->content) != 4)
 		exit_error(s, "Camera parameters not compliant", 1);
-	get_axis(s, &s->cam_view_point_axis, p->content[1], 0);
+	get_axis(s, &s->cam_origin, p->content[1], 0);
 	get_axis(s, &s->cam_norm_or_vector_axis, p->content[2], 0);
 	check_vector_range(s, &s->cam_norm_or_vector_axis);
 	check_integer_format(s, p->content[3]);
 	s->cam_hor_field_view = ft_atoi(p->content[3]);
 	if (ft_strncmp(p->content[3], "0", 2) && !s->cam_hor_field_view)
 		exit_error(s, "A number is > INT_MAX", 1);
-	if (s->cam_hor_field_view > 180 || s->cam_hor_field_view < 0)
+	if (s->cam_hor_field_view >= 180 || s->cam_hor_field_view <= 0)
 		exit_error(s, "Horizontal field of view not in range [0,180]", 1);
 	return (1);
 }
