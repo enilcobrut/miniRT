@@ -1,3 +1,5 @@
+MAKEFLAGS = "-j 10"
+
 HEADER = 		libs/includes/miniRT.h \
 				libs/includes/ft_printf_fd.h \
 				libs/includes/get_next_line.h \
@@ -38,7 +40,7 @@ CC = 			gcc
 AR = 			ar rsc
 
 ifeq ($(USER), aroard)
-	FLAGS = 		-Imlx -g -I ./libs/mlx -O3 #-Wall -Wextra -Werror
+	FLAGS = 		-Imlx -g -I ./libs/mlx -Ofast #-Wall -Wextra -Werror
 	FLAGS_MLX =		-I ./libs/mlx -L ./libs/mlx -lmlx -lXext -lX11 -lm
 else
 	FLAGS =		 	-Wall -Wextra -Werror -g -O3
@@ -91,18 +93,26 @@ fclean:			clean
 				@rm -f $(NAME) $(NAME)_bonus
 				@make fclean -C ./libs
 
-re:				fclean all
+re:
+	make fclean
+	make all
 
-re_bonus:       fclean bonus
+re_bonus:
+	make fclean
+	make bonus
 
 debug:      	$(NAME)_debug
 
 run:
-	./$(NAME)
+	./$(NAME) example_2.rt
 
-rr: re run
+rr:
+	make re
+	make run
 
-r: all run
+r:
+	make all
+	make run
 
 .PHONY: 		all bonus mlx clean fclean re re_bonus debug run rr r
 

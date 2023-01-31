@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:53:04 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/25 17:12:38 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/01/30 17:46:33 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	get_ambient_light_par(t_minirt *s, t_list *p)
 	s->amb_light_ratio = ft_atof(s, p->content[1], 0, 0);
 	if (s->amb_light_ratio < 0 || s->amb_light_ratio > 1)
 		exit_error(s, "Ambient lighting ratio is not in range [0,1]", 1);
-	s->amb_light_color = get_rgb_str_to_color(s, p->content[2], 0);
+	s->amb_light_color = map_color(get_rgb_str_to_color(s, p->content[2], 0));
 	return (1);
 }
 
@@ -55,6 +55,7 @@ int	get_camera_par(t_minirt *s, t_list *p)
 	get_axis(s, &s->cam_origin, p->content[1], 0);
 	get_axis(s, &s->cam_norm_or_vector_axis, p->content[2], 0);
 	check_vector_range(s, &s->cam_norm_or_vector_axis);
+	s->cam_norm_or_vector_axis = vec3_unit_vector(s->cam_norm_or_vector_axis);
 	check_integer_format(s, p->content[3]);
 	s->cam_hor_field_view = ft_atoi(p->content[3]);
 	if (ft_strncmp(p->content[3], "0", 2) && !s->cam_hor_field_view)
@@ -73,7 +74,7 @@ int	get_light_par(t_minirt *s, t_list *p)
 	s->light_brightness_ratio = ft_atof(s, p->content[2], 0, 0);
 	if (s->light_brightness_ratio < 0 || s->light_brightness_ratio > 1)
 		exit_error(s, "Light brightness ratio are not in range [0,1]", 1);
-	s->light_color = get_rgb_str_to_color(s, p->content[3], 0);
+	s->light_color = map_color(get_rgb_str_to_color(s, p->content[3], 0));
 	return (1);
 }
 

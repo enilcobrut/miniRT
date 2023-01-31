@@ -6,15 +6,15 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:52:12 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/25 16:47:41 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/01/28 17:14:48 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
 int gi = 0;
-#define MATERIAL(obj) (gi++ % 2 ? &scatter_dielectric : &scatter_lambertian)
-#define FUZZ 1
+#define MATERIAL(obj) (gi++ % 2 ? &scatter_lambertian : &scatter_lambertian)
+#define FUZZ 0.5
 #define IR 1.5
 //#define MATERIAL scatter_metal
 

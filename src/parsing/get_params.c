@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:50:49 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/20 11:39:55 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/01/27 19:23:44 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	get_params(t_minirt *s)
 	char	*tmp;
 
 	tmp = NULL;
-	fd_params = open(/*s->argv[1]*/"example.rt", O_RDONLY);
+	fd_params = open(s->argv[1]/*"example.rt"*/, O_RDONLY);
 	if (fd_params == -1)
 		exit_error(s, 0, 0);
 	tmp = get_next_line(fd_params);

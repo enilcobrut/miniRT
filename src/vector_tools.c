@@ -118,12 +118,17 @@ t_vector random_in_unit_sphere()
 		t_vector p = vec_random_2(-1, 1);
 		double len = length_squared(p);
 		if (len <= 1 && len > 0)
-			continue ;
-		return (get_normalize_vector(p));
+			return (get_normalize_vector(p));
 	}
 }
 
-t_vector random_in_unit_vector()
+t_vector random_in_unit_sphere_2()
 {
-	return (vec3_unit_vector(random_in_unit_sphere()));
+	while (1)
+	{
+		t_vector p = vec_random_2(-1, 1);
+		double len = length_squared(p);
+		if (len <= 1 && len > 0)
+			return (p);
+	}
 }

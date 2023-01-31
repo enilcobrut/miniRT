@@ -21,6 +21,12 @@ double clamp(double x, double min, double max)
 	return (x);
 }
 
+// t_color clamp(t_color x, t_color min, double max)
+// {
+
+// }
+
+
 double	degrees_to_radians(double degrees)
 {
 	return (degrees * PI / 180.0);
@@ -45,5 +51,5 @@ double ft_sqrt(double number)
 
 t_vector vec_cross(const t_vector u, const t_vector v)
 {
-	return ((t_vector){u.y * v.z - u.z * v.y, u.z * v.x - u.x * u.z, u.x * v.y - u.y * v.x});
+	return ((t_vector){u.y * v.z - u.z * v.y, u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x});
 }

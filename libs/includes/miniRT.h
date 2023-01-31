@@ -14,17 +14,17 @@
 # include <pthread.h>
 
 # define MAX_PATH 1024
-# define PARSING 0
+# define PARSING 1
 # define LEAKS 0
 # define PRINT 1
 # define EXEC 1
-# define PI 3.1415926535897932385
+# define PI M_PI
 # define INF DBL_MAX
 
 
 
-#define HEIGHT 400
-#define WIDTH 500
+#define HEIGHT 768
+#define WIDTH 1024
 typedef struct s_material t_material;
 
 enum e_keyboard_key
@@ -62,9 +62,9 @@ typedef struct s_color
 
 typedef struct s_vector
 {
-	float	x;
-	float	y;
-	float	z;
+	double	x;
+	double	y;
+	double	z;
 }			t_vector;
 
 typedef struct s_rayon
@@ -83,11 +83,19 @@ typedef struct s_hit_record
 	t_material	*mat_ptr;
 }		t_hit_record;
 
+typedef struct s_light
+{
+	t_vector	pos;
+	double		lum;
+}	t_light;
+
 
 typedef struct s_material
 {
 	int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 	t_color	albedo;
+	double	specular;
+	t_color	albedo1;
 	double	fuzz;
 	double	ir;
 } t_material;
@@ -145,13 +153,13 @@ typedef struct s_minirt
 	char				*k;
 	float				f[3];
 	char				*prompt;
-	float				amb_light_ratio;
+	double				amb_light_ratio;
 	t_color				amb_light_color;
 	t_vector			cam_origin;
 	t_vector			cam_norm_or_vector_axis;
 	int					cam_hor_field_view;
 	t_vector			light_axis;
-	float				light_brightness_ratio;
+	double				light_brightness_ratio;
 	t_color				light_color;
 	t_obj				*obj;
 	char				**argv;
@@ -249,7 +257,7 @@ t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
 t_vector	vector_director(t_minirt *s, int *x, int *y);
 void			normalize_vector(t_vector v);
-t_color			ray_color(const t_rayon *r, t_minirt *s, int depth);
+t_color			ray_color(t_rayon *r, t_minirt *s, int depth);
 t_vector random_in_unit_sphere();
 float		intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n);
 void 			show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
@@ -279,7 +287,6 @@ float	get_norme_vector(t_vector v);
 int	near_zero(const t_vector *vec);
 t_color map_color(t_color color);
 /* VECTOR TOOLS *************************************************************** */
-t_vector random_in_unit_vector();
 void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
 t_color get_rgb(int color);
 double	vec3_length(t_vector a);
@@ -287,7 +294,7 @@ t_vector	vec3_unit_vector(t_vector a);
 t_vector vec_random();
 t_vector vec_random_2(double min, double max);
 t_vector random_in_unit_sphere();
-t_vector random_in_unit_vector();
+t_vector random_in_unit_sphere_2();
 double length_squared(t_vector v);
 int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 
