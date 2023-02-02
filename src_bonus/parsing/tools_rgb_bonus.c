@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 char	**get_next_rgb(char **rgb, int *color)
 {

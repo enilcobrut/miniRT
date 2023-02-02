@@ -1,10 +1,5 @@
 
-#include "miniRT.h"
-
-t_cylinder	*init_cylinder(t_cylinder *new)
-{
-	return (new);
-}
+#include "miniRT_bonus.h"
 
 t_cylinder	*lst_new_cylinder(void)
 {

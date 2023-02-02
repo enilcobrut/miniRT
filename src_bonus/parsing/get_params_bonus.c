@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 void	get_params_loop(t_minirt *s, char *tmp, int fd_params)
 {

@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 int	red_cross(t_minirt *s)
 {

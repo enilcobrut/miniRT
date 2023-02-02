@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 t_sphere	*init_sphere_lst(t_sphere *new)
 {

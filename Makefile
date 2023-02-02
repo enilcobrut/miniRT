@@ -28,29 +28,34 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/tools.c \
 				src/vector_tools.c \
 
-SRCS_BONUS =	src/linked_lists/cylinder.c \
-				src/linked_lists/obj.c \
-				src/linked_lists/plane.c \
-				src/linked_lists/sphere.c \
-				src/parsing/get_objects.c \
-				src/parsing/get_params.c \
-				src/parsing/memory.c \
-				src/parsing/parsing.c \
-				src/parsing/tools_axis.c \
-				src/parsing/tools_rgb.c \
-				src/parsing/tools_rgb2.c \
-				src/parsing/tools.c \
-				src/deal_keys.c \
-				src/display_general.c \
-				src/display_scene.c \
-				src/get_buffer.c \
-				src/maths_tools.c \
-				src/tools.c \
-				src/vector_tools.c \
-				src_bonus/get_id_bonus.c \
-				src_bonus/get_objects_bonus.c \
-				src_bonus/linked_list_light.c \
+SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
+				src_bonus/linked_lists/light_bonus.c \
+				src_bonus/linked_lists/obj_bonus.c \
+				src_bonus/linked_lists/plane_bonus.c \
+				src_bonus/linked_lists/sphere_bonus.c \
+				src_bonus/parsing/get_id_bonus.c \
+				src_bonus/parsing/get_objects_for_bonus.c \
+				src_bonus/parsing/get_objects_bonus.c \
+				src_bonus/parsing/get_params_bonus.c \
+				src_bonus/parsing/memory_bonus.c \
+				src_bonus/parsing/parsing_bonus.c \
+				src_bonus/parsing/tools_axis_bonus.c \
+				src_bonus/parsing/tools_rgb_bonus.c \
+				src_bonus/parsing/tools_rgb2_bonus.c \
+				src_bonus/parsing/tools_bonus.c \
+				src_bonus/deal_keys_bonus.c \
+				src_bonus/display_general_bonus.c \
+				src_bonus/display_scene_bonus.c \
+				src_bonus/get_buffer_bonus.c \
 				src_bonus/main_bonus.c \
+				src_bonus/maths_tools_bonus.c \
+				src_bonus/tools_bonus.c \
+				src_bonus/vector_tools_bonus.c \
+	
+				
+
+				
+				
 
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)

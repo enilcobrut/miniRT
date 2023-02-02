@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 void	exit_error(t_minirt *s, char *message, int opt)
 {

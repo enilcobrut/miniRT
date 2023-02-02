@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 t_plane	*init_plane(t_plane *new)
 {

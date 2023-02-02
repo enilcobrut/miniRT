@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 void	check_axis_format(t_minirt *s, char *axis, char *tmp)
 {
