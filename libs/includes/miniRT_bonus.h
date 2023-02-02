@@ -18,13 +18,14 @@
 # define LEAKS 0
 # define PRINT 1
 # define EXEC 1
+# define INTERVAL 0.3
+# define INTERVAL_VEC 0.01
 # define PI M_PI
 # define INF DBL_MAX
 
-
-
 #define HEIGHT 768
 #define WIDTH 1024
+
 typedef struct s_material t_material;
 
 enum e_keyboard_key
@@ -155,6 +156,8 @@ typedef struct s_obj
 
 typedef struct s_minirt
 {
+	int					samples_per_pixel;
+	int					depth;
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;
 	t_list				*params;
@@ -166,6 +169,7 @@ typedef struct s_minirt
 	t_vector			cam_origin;
 	t_vector			cam_vec_dir;
 	int					cam_fov;
+	int					cam_param_display;
 	t_light				*li;
 	t_obj				*obj;
 	char				**argv;
@@ -242,10 +246,13 @@ int		key_release(int key, t_minirt *s);
 int		button_press(int i, int y, int x, t_minirt *s);
 int		key_press(int key, t_minirt *s);
 void	get_prompt_bar(t_minirt *s);
+void	display_param_cam(t_minirt *s);
 
 /* DISPLAY GENERAL*********************************************************** */
 void	scene_loop(t_minirt *s);
 void	start_ray_tracing(t_minirt *s);
+int 	get_pixels_to_img(t_minirt *s, int h, int opt);
+
 
 /* GET BUFFER *************************************************************** */
 void	get_buffer(t_minirt *s, int opt);

@@ -147,7 +147,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 		// }
 		//return (rec.mat_ptr->albedo);
 		{
-			t_vector light_ax =s->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
+			t_vector light_ax =s->li->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
 			t_vector light_dir = sub_(light_ax, rec.p);
 
 			verif = init_rayon(rec.p, light_dir);
@@ -156,7 +156,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 			{
 				double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
 				double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal)));
-				light = color_add_(light, color_mul_scalar(s->light_color, s->light_brightness_ratio * (test + pow(speculaire, 100))));
+				light = color_add_(light, color_mul_scalar(s->li->light_color, s->li->light_brightness_ratio * (test + pow(speculaire, 100))));
 
 				 // pour toute les lights
 			}
