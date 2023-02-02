@@ -161,6 +161,7 @@ typedef struct s_minirt
 	t_vector			cam_origin;
 	t_vector			cam_vec_dir;
 	int					cam_fov;
+	int					cam_param_display;
 	t_vector			light_axis;
 	double				light_brightness_ratio;
 	t_color				light_color;
