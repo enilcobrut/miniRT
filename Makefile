@@ -1,10 +1,10 @@
 MAKEFLAGS = "-j 10"
 
 HEADER = 		libs/includes/miniRT.h \
+				libs/includes/miniRT_bonus.h \
 				libs/includes/ft_printf_fd.h \
 				libs/includes/get_next_line.h \
 				libs/includes/libft.h
-
 
 SRCS =			src/linked_lists/cylinder.c \
 				src/linked_lists/obj.c \
@@ -28,24 +28,39 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/tools.c \
 				src/vector_tools.c \
 
-SRCS_BONUS =	src/main.c \
+SRCS_BONUS =	src/linked_lists/cylinder.c \
+				src/linked_lists/obj.c \
+				src/linked_lists/plane.c \
+				src/linked_lists/sphere.c \
+				src/parsing/get_objects.c \
+				src/parsing/get_params.c \
+				src/parsing/memory.c \
+				src/parsing/parsing.c \
+				src/parsing/tools_axis.c \
+				src/parsing/tools_rgb.c \
+				src/parsing/tools_rgb2.c \
+				src/parsing/tools.c \
+				src/deal_keys.c \
+				src/display_general.c \
+				src/display_scene.c \
+				src/get_buffer.c \
+				src/maths_tools.c \
+				src/tools.c \
+				src/vector_tools.c \
+				src_bonus/get_id_bonus.c \
+				src_bonus/get_objects_bonus.c \
+				src_bonus/linked_list_light.c \
+				src_bonus/main_bonus.c \
 
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)
 
 INCLUDES =		-I./libs/includes
-INCLUDES/MLX =  -I./user/local/include
 
 CC = 			gcc
 AR = 			ar rsc
-
-ifeq ($(USER), aroard)
-	FLAGS = 		-Imlx -g -I ./libs/mlx -Ofast #-Wall -Wextra -Werror
-	FLAGS_MLX =		-I ./libs/mlx -L ./libs/mlx -lmlx -lXext -lX11 -lm
-else
-	FLAGS =		 	-Wall -Wextra -Werror -g -O3
-	FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -fsanitize=address
-endif
+FLAGS =		 	-Wall -Wextra -Werror -g -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
+FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit #-fsanitize=address
 
 NAME =			miniRT
 
@@ -57,20 +72,13 @@ all: 			$(NAME)
 
 bonus: 			$(NAME)_bonus
 
-mlx:			
-				@make -C ./libs/mlx
-
 $(NAME): 		$(OBJS) $(HEADER)
 				@make all -C ./libs
 				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME) 
 					
 $(NAME)_bonus: 	$(OBJS_BONUS) $(HEADER)
 				@make all -C ./libs
-				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME)_bonus
-
-$(NAME)_debug: 	$(SRCS) #lldb minishell_debug -o "run"
-				@make all -C ./libs
-				$(CC) $(SRCS) -o $(NAME)_debug ./libs/libft.a -g $(INCLUDES) 
+				@$(CC) $(OBJS_BONUS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME)_bonus
 
 #palmi:
 #		@echo
@@ -101,20 +109,25 @@ re_bonus:
 	make fclean
 	make bonus
 
-debug:      	$(NAME)_debug
-
 run:
-	./$(NAME) example_2.rt
+	./$(NAME) #example.rt
+run_bonus:
+	./$(NAME)_bonus #example.rt
 
 rr:
 	make re
 	make run
-
 r:
 	make all
 	make run
+bb:
+	make re_bonus
+	make run_bonus
+b:
+	make bonus
+	make run_bonus
 
-.PHONY: 		all bonus mlx clean fclean re re_bonus debug run rr r
+.PHONY: 		all bonus clean fclean re re_bonus run rr r b bb
 
 # Reset
 RESET		=\033[0m
@@ -133,20 +146,3 @@ cyan		=\033[0;36m
 blue_c		=\033[38;2;153;238;251m
 white		=\033[0;37m
 brown		=\033[38;2;158;72;29m
-
-
-#d1 =\033[38;2;192;66;138m
-#d2 =\033[38;2;183;81;137m
-#d3 =\033[38;2;174;93;135m
-#d4 =\033[38;2;164;103;134m
-#d5 =\033[38;2;153;113;132m
-#d6 =\033[38;2;142;121;131m
-#d7 =\033[0;37m
-
-#d1 =\033[38;2;179;62;222m
-#d2 =\033[38;2;149;74;226m
-#d3 =\033[38;2;118;87;230m
-#d4 =\033[38;2;88;99;233m
-#d5 =\033[38;2;57;111;237m
-#bg		=\033[38;2;192;66;138m
-

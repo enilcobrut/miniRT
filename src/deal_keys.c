@@ -20,14 +20,15 @@ void	key_backspace(t_minirt *s, char *tmp)
 	}
 }
 
-int	key_enter(t_minirt *s, char *tmp)
+int	key_enter(t_minirt *s)
 {
-	(void)tmp;
+	char *help;
+
 	if (!ft_strncmp(s->prompt, "print", 6))
 			print_params(s);
 		else if (!ft_strncmp(s->prompt, "help", 5))
 		{
-			char *help = ft_strdup("[help] : print help [print] : print params");
+			help = ft_strdup("[help] : print help [print] : print params");
 			mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xFF0000, help);
 			ft_free(&help);
 		}
@@ -45,59 +46,121 @@ void	type_key(t_minirt *s, char *tmp, int key)
 	ft_free(&tmp);
 }
 
+void	itof_to_win(t_minirt *s, double n, int x, int y)
+{
+	char *tmp;
+
+	tmp = ft_itof(n);
+	mlx_string_put(s->mlx, s->win, x, y, 0xFFFFFF, tmp);
+	free(tmp);
+}
+
+
+void	display_param_cam(t_minirt *s)
+{
+	mlx_string_put(s->mlx, s->win, 10, 10, 0xFFFFFF, "CAM.OR.X :");
+	itof_to_win(s, s->cam_origin.x, 125, 10);
+	mlx_string_put(s->mlx, s->win, 10, 30, 0xFFFFFF, "CAM.OR.Y :");
+	itof_to_win(s, s->cam_origin.y, 125, 30);
+	mlx_string_put(s->mlx, s->win, 10, 50, 0xFFFFFF, "CAM.OR.Z :");
+	itof_to_win(s, s->cam_origin.z, 125, 50);
+	mlx_string_put(s->mlx, s->win, 10, 70, 0xFFFFFF, "CAM.DIR.X :");
+	itof_to_win(s, s->cam_vec_dir.x, 125, 70);
+	mlx_string_put(s->mlx, s->win, 10, 90, 0xFFFFFF, "CAM.DIR.Y :");
+	itof_to_win(s, s->cam_vec_dir.y, 125, 90);
+	mlx_string_put(s->mlx, s->win, 10, 110, 0xFFFFFF, "CAM.DIR.Z :");
+	itof_to_win(s, s->cam_vec_dir.z, 125, 110);
+	mlx_string_put(s->mlx, s->win, 10, 130, 0xFFFFFF, "S/PIX :");
+	itof_to_win(s, s->samples_per_pixel, 125, 130);
+	mlx_string_put(s->mlx, s->win, 10, 150, 0xFFFFFF, "DEPTH :");
+	itof_to_win(s, s->depth, 125, 150);
+
+}
+
+int	is_key_move(int key)
+{
+	if (key == 126 || key == 123 || key == 124 || key == 125 || key == 69
+		|| key == 78|| key == 91|| key == 86|| key == 84 || key == 88
+		|| key == 83 || key == 85)
+		return (1);
+	return (0);
+}
+
 int	key_press(int key, t_minirt *s)
 {
 	char *tmp = NULL;
-	
-	push_img_to_win(s, PROMPT);
-	if (key == ESCAPE)
-		red_cross(s);
-	else if (key == BACKSP)
-		key_backspace(s, tmp);
-	else if (key == ENTER && s->prompt)
-		return(key_enter(s, tmp));
-	else if (key >= 0 && key < 53)
-		type_key(s, tmp, key);
-	if (s->prompt)
-		mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xBA55D3, s->prompt);
+
+	if (is_key_move(key))
+	{
+		if (key == 126) // haut
+			s->cam_origin.y += INTERVAL;
+		else if (key == 123) // gauche
+			s->cam_origin.x -= INTERVAL;
+		else if (key == 124) // droite
+			s->cam_origin.x += INTERVAL;
+		else if (key == 125) // bas
+			s->cam_origin.y -= INTERVAL;
+		else if (key == 69) // +
+			s->cam_origin.z += INTERVAL;
+		else if (key == 78) // -
+			s->cam_origin.z -= INTERVAL;
+		else if (key == 91) // 8
+			s->cam_vec_dir.y += INTERVAL_VEC;
+		else if (key == 86) // 4
+			s->cam_vec_dir.x -= INTERVAL_VEC;
+		else if (key == 84) // 2
+			s->cam_vec_dir.y -= INTERVAL_VEC;
+		else if (key == 88) // 6
+			s->cam_vec_dir.x += INTERVAL_VEC;
+		else if (key == 83) // 1
+			s->cam_vec_dir.z -= INTERVAL_VEC;
+		else if (key == 85) // 3
+			s->cam_vec_dir.z += INTERVAL_VEC;
+		get_buffer(s, SCENE);
+		get_pixels_to_img(s, HEIGHT, SCENE);
+		push_img_to_win(s, SCENE);
+		display_param_cam(s);
+	}
+	else
+	{
+		push_img_to_win(s, PROMPT);
+		if (key == ESCAPE)
+			red_cross(s);
+		else if (key == BACKSP)
+			key_backspace(s, tmp);
+		else if (key == ENTER && s->prompt)
+			return (key_enter(s));
+		else if (key >= 0 && key < 53)
+			type_key(s, tmp, key);
+		if (s->prompt)
+			mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xBA55D3, s->prompt);
+	}
 	return (0);
 }
-/*
+
 int	button_press(int i, int y, int x, t_minirt *s)
 {
-	t_rayon		r;
-	t_vector	p;
-	t_vector	n;
-	t_sphere	*sphere;
-	t_sphere	*sphere_tmp;
-	float		t;
-	float		t1;
-	(void ) i;
-	r = init_rayon(s->cam_origin, get_normalize_vector(vector_director(s, &x, &y)));
-	sphere = s->sp;
-	t = FLT_MAX;
-	sphere_tmp = NULL;
-	while (sphere != NULL)
+	(void)y;
+	(void)x;
+	
+	if (i == 1)
 	{
-		if (intersection_sphere(&r, sphere, &p, &n))
-		{
-			t1 = get_norme_vector(div_(sub_(r.origine, p), get_norme_vector(r.direction)));
-			if (t1 < t)
-			{
-				t = t1;
-				sphere_tmp = sphere;
-			}
-		}
-		sphere = sphere->next;
+		printf("Clic gauche\n");
 	}
-	if (sphere_tmp != NULL) {
+	else if (i == 4 || i == 5) // scroll up
+	{
+		if (i == 4)
+			s->cam_origin.z += INTERVAL;
+		else
+			s->cam_origin.z -= INTERVAL;
 		get_buffer(s, SCENE);
+		get_pixels_to_img(s, HEIGHT, SCENE);
 		push_img_to_win(s, SCENE);
-		sphere_tmp->center_axis.x += 2;
+		display_param_cam(s);
 	}
 	return (0);
 }
-*/
+
 int	key_release(int key, t_minirt *s)
 {
 	(void)key;

@@ -23,6 +23,7 @@ SRCS =		src/ft_printf_fd.c \
 			src/ft_isdigit.c \
 			src/ft_isprint.c \
 			src/ft_itoa.c \
+			src/ft_itof.c \
 			src/ft_memchr.c \
 			src/ft_memcmp.c \
 			src/ft_memcpy.c \

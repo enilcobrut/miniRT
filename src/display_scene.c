@@ -523,7 +523,7 @@ void	get_buffer(t_minirt *s, int opt)
 	t_vector lower_left_corner;
 	t_vector origin;
 	const t_vector vup = init_vector(0, 1, 0);
-	double	theta = degrees_to_radians(s->cam_hor_field_view);
+	double	theta = degrees_to_radians(s->cam_fov);
 	double h = tan(theta/2);
 	double mul_t_u;
 	double mul_t_v;
@@ -538,23 +538,23 @@ void	get_buffer(t_minirt *s, int opt)
 	// vertical.x = 0;
 	// vertical.y = viewport_height;
 	// vertical.z = 0;
-	//t_vector lookat = add_(s->cam_origin, s->cam_norm_or_vector_axis);
+	//t_vector lookat = add_(s->cam_origin, s->cam_vec_dir);
 	//t_vector lookfrom = s->cam_origin;
-	t_vector w = vec3_unit_vector(mul_(s->cam_norm_or_vector_axis, -1));
+	t_vector w = vec3_unit_vector(mul_(s->cam_vec_dir, -1));
 	t_vector u = vec3_unit_vector(vec_cross(vup, w));
 	t_vector v = vec_cross(w, u);
 	origin = s->cam_origin;
 	horizon = mul_(u, viewport_width);
 	vertical = mul_(v, viewport_height);
-	const int samples_per_pixel = 100;
-	const int max_depth = 10;
+	s->samples_per_pixel = 1;
+	s->depth = 10;
 	// Camera
 	//double focal_length = 1.0;
 	// origin.x = s->cam_origin.x;
 	// origin.y = s->cam_origin.y;
 	// origin.z = s->cam_origin.z;
 	lower_left_corner = sub_(sub_(sub_(origin, mul_(horizon, 0.5)), mul_(vertical, 0.5)), w);
-	//lower_left_corner = sub_(sub_(origin, div_(horizon, 2)), sub_(div_(vertical, 2), s->cam_norm_or_vector_axis/*init_vector(0, 0, focal_length*/));
+	//lower_left_corner = sub_(sub_(origin, div_(horizon, 2)), sub_(div_(vertical, 2), s->cam_vec_dir/*init_vector(0, 0, focal_length*/));
 	
 	// Render
 	
@@ -565,14 +565,14 @@ void	get_buffer(t_minirt *s, int opt)
 			pixel_color.r = 0;
 			pixel_color.g = 0;
 			pixel_color.b = 0;
-			for (int i = 0; i < samples_per_pixel; ++i)
+			for (int i = 0; i < s->samples_per_pixel; ++i)
 			{
 				mul_t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
 				mul_t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
 				r = init_rayon(origin, sub_(add_(add_(lower_left_corner, mul_(horizon, mul_t_u)), mul_(vertical, mul_t_v)), origin));
-				pixel_color = color_add_(pixel_color, ray_color(&r, s, max_depth));
+				pixel_color = color_add_(pixel_color, ray_color(&r, s, s->depth));
 			}
-			s->buf[HEIGHT - y - 1][x] = write_color(pixel_color, samples_per_pixel);
+			s->buf[HEIGHT - y - 1][x] = write_color(pixel_color, s->samples_per_pixel);
 		}
 	}
 }

@@ -1,8 +1,3 @@
-
-
-
-
-
 #include "miniRT.h"
 
 int	rgb_to_int(unsigned char r, unsigned char g, unsigned char b)
@@ -39,7 +34,7 @@ t_vector 	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsign
 
 	// p.x = *x - (WIDTH) / 2;
 	// p.y = *y - (HEIGHT + 32) / 2;
-	// p.z = - ((WIDTH) / 2) / tan((s->cam_hor_field_view * PI / 180) / 2);
+	// p.z = - ((WIDTH) / 2) / tan((s->cam_fov * PI / 180) / 2);
 /*
 
 t_vector	vector_director(t_minirt *s, int *x, int *y)
@@ -49,7 +44,7 @@ t_vector	vector_director(t_minirt *s, int *x, int *y)
 	float		a;
 	float		b;
 	
-	// s->cam_norm_or_vector_axis;
+	// s->cam_vec_dir;
 	// s->cam_origin;
 
 	// p.x = *x - (WIDTH) / 2;
@@ -58,13 +53,13 @@ t_vector	vector_director(t_minirt *s, int *x, int *y)
 
 	x2 = - *x + (WIDTH) / 2;
 	y2 = *y - (HEIGHT + 32) / 2;
-	a = (WIDTH) / (2 * (tan((s->cam_hor_field_view * PI / 180) / 2)));
+	a = (WIDTH) / (2 * (tan((s->cam_fov * PI / 180) / 2)));
 
-	p.x = s->cam_origin.x + s->cam_norm_or_vector_axis.z * x2 + s->cam_norm_or_vector_axis.x * (a + y2 * s->cam_norm_or_vector_axis.y);
-	p.y = s->cam_origin.y + a * s->cam_norm_or_vector_axis.y + y2 * \
-			(s->cam_norm_or_vector_axis.z * s->cam_norm_or_vector_axis.z - s->cam_norm_or_vector_axis.x * s->cam_norm_or_vector_axis.x);
+	p.x = s->cam_origin.x + s->cam_vec_dir.z * x2 + s->cam_vec_dir.x * (a + y2 * s->cam_vec_dir.y);
+	p.y = s->cam_origin.y + a * s->cam_vec_dir.y + y2 * \
+			(s->cam_vec_dir.z * s->cam_vec_dir.z - s->cam_vec_dir.x * s->cam_vec_dir.x);
 
-	p.z = s->cam_origin.z + x2 * s->cam_norm_or_vector_axis.x + s->cam_norm_or_vector_axis.z * (a - y2 * s->cam_norm_or_vector_axis.y);
+	p.z = s->cam_origin.z + x2 * s->cam_vec_dir.x + s->cam_vec_dir.z * (a - y2 * s->cam_vec_dir.y);
 	// printf("(%f) - (%f) - (%f)\n", p.x, p.y, p.z);
 	// exit (0);
 	return (p);
@@ -217,14 +212,14 @@ t_vector	show_light(t_minirt *s, t_type obj_type, t_vector *p, t_vector *n)
 	t_rayon		r;
 	t_vector	color_pixel;
 	float		d_light;
-	float		t_light;
+	float		t_light_scene;
 	int 		intensite_lumiere;
 
 	r = init_rayon(add_(*p, mul_(*n, 0.01)), get_normalize_vector(sub_(s->light_axis, *p)));
 	d_light = get_norme_vector(sub_(s->light_axis, *p));
 	t_vector p2, n2;
-	t_light = intersection_scene(s, &r, NULL, NULL);
-	if (s->light_brightness_ratio > s->amb_light_ratio && t_light != -1 && t_light * t_light < d_light)
+	t_light_scene = intersection_scene(s, &r, NULL, NULL);
+	if (s->light_brightness_ratio > s->amb_light_ratio && t_light_scene != -1 && t_light_scene * t_light_scene < d_light)
 		intensite_lumiere = 100000000 * s->amb_light_ratio;
 	else
 		intensite_lumiere = 100000000 * s->light_brightness_ratio;

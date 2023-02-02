@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 int	print_color(t_color color)
 {	
@@ -7,14 +7,12 @@ int	print_color(t_color color)
 
 void print_sphere(t_sphere *sp, int nb)
 {
-
 	printf("\033[45m ⚪️ Sphere #%d  \033[0m\n", nb);
 	printf("\033[35m Coordinates of the sphere center \033[0m");
 	printf("[%0.1f]", sp->center_axis.x);
 	printf("[%0.1f]", sp->center_axis.y);
 	printf("[%0.1f]\n", sp->center_axis.z);
 	printf("\033[35m Diameter \033[0m[%0.1f]           ", sp->diameter);
-	// printf("\033[35m Color \033[0m[%x]\n\n", print_color(sp->color));
 }
 
 void print_plane(t_plane *pl, int nb)
@@ -28,7 +26,6 @@ void print_plane(t_plane *pl, int nb)
 	printf("[%0.1f]", pl->norm_or_vector.x);
 	printf("[%0.1f]", pl->norm_or_vector.y);
 	printf("[%0.1f]\n", pl->norm_or_vector.z);
-	// printf("\033[35m Color                            \033[0m[%x]\n\n", print_color(pl->color));
 }
 
 void	print_cylinder(t_cylinder *cy, int nb)
@@ -44,7 +41,22 @@ void	print_cylinder(t_cylinder *cy, int nb)
 	printf("[%0.1f]\n", cy->norm_or_vector.z);
 	printf("\033[35m Diameter \033[0m[%0.1f]", cy->diameter);
 	printf("\033[35m Height \033[0m[%0.2f]", cy->height);
-	// printf("\033[35m Color \033[0m[%x]\n\n", print_color(cy->color));
+}
+
+void	print_lights(t_light *li)
+{
+	while (li)
+	{
+		printf("\033[45m 🔦 Light #%d  \033[0m\n", li->n);
+		printf("\033[35m Light point \033[0m");
+		printf("[%0.1f]", li->light_axis.x);
+		printf("[%0.1f]", li->light_axis.y);
+		printf("[%0.1f]", li->light_axis.z);
+		printf("\033[35m View point \033[0m");
+		printf("[%0.1f]\n", li->light_brightness_ratio);
+		printf("\033[35m Color\033[0m       [%x]\n\n", print_color(li->light_color));
+		li = li->next;
+	}
 }
 
 void	print_params(t_minirt *s)
@@ -63,14 +75,7 @@ void	print_params(t_minirt *s)
 	printf("[%0.1f]\n", s->cam_vec_dir.z);
 	printf("\033[35m Horizontal field of view \033[0m     ");
 	printf("[%d]°\n\n", s->cam_fov);
-	printf("\033[45m 🔦 Light  \033[0m\n");
-	printf("\033[35m Light point \033[0m");
-	printf("[%0.1f]", s->light_axis.x);
-	printf("[%0.1f]", s->light_axis.y);
-	printf("[%0.1f]", s->light_axis.z);
-	printf("\033[35m View point \033[0m");
-	printf("[%0.1f]\n", s->light_brightness_ratio);
-	printf("\033[35m Color\033[0m       [%x]\n\n", print_color(s->light_color));
+	print_lights(s->li);
 	t_obj *obj = s->obj;
 	while (obj)
 	{
@@ -84,7 +89,6 @@ void	print_params(t_minirt *s)
 		obj = obj->next;
 	}
 }
-
 
 int	main(int argc, char **argv)
 {
@@ -103,7 +107,9 @@ int	main(int argc, char **argv)
 		check_extension_rt(s);
 	}
 	init_set(s);
+
 	get_params(s);
+
 	get_identifiers(s, 0, 0, 0);
 	if (PRINT == 1)
 		print_params(s);

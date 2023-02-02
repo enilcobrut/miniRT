@@ -37,7 +37,7 @@ void	get_params(t_minirt *s)
 	char	*tmp;
 
 	tmp = NULL;
-	fd_params = open(s->argv[1]/*"example.rt"*/, O_RDONLY);
+	fd_params = open(/*s->argv[1]*/"example.rt", O_RDONLY);
 	if (fd_params == -1)
 		exit_error(s, 0, 0);
 	tmp = get_next_line(fd_params);
@@ -50,4 +50,5 @@ void	get_params(t_minirt *s)
 			ft_lstadd_back(&s->params, ft_lstnew(ft_split(tmp, ' ')));
 	}
 	get_params_loop(s, tmp, fd_params);
+	printf("%d\n", ft_lstsize(s->params));
 }

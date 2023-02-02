@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   memory.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/04 18:50:23 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/21 11:38:50 by cjunker          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "miniRT.h"
 
@@ -17,7 +6,7 @@ void	init_set(t_minirt *s)
 	s->params = NULL;
 	s->prompt = NULL;
 	s->amb_light_ratio = 0;
-	s->cam_hor_field_view = 0;
+	s->cam_fov = 0;
 	s->light_brightness_ratio = 0;
 	s->obj = NULL;
 	s->mlx = NULL;
