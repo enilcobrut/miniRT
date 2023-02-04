@@ -100,7 +100,7 @@ t_vector	vec3_unit_vector(t_vector a)
     return (t_vector) { a.x / length, a.y / length, a.z / length };
 }
 
-t_vector vec_random()
+t_vector vec_random(void)
 {
 	return ((t_vector){(double)random_double(), (double)random_double(), (double)random_double()});
 }
@@ -111,7 +111,7 @@ t_vector vec_random_2(double min, double max)
 	return ((t_vector){random_double_2(min, max), random_double_2(min, max), random_double_2(min, max)});
 }
 
-t_vector random_in_unit_sphere()
+t_vector random_in_unit_sphere(void)
 {
 	while (1)
 	{
@@ -122,7 +122,7 @@ t_vector random_in_unit_sphere()
 	}
 }
 
-t_vector random_in_unit_sphere_2()
+t_vector random_in_unit_sphere_2(void)
 {
 	while (1)
 	{

@@ -39,5 +39,4 @@ void	get_params(t_minirt *s)
 			ft_lstadd_back(&s->params, ft_lstnew(ft_split(tmp, ' ')));
 	}
 	get_params_loop(s, tmp, fd_params);
-	printf("%d\n", ft_lstsize(s->params));
 }

@@ -54,25 +54,25 @@ typedef struct	s_data {
 	int		endian[2];
 }				t_data;
 
-typedef struct s_color
+typedef struct	s_color
 {
 	double 	r;
 	double 	g;
 	double 	b;
-}	t_color;
+}				t_color;
 
 typedef struct s_vector
 {
 	double	x;
 	double	y;
 	double	z;
-}			t_vector;
+}				t_vector;
 
 typedef struct s_rayon
 {
 	t_vector	origine;
 	t_vector	direction;
-} 			t_rayon;
+} 				t_rayon;
 
 typedef struct s_hit_record
 {
@@ -255,7 +255,7 @@ int 	get_pixels_to_img(t_minirt *s, int h, int opt);
 
 
 /* GET BUFFER *************************************************************** */
-void	get_buffer(t_minirt *s, int opt);
+void	get_buffer(t_minirt *s);
 
 /* DISPLAY SCENE ************************************************************ */
 int				rgb_to_int(unsigned char r, unsigned char g, unsigned char b);
@@ -299,6 +299,7 @@ t_color get_rgb(int color);
 float	get_norme_vector(t_vector v);
 int	near_zero(const t_vector *vec);
 t_color map_color(t_color color);
+
 /* VECTOR TOOLS *************************************************************** */
 void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
 t_color get_rgb(int color);
@@ -319,6 +320,7 @@ double clamp(double x, double min, double max);
 double	degrees_to_radians(double degree);
 double ft_sqrt(double number);
 t_vector vec_cross(const t_vector u, const t_vector v);
+
 /* LINKEDLISTS *************************************************************** */
 
 /* -- CYLINDER -- */
@@ -329,11 +331,11 @@ t_cylinder	*lst_last_cylinder(t_cylinder **lst);
 int			size_cylinder(t_cylinder *lst);
 
 /* -- OBJ -- */
-t_obj	*init_obj_lst(t_obj *new);
-t_obj	*lst_new_obj(int type);
-t_obj	*lst_add_obj(t_obj **lst, t_obj *new);
-t_obj	*lst_last_obj(t_obj **lst);
-int	size_obj(t_obj *lst);
+t_obj		*init_obj_lst(t_obj *new);
+t_obj		*lst_new_obj(int type);
+t_obj		*lst_add_obj(t_obj **lst, t_obj *new);
+t_obj		*lst_last_obj(t_obj **lst);
+int			size_obj(t_obj *lst);
 
 /* -- PLANE -- */
 t_plane		*init_plane(t_plane *new);

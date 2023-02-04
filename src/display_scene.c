@@ -1,28 +1,12 @@
 #include "miniRT.h"
 
-
-/****************************************************************************************************/
-
-
-t_color color_add_(t_color a, t_color b)
+void display_scene(t_minirt *s)
 {
-	return ((t_color){a.r + b.r, a.g + b.g, a.b + b.b});
-}
-
-t_color color_mul(t_color a, t_color b)
-{
-	return ((t_color){a.r * b.r, a.g * b.g, a.b * b.b});
-}
-
-t_color init_color(double r, double g, double b)
-{
-	return ((t_color){r, g, b});
-}
-
-
-t_color	color_mul_scalar(t_color a, double b)
-{
-	return ((t_color){a.r * b, a.g * b, a.b * b});
+	get_buffer(s);
+	get_pixels_to_img(s, HEIGHT, SCENE);
+	push_img_to_win(s, SCENE);
+	if (s->cam_param_display == 1)
+		display_param_cam(s);
 }
 // t_color	ray_color(const t_rayon *r, t_minirt *s, int depth)
 // {
@@ -58,10 +42,6 @@ t_color	color_mul_scalar(t_color a, double b)
 // 	 }
 // 	 return (light);
 // }
-
-
-
-
 
 // t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 // {
@@ -117,7 +97,6 @@ t_color	color_mul_scalar(t_color a, double b)
 
 // 	//return (color_add_(color_mul_scalar(white, 1.0 - t), color_mul_scalar(blue, t)));
 // }
-
 
 t_color		clamp_color(t_color color)
 {
@@ -253,41 +232,6 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 // 		//return (color_add_(color_mul_scalar(attenuation, s->amb_light_ratio), color_mul(attenuation, ray_color(&scattered, s, depth - 1, background))));
 // }
 
-
-int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-{
-	double radius = cyl->diameter / 2;
-	t_vector oc = sub_(r->origine, cyl->axis);
-	double a = length_squared(r->direction) - pow(dot(r->direction, cyl->axis), 2);
-	double half_b = dot(oc, r->direction) - dot(oc, cyl->axis) * dot(r->direction, cyl->axis);
-	double c = length_squared(oc) - pow(dot(oc, cyl->axis), 2) - radius * radius;
-	double delta = half_b * half_b - a * c;
-	if (delta < 0)
-	return (0);
-	double sqrtd = sqrt(delta);
-	double root = (-half_b - sqrtd) / a;
-	if (root < t_min || t_max < root)
-	{
-	root = (-half_b + sqrtd) / a;
-	if (root < t_min || t_max < root)
-	return (0);
-	}
-	rec->t = root;
-	rec->p = add_(r->origine, mul_(r->direction, rec->t));
-	t_vector normal = sub_(rec->p, cyl->axis);
-	normal = sub_(normal, mul_(cyl->axis, dot(normal, cyl->axis)));
-	normal = vec3_unit_vector(normal);
-	rec->normal = normal;
-	rec->front_face = dot(r->direction, normal) < 0;
-	if (!rec->front_face)
-	rec->normal = mul_(rec->normal, -1);
-	return (1);
-}
-
-
-
-
-
 // int	scatter(t_rayon r, t_hit_record *rec, t_color *attenuation, t_rayon *scat)
 // {
 
@@ -308,116 +252,6 @@ void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_norma
 	}
 }
 
-
-t_color map_color(t_color color)
-{
-	return ((t_color) {color.r / 255.0, color.g / 255.0, color.b / 255.0});
-
-}
-
-int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-{
-	t_vector norm = vec3_unit_vector(p->norm_or_vector);
-double t = dot(norm, sub_(p->axis, r->origine)) / dot(norm, r->direction);
-if (t < t_min || t > t_max)
-return (0);
-rec->t = t;
-rec->p = add_(r->origine, mul_(r->direction, t));
-rec->normal = norm;
-rec->front_face = dot(r->direction, rec->normal) < 0;
-if (!rec->front_face)
-rec->normal = mul_(rec->normal, -1);
-return (1);
-}
-
-
-// int	hit_plane(t_plane *pl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-// {
-// 	(void)rec;
-// 	double denom = dot(vec3_unit_vector(pl->norm_or_vector), r->direction);
-// 	if (denom > 1e-6) 
-// 	{
-// 		t_vector p = sub_(pl->axis, r->origine);
-// 		double t = dot(p, pl->axis);
-// 		if (t < t_min || t_max < t)
-// 		{
-// 			t = dot(p, pl->axis);
-// 			if (t < t_min || t_max < t)
-// 				return (0);
-// 		}
-// 		return (t >= 0);
-// 	}
-// 	return (0);
-//       //  t_vector p0l0 = sub_(pl->axis, r->origine);
-//         //t = dot(get_normalize_vector(p0l0), get_normalize_vector(pl->norm_or_vector)) / denom;
-// }
-	
-
-
-
-
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj)
-{
-	t_hit_record temp_rec;
-	int	hit_anything = 0;
-	double closest_so_far = t_max;
-	
-
-	while (obj)
-	{
-
-		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, t_min, closest_so_far))
-		{
-			hit_anything = 1;
-			closest_so_far = temp_rec.t;
-			*rec = temp_rec;
-			rec->mat_ptr = &obj->mat;
-		}
-		else if (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, t_min, closest_so_far))
-		{
-			hit_anything = 1;
-			closest_so_far = temp_rec.t;
-			*rec = temp_rec;
-			rec->mat_ptr = &obj->mat;
-		}
-		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, t_min, closest_so_far))
-		{
-			hit_anything = 1;
-			closest_so_far = temp_rec.t;
-			*rec = temp_rec;
-			rec->mat_ptr = &obj->mat;
-		}
-		/*else if (obj->type == CYLINDER && hit_plane(&obj->u.cy, r, &temp_rec, t_min, t_max))*/
-		obj = obj->next;
-	}
-	if (hit_anything)
-		rec->normal = vec3_unit_vector(rec->normal);
-	return (hit_anything);
-}
-
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-{
-	t_vector oc = sub_(r->origine, sp->center_axis);
-	double a = length_squared(r->direction);
-	double half_b = dot(oc, r->direction);
-	double c = length_squared(oc) -  sp->radius *  sp->radius;
-	double delta = half_b*half_b - a*c;
-	if (delta < 0)
-		return (0);
-	double sqrtd = sqrt(delta);
-	double root = (-half_b - sqrtd) / a;
-	if (root < t_min || t_max < root)
-	{
-		root = (-half_b + sqrtd) / a;
-		if (root < t_min || t_max < root)
-			return (0);
-	}
-	rec->t = root;
-	rec->p = add_(r->origine, mul_(r->direction, rec->t));
-	set_face_normal(r, rec, div_(sub_(rec->p, sp->center_axis), sp->radius));
-	//rec->normal = div_(sub_(rec->p, sp->center_axis), sp->radius);
-	return (1);
-}
 
 int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
 {
@@ -440,8 +274,6 @@ int scatter_light(const t_rayon *r, const t_hit_record *rec, t_color *attenuatio
 	*attenuation = rec->mat_ptr->albedo;
 	return (1);
 }
-
-
 
 
 t_vector	refract(const t_vector uv, const t_vector n, double etai_over_etat)
@@ -504,20 +336,8 @@ int	near_zero(const t_vector *vec)
 	return ((fabs(vec->x) < s) && (fabs(vec->y) < s) && fabs(vec->z) < s);
 }
 
-int	write_color(t_color	 pixel_color, int sample_per_pixel)
+void	get_buffer(t_minirt *s)
 {
-	double scale = 1.0 / (double)sample_per_pixel;
-	t_color new_c;
-	new_c.r = pixel_color.r * scale;//sqrt(pixel_color.r * scale);
-	new_c.g = pixel_color.g * scale; //sqrt(pixel_color.g * scale);
-	new_c.b = pixel_color.b * scale;//sqrt(pixel_color.b * scale);
-	return (create_trgb(0, new_c.r  * 255,  new_c.g * 255,  new_c.b*255));
-	//return (create_trgb(0, clamp(new_c.r, 0.0, 0.999) * 256,  clamp(new_c.g, 0.0, 0.999) * 256,  clamp(new_c.b, 0.0, 0.999) * 255));
-}
-
-void	get_buffer(t_minirt *s, int opt)
-{
-	(void)opt;
 	t_vector horizon;
 	t_vector vertical;
 	t_vector lower_left_corner;
@@ -530,7 +350,7 @@ void	get_buffer(t_minirt *s, int opt)
 	// Image
 	t_rayon		r;
 	t_color	 pixel_color;
-	double viewport_height = 2.0*h;
+	double viewport_height = 2.0 * h;
 	double viewport_width = ((double)WIDTH/HEIGHT) * viewport_height;
 	// horizon.x = viewport_width;
 	// horizon.y = 0;
@@ -546,8 +366,8 @@ void	get_buffer(t_minirt *s, int opt)
 	origin = s->cam_origin;
 	horizon = mul_(u, viewport_width);
 	vertical = mul_(v, viewport_height);
-	s->samples_per_pixel = 1;
-	s->depth = 10;
+	s->samples_per_pixel = 10;
+	s->depth = 5;
 	// Camera
 	//double focal_length = 1.0;
 	// origin.x = s->cam_origin.x;
@@ -557,22 +377,33 @@ void	get_buffer(t_minirt *s, int opt)
 	//lower_left_corner = sub_(sub_(origin, div_(horizon, 2)), sub_(div_(vertical, 2), s->cam_vec_dir/*init_vector(0, 0, focal_length*/));
 	
 	// Render
-	
-	for (int y = HEIGHT - 1; y >= 0; --y)
+	//t_buf *b = s->b;
+
+	int y = HEIGHT - 1;
+	int x = 0;
+	int i = 0;
+	while (y >= 0)
 	{
-		for (int x = 0; x < WIDTH; ++x)
+		x = 0;
+		while (x < WIDTH)
 		{
 			pixel_color.r = 0;
 			pixel_color.g = 0;
 			pixel_color.b = 0;
-			for (int i = 0; i < s->samples_per_pixel; ++i)
+			i = 0;
+			while (i < s->samples_per_pixel)
 			{
 				mul_t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
 				mul_t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
 				r = init_rayon(origin, sub_(add_(add_(lower_left_corner, mul_(horizon, mul_t_u)), mul_(vertical, mul_t_v)), origin));
 				pixel_color = color_add_(pixel_color, ray_color(&r, s, s->depth));
+				i++;
 			}
+			// b = lst_add_buf(&s->b, lst_new_buf(x, (HEIGHT - y - 1), write_color(pixel_color, s->samples_per_pixel), 0));
+			// printf("%d-%d ", b->hexa, b->n_object);
 			s->buf[HEIGHT - y - 1][x] = write_color(pixel_color, s->samples_per_pixel);
+			x++;
 		}
+		y--;
 	}
 }

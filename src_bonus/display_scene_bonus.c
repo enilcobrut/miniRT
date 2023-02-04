@@ -511,9 +511,8 @@ int	write_color(t_color	 pixel_color, int sample_per_pixel)
 	//return (create_trgb(0, clamp(new_c.r, 0.0, 0.999) * 256,  clamp(new_c.g, 0.0, 0.999) * 256,  clamp(new_c.b, 0.0, 0.999) * 255));
 }
 
-void	get_buffer(t_minirt *s, int opt)
+void	get_buffer(t_minirt *s)
 {
-	(void)opt;
 	t_vector horizon;
 	t_vector vertical;
 	t_vector lower_left_corner;

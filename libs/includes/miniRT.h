@@ -16,7 +16,7 @@
 # define MAX_PATH 1024
 # define PARSING 0
 # define LEAKS 0
-# define PRINT 1
+# define PRINT 0
 # define EXEC 1
 # define INTERVAL 0.3
 # define INTERVAL_VEC 0.01
@@ -101,7 +101,6 @@ typedef struct s_material
 	double	ir;
 } t_material;
 
-
 typedef struct s_sphere
 {
 	t_vector			center_axis;
@@ -132,10 +131,9 @@ typedef struct s_cylinder
 
 typedef struct s_obj
 {
-	t_id type;
-	int n;
+	t_id				type;
+	int					n;
 	t_material			mat;
-
 	union
 	{
 		t_cylinder cy;
@@ -146,10 +144,24 @@ typedef struct s_obj
 	struct s_obj *prev;
 } t_obj;
 
+
+typedef struct s_buf
+{
+	int x;
+	int y;
+	int hexa;
+	int n_object;
+	struct s_buf *next;
+	struct s_buf *prev;
+
+} t_buf;
+
+
 typedef struct s_minirt
 {
 	int					samples_per_pixel;
 	int					depth;
+	t_buf				*b;
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;
 	t_list				*params;
@@ -235,53 +247,86 @@ int		is_void(char *str, int end);
 int		nb_arg_tab(char **tab);
 int		check_float_atof(t_minirt *s, char *str, int i);
 
+/* COLOR TOOLS ************************************************************** */
+
+t_color		color_add_(t_color a, t_color b);
+t_color		color_mul(t_color a, t_color b);
+t_color		init_color(double r, double g, double b);
+t_color		color_mul_scalar(t_color a, double b);
+t_vector	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue);
+t_color		map_color(t_color color);
+int			write_color(t_color	 pixel_color, int sample_per_pixel);
+
 /* DEAL KEY ***************************************************************** */
-int		key_release(int key, t_minirt *s);
-int		button_press(int i, int y, int x, t_minirt *s);
+
+void	key_backspace(t_minirt *s, char *tmp);
+int		key_enter(t_minirt *s);
 int		key_press(int key, t_minirt *s);
-void	get_prompt_bar(t_minirt *s);
+void	get_prompt(t_minirt *s, int key);
+
+/* -- DISPLAY -- */
+
+void	itof_to_win(t_minirt *s, double n, int x, int y);
+void	itoa_to_win(t_minirt *s, int n, int x, int y);
 void	display_param_cam(t_minirt *s);
 
+/* -- TOOLS -- */
+
+int	is_key_move(int key);
+int	vec_limit(double value);
+void	type_key(t_minirt *s, char *tmp, int key);
+
+/* -- MOUSE -- */
+
+int	button_press(int i, int y, int x, t_minirt *s);
+
+
 /* DISPLAY GENERAL*********************************************************** */
-void	scene_loop(t_minirt *s);
+
+int		get_pixels_to_img(t_minirt *s, int h, int opt);
+int		push_img_to_win(t_minirt *s, int opt);
 void	start_ray_tracing(t_minirt *s);
-int 	get_pixels_to_img(t_minirt *s, int h, int opt);
 
 /* GET BUFFER *************************************************************** */
-void	get_buffer(t_minirt *s, int opt);
+void	get_buffer(t_minirt *s);
 
 /* DISPLAY SCENE ************************************************************ */
-int				rgb_to_int(unsigned char r, unsigned char g, unsigned char b);
-float 		max(float t1, float t2);
-float 		min(float t1, float t2);
-t_vector 	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue);
-t_vector 	init_vector(float x, float y, float z);
-t_rayon		init_rayon(t_vector origine, t_vector direction);
-t_vector	sub_(t_vector v1, t_vector v2);
-t_vector	add_(t_vector v1, t_vector v2);
-t_vector	div_(t_vector v, float n);
-t_vector	mul_(t_vector v, double n);
-t_vector	vector_director(t_minirt *s, int *x, int *y);
-void			normalize_vector(t_vector v);
-t_color			ray_color(t_rayon *r, t_minirt *s, int depth);
-t_vector random_in_unit_sphere();
-float		intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n);
-void 			show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
-int				push_img_to_win(t_minirt *s, int opt);
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
-int	write_color(t_color	 pixel_color, int sample_per_pixel);
+
+void display_scene(t_minirt *s);
+t_color		clamp_color(t_color color);
+t_color	ray_color(t_rayon *r, t_minirt *s, int depth);
 void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
 int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
-int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int scatter_light(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+t_vector	refract(const t_vector uv, const t_vector n, double etai_over_etat);
 t_vector	reflect(const t_vector v, const t_vector n);
+int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+double	reflectance(double cos, double ref_i);
+int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int	near_zero(const t_vector *vec);
+void	get_buffer(t_minirt *s);
+
+/* HIT ********************************************************************** */
+int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
+
+/* -- HIT CYLINDER -- */
+int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+
+/* -- HIT PLANE -- */
+int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+
+/* -- HIT SHPERE -- */
+int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int	hit_sphere_2(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
 
 /* TOOLS ******************************************************************** */
 int			red_cross(t_minirt *s);
-void		put_str(t_minirt *s, int x, int y, char *str);
-t_color get_rgb(int color);
+
+/* VECTOR TOOLS *************************************************************** */
+double length_squared(t_vector v);
 double	dot(t_vector u, t_vector v);
 t_vector	get_normalize_vector(t_vector v);
+float	get_norme_vector(t_vector v);
 t_vector init_vector(float x, float y, float z);
 t_rayon	init_rayon(t_vector origine, t_vector direction);
 t_vector	sub_(t_vector v1, t_vector v2);
@@ -289,29 +334,22 @@ t_vector	add_(t_vector v1, t_vector v2);
 t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
 t_color get_rgb(int color);
-float	get_norme_vector(t_vector v);
-int	near_zero(const t_vector *vec);
-t_color map_color(t_color color);
-/* VECTOR TOOLS *************************************************************** */
-void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
-t_color get_rgb(int color);
 double	vec3_length(t_vector a);
 t_vector	vec3_unit_vector(t_vector a);
-t_vector vec_random();
+t_vector vec_random(void);
 t_vector vec_random_2(double min, double max);
-t_vector random_in_unit_sphere();
-t_vector random_in_unit_sphere_2();
-double length_squared(t_vector v);
-int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+t_vector random_in_unit_sphere(void);
+t_vector random_in_unit_sphere_2(void);
 
 /* MATHS TOOLS *************************************************************** */
 double degrees_to_radians(double degrees);
 double random_double_2(double min, double max);
-double	random_double();
+double	random_double(void);
 double clamp(double x, double min, double max);
 double	degrees_to_radians(double degree);
 double ft_sqrt(double number);
 t_vector vec_cross(const t_vector u, const t_vector v);
+
 /* LINKEDLISTS *************************************************************** */
 
 /* -- CYLINDER -- */
@@ -342,6 +380,10 @@ t_sphere	*lst_add__sphere(t_sphere **lst, t_sphere *new);
 t_sphere	*lst_last_sphere(t_sphere **lst);
 int			size_sphere(t_sphere *lst);
 
-
+/* -- BUF -- */
+t_buf	*lst_new_buf(int x, int y, int hexa, int n_object);
+t_buf	*lst_add_buf(t_buf **lst, t_buf *new);
+t_buf	*lst_last_buf(t_buf **lst);
+int		size_buf(t_buf *lst);
 
 #endif

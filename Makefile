@@ -6,7 +6,8 @@ HEADER = 		libs/includes/miniRT.h \
 				libs/includes/get_next_line.h \
 				libs/includes/libft.h
 
-SRCS =			src/linked_lists/cylinder.c \
+SRCS =			src/linked_lists/buf.c \
+				src/linked_lists/cylinder.c \
 				src/linked_lists/obj.c \
 				src/linked_lists/plane.c \
 				src/linked_lists/sphere.c \
@@ -19,10 +20,18 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/parsing/tools_rgb.c \
 				src/parsing/tools_rgb2.c \
 				src/parsing/tools.c \
+				src/color_tools.c \
+				src/deal_keys_display.c \
+				src/deal_keys_tools.c \
 				src/deal_keys.c \
+				src/deal_mouse.c \
 				src/display_general.c \
 				src/display_scene.c \
 				src/get_buffer.c \
+				src/hit_cylinder.c \
+				src/hit_plane.c \
+				src/hit_sphere.c \
+				src/hit.c \
 				src/main.c \
 				src/maths_tools.c \
 				src/tools.c \
@@ -64,14 +73,14 @@ INCLUDES =		-I./libs/includes
 
 CC = 			gcc
 AR = 			ar rsc
-FLAGS =		 	-Wall -Wextra -Werror -g -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
-FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit #-fsanitize=address
+FLAGS =		 	-Wall -Wextra -Werror   -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
+FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -fsanitize=address
 
 NAME =			miniRT
 
 %.o:			%.c $(HEADER)
 				@printf '\033[1m\033[38;95;13;64m'"\r\033[KCompiling miniRT objects... ⏳ "'\033[1m\033[38;217;0;83m'"<$<>"'\033[0m'
-				@$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $< 
+				@$(CC) $(FLAGS)  $(INCLUDES) -o $@ -c $< 
 
 all: 			$(NAME)
 

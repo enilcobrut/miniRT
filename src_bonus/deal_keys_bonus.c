@@ -38,11 +38,7 @@ int	key_enter(t_minirt *s)
 			s->cam_param_display = 0;
 		else
 			s->cam_param_display = 1;
-		get_buffer(s, SCENE);
-		get_pixels_to_img(s, HEIGHT, SCENE);
-		push_img_to_win(s, SCENE);
-		if (s->cam_param_display == 1)
-			display_param_cam(s);
+		display_scene(s);
 	}
 	ft_free(&s->prompt);
 	return (0);
@@ -179,11 +175,7 @@ int	key_press(int key, t_minirt *s)
 			else
 				s->cam_vec_dir.z = 1;
 		}
-		get_buffer(s, SCENE);
-		get_pixels_to_img(s, HEIGHT, SCENE);
-		push_img_to_win(s, SCENE);
-		if (s->cam_param_display == 1)
-			display_param_cam(s);
+		display_scene(s);
 	}
 	else
 	{
@@ -217,7 +209,7 @@ int	button_press(int i, int y, int x, t_minirt *s)
 			s->cam_origin.z += INTERVAL;
 		else
 			s->cam_origin.z -= INTERVAL;
-		get_buffer(s, SCENE);
+		get_buffer(s);
 		get_pixels_to_img(s, HEIGHT, SCENE);
 		push_img_to_win(s, SCENE);
 		if (s->cam_param_display == 1)
@@ -226,9 +218,3 @@ int	button_press(int i, int y, int x, t_minirt *s)
 	return (0);
 }
 
-int	key_release(int key, t_minirt *s)
-{
-	(void)key;
-	(void)s;
-	return (0);
-}

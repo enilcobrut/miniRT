@@ -53,14 +53,12 @@ void	init_rtx(t_minirt *s)
 
 void	start_ray_tracing(t_minirt *s)
 {
-	get_buffer(s, ALL);
+	get_buffer(s);
 	init_rtx(s);
 	get_pixels_to_img(s, HEIGHT, ALL); //init image
 	push_img_to_win(s, ALL); // affiche image
 	display_param_cam(s);
 	mlx_hook(s->win, 2, 1L << 0, key_press, s);
-	//mlx_hook(s->win, 3, 1L << 0, key_release, s);
-	//mlx_hook(s->win, 5, 1L << 0, button_press, s);
 	mlx_mouse_hook(s->win, button_press, s);
 	mlx_hook(s->win, 17, 1L << 0, red_cross, s);
 	mlx_loop(s->mlx);

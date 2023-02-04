@@ -1,40 +1,5 @@
 #include "miniRT.h"
 
-int	rgb_to_int(unsigned char r, unsigned char g, unsigned char b)
-{
-	return (r << 16) | (g << 8) | b;
-}
-
-float max(float t1, float t2)
-{
-	if (t2 < t1)
-		return (t1);
-	return (t2);
-}
-
-float min(float t1, float t2)
-{
-	if (t2 > t1)
-		return (t1);
-	return (t2);
-}
-
-t_vector 	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue)
-{
-	t_vector v_color;
-
-	*red = (hexa >> 16) & 0xff;
-	*green = (hexa >> 8) & 0xff;
-	*blue = hexa & 0xff;
-	v_color.x = *red;
-	v_color.y = *green;
-	v_color.z = *blue;
-	return (v_color);
-}
-
-	// p.x = *x - (WIDTH) / 2;
-	// p.y = *y - (HEIGHT + 32) / 2;
-	// p.z = - ((WIDTH) / 2) / tan((s->cam_fov * PI / 180) / 2);
 /*
 
 t_vector	vector_director(t_minirt *s, int *x, int *y)

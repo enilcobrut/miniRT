@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-double	random_double()
+double	random_double(void)
 {
 	  // Returns a random real in [0,1).
 	return ((double)rand() / (RAND_MAX + 1.0));
@@ -20,12 +20,6 @@ double clamp(double x, double min, double max)
 		return (max);
 	return (x);
 }
-
-// t_color clamp(t_color x, t_color min, double max)
-// {
-
-// }
-
 
 double	degrees_to_radians(double degrees)
 {
