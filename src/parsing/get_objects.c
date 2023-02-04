@@ -58,11 +58,12 @@ int	get_cylinder(t_minirt *s, t_list *p)
 		exit_error(s, "A cylinder parameters aren't compliant", 1);
 	new_obj = lst_add_obj(&s->obj, lst_new_obj(CYLINDER));
 	cy = &new_obj->u.cy;
-	get_axis(s, &cy->axis, p->content[1], 0);
-	get_axis(s, &cy->norm_or_vector, p->content[2], 0);
-	check_vector_range(s, &cy->norm_or_vector);
+	get_axis(s, &cy->center, p->content[1], 0);
+	get_axis(s, &cy->dir_ax, p->content[2], 0);
+	check_vector_range(s, &cy->dir_ax);
 	check_float_format(s, p->content[3]);
 	cy->diameter = ft_atof(s, p->content[3], 0, 0);
+	cy->radius = cy->diameter * 0.5;
 	check_float_format(s, p->content[4]);
 	cy->height = ft_atof(s, p->content[4], 0, 0);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));

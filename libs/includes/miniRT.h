@@ -121,10 +121,11 @@ typedef struct s_plane
 
 typedef struct s_cylinder
 {
-	t_vector			axis;
-	t_vector			norm_or_vector;
-	float				diameter;
-	float				height;
+	t_vector			center;
+	t_vector			dir_ax;
+	double				diameter;
+	double				radius;
+	double				height;
 	struct s_cylinder	*next;
 	struct s_cylinder	*prev;
 }						t_cylinder;

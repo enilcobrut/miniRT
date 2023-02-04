@@ -102,8 +102,157 @@ t_color		clamp_color(t_color color)
 {
 	return ((t_color) {clamp(color.r, 0, 1), clamp(color.g, 0, 1), clamp(color.b, 0, 1)});
 }
+// t_color ray_color(t_rayon *r, t_minirt *s, int depth)
+// {
+//     t_hit_record rec;
+//     t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
+
+//     if (depth <= 0)
+//         return (init_color(0, 0, 0));
+
+//     if (hit(r, 0.001, INF, &rec, s->obj))
+//     {
+//         t_vector light_dir = sub_(s->light_axis, rec.p);
+//         double light_distance = vec3_length(light_dir);
+//         light_dir = vec3_unit_vector(light_dir);
+
+//         t_rayon shadow_ray = init_rayon(rec.p, light_dir);
+//         t_hit_record shadow_rec;
+
+//         if (!hit(&shadow_ray, 0.001, light_distance, &shadow_rec, s->obj))
+//         {
+//             double specular = fmax(0, dot(light_dir, vec3_unit_vector(reflect(r->direction, rec.normal))));
+//             double diffuse = fmax(0, dot(light_dir, vec3_unit_vector(rec.normal)));
+//             light = color_add_(light, color_mul_scalar(s->light_color, s->light_brightness_ratio * (diffuse + pow(specular, 100))));
+//         }
+
+//         t_rayon scattered;
+//         t_color attenuation;
+
+//         if (rec.mat_ptr->scatter(r, &rec, &attenuation, &scattered))
+//             return (color_mul(attenuation, ray_color(&scattered, s, depth - 1)));
+//         return (attenuation);
+//     }
+//     return (light);
+// }
+
+// t_color ray_color_2(t_rayon *r, t_minirt *s, int depth)
+// {
+// 	t_hit_record rec;
+
+// 	if (!hit(r, 0.001, INF, &rec, s->obj))
+// 		return (init_color(0,0,0));
+// }
+
+t_color	ray_color_1(t_rayon *r, t_minirt *s, int depth)
+{
+	t_hit_record rec;
+	if (depth <= 0)
+		return (init_color(0, 0, 0));
+
+	r->direction = vec3_unit_vector(r->direction);
+	if (!hit(r, 0.001, INF, &rec, s->obj))
+		return (init_color(0, 0, 0));
+	t_rayon	verif;
+	t_vector light_ax = s->light_axis;
+	t_vector light_dir = sub_(light_ax, rec.p);
+	verif = init_rayon(rec.p, light_dir);
+	t_hit_record rec2;
+	if (hit(&verif, 0.001, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
+		return (init_color(0, 0, 0));
+	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
+	double light_distance = vec3_length(light_dir);
+	double diffuse = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal)));
+	double specular = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
+	light = color_add_(light, color_mul_scalar(s->light_color, s->light_brightness_ratio * (diffuse / (1 + light_distance * light_distance) + pow(specular, 100))));
+	t_color	attenuation;
+	t_rayon scattered;
+	if (rec.mat_ptr->scatter(r, &rec, &attenuation, &scattered))
+		return (color_mul(attenuation, clamp_color(color_mul(light, ray_color(&scattered, s, depth - 1)))));
+	return (color_mul(attenuation, clamp_color(light)));
+}
+
+
+// t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
+// {
+// 	t_hit_record rec;
+// 	t_hit_record rec2;
+
+// 	if (depth <= 0)
+// 		return (init_color(0, 0, 0));
+
+// 	r->direction = vec3_unit_vector(r->direction);
+// 	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
+// 	if (hit(r, 0.001, INF, &rec, s->obj))
+// 	{
+// 		t_rayon scattered;
+// 		t_color attenuation;
+// 		t_rayon	verif;
+// 		{
+// 			t_vector light_ax =s->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
+// 			t_vector light_dir = sub_(light_ax, rec.p);
+
+// 			verif = init_rayon(rec.p, vec3_unit_vector(light_dir));
+
+// 			if (!hit(&verif, 0.001, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
+// 			{
+// 				double diffuse = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal)));
+// 				light = color_add_(light, color_mul_scalar(s->light_color, s->light_brightness_ratio * diffuse));
+
+// 				// pour toutes les lumières
+// 			}
+// 			else
+// 				printf("brbrbr\n");
+// 		}
+// 		if (rec.mat_ptr->scatter(r, &rec, &attenuation, &scattered))
+// 			return (color_mul(attenuation, light));
+// 		return (color_mul(attenuation, light));
+// 	}
+// 	return (init_color(0,0,0));
+// }
+
 
 t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
+{
+	t_hit_record rec;
+	t_hit_record rec2;
+
+	if (depth <= 0)
+		return (init_color(0, 0, 0));
+
+	r->direction = vec3_unit_vector(r->direction);
+	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
+	 if (hit(r, 0.001, INF, &rec, s->obj))
+	 {
+		t_rayon scattered;
+		t_color attenuation;
+		t_rayon	verif;
+		{
+			t_vector light_ax =s->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
+			t_vector light_dir = sub_(light_ax, rec.p);
+
+			verif = init_rayon(rec.p, vec3_unit_vector(light_dir));
+
+			if (!hit(&verif, 0.001, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
+			{
+				double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
+				double light_distance = vec3_length(light_dir);
+				double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal))) / (1 + light_distance * light_distance);
+				light = color_add_(light, color_mul_scalar(s->light_color, s->light_brightness_ratio * (test + pow(speculaire, 100))));
+
+				 // pour toute les lights
+			}
+		}
+		if (rec.mat_ptr->scatter(r, &rec, &attenuation, &scattered))
+			return (/*color_mul(*/color_mul(attenuation, clamp_color(light)/*, ray_color(&scattered, s, depth - 1))*/));
+		return (color_mul(attenuation, clamp_color(light)));
+	 }
+	 return (init_color(0,0,0));
+}
+
+
+
+t_color	ray_color_3(t_rayon *r, t_minirt *s, int depth)
 {
 	//t_vector unit_dir;
 	t_hit_record rec;
@@ -138,7 +287,8 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 			if (!hit(&verif, 0.001, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
 			{
 				double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
-				double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal)));
+				double light_distance = vec3_length(light_dir);
+				double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal))) / (1 + light_distance * light_distance);
 				light = color_add_(light, color_mul_scalar(s->light_color, s->light_brightness_ratio * (test + pow(speculaire, 100))));
 
 				 // pour toute les lights
@@ -252,6 +402,146 @@ void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_norma
 	}
 }
 
+
+t_color map_color(t_color color)
+{
+	return ((t_color) {color.r / 255.0, color.g / 255.0, color.b / 255.0});
+
+}
+
+int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+{
+	t_vector oc = sub_(r->origine, cyl->center);
+	double a = length_squared(r->direction) - pow(dot(r->direction, cyl->dir_ax), 2);
+	double half_b = dot(oc, r->direction) - dot(oc, cyl->dir_ax) * dot(r->direction, cyl->dir_ax);
+	double c = length_squared(oc) - pow(dot(oc, cyl->dir_ax), 2) - cyl->radius * cyl->radius;
+	double delta = half_b * half_b - a * c;
+	if (delta < 0)
+	return (0);
+	double sqrtd = sqrt(delta);
+	double root = (-half_b - sqrtd) / a;
+	if (root < t_min || t_max < root)
+	{
+	root = (-half_b + sqrtd) / a;
+	if (root < t_min || t_max < root)
+	return (0);
+	}
+	rec->t = root;
+	rec->p = add_(r->origine, mul_(r->direction, rec->t));
+	t_vector p = sub_(rec->p, cyl->center);
+	double v = dot(p, cyl->dir_ax);
+	if (v < 0 || cyl->height < v)
+	return (0);
+	t_vector normal = sub_(rec->p, cyl->center);
+	normal = sub_(normal, mul_(cyl->dir_ax, dot(normal, cyl->dir_ax)));
+	normal = div_(normal, cyl->radius);
+	set_face_normal(r, rec, normal);
+	return (1);
+}
+
+int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+{
+	t_vector norm = vec3_unit_vector(p->norm_or_vector);
+	double t = dot(norm, sub_(p->axis, r->origine)) / dot(norm, r->direction);
+	if (t < t_min || t > t_max)
+		return (0);
+	rec->t = t;
+	rec->p = add_(r->origine, mul_(r->direction, t));
+	rec->normal = norm;
+	rec->front_face = dot(r->direction, rec->normal) < 0;
+	if (!rec->front_face)
+		rec->normal = mul_(rec->normal, -1);
+	return (1);
+}
+
+
+// int	hit_plane(t_plane *pl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+// {
+// 	(void)rec;
+// 	double denom = dot(vec3_unit_vector(pl->norm_or_vector), r->direction);
+// 	if (denom > 1e-6) 
+// 	{
+// 		t_vector p = sub_(pl->axis, r->origine);
+// 		double t = dot(p, pl->axis);
+// 		if (t < t_min || t_max < t)
+// 		{
+// 			t = dot(p, pl->axis);
+// 			if (t < t_min || t_max < t)
+// 				return (0);
+// 		}
+// 		return (t >= 0);
+// 	}
+// 	return (0);
+//       //  t_vector p0l0 = sub_(pl->axis, r->origine);
+//         //t = dot(get_normalize_vector(p0l0), get_normalize_vector(pl->norm_or_vector)) / denom;
+// }
+	
+
+
+
+
+int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj)
+{
+	t_hit_record temp_rec;
+	int	hit_anything = 0;
+	double closest_so_far = t_max;
+	
+
+	while (obj)
+	{
+
+		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, t_min, closest_so_far))
+		{
+			hit_anything = 1;
+			closest_so_far = temp_rec.t;
+			*rec = temp_rec;
+			rec->mat_ptr = &obj->mat;
+		}
+		else if (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, t_min, closest_so_far))
+		{
+			hit_anything = 1;
+			closest_so_far = temp_rec.t;
+			*rec = temp_rec;
+			rec->mat_ptr = &obj->mat;
+		}
+		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, t_min, closest_so_far))
+		{
+			hit_anything = 1;
+			closest_so_far = temp_rec.t;
+			*rec = temp_rec;
+			rec->mat_ptr = &obj->mat;
+		}
+		/*else if (obj->type == CYLINDER && hit_plane(&obj->u.cy, r, &temp_rec, t_min, t_max))*/
+		obj = obj->next;
+	}
+	if (hit_anything)
+		rec->normal = vec3_unit_vector(rec->normal);
+	return (hit_anything);
+}
+
+int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+{
+	t_vector oc = sub_(r->origine, sp->center_axis);
+	double a = length_squared(r->direction);
+	double half_b = dot(oc, r->direction);
+	double c = length_squared(oc) -  sp->radius *  sp->radius;
+	double delta = half_b*half_b - a*c;
+	if (delta < 0)
+		return (0);
+	double sqrtd = sqrt(delta);
+	double root = (-half_b - sqrtd) / a;
+	if (root < t_min || t_max < root)
+	{
+		root = (-half_b + sqrtd) / a;
+		if (root < t_min || t_max < root)
+			return (0);
+	}
+	rec->t = root;
+	rec->p = add_(r->origine, mul_(r->direction, rec->t));
+	set_face_normal(r, rec, div_(sub_(rec->p, sp->center_axis), sp->radius));
+	//rec->normal = div_(sub_(rec->p, sp->center_axis), sp->radius);
+	return (1);
+}
 
 int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
 {
