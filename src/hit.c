@@ -5,9 +5,11 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 	t_hit_record temp_rec;
 	int	hit_anything = 0;
 	double closest_so_far = t_max;
+	
 
 	while (obj)
 	{
+
 		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, t_min, closest_so_far))
 		{
 			hit_anything = 1;

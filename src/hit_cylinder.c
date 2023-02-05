@@ -2,11 +2,10 @@
 
 int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
 {
-	double radius = cyl->diameter / 2;
-	t_vector oc = sub_(r->origine, cyl->axis);
-	double a = length_squared(r->direction) - pow(dot(r->direction, cyl->axis), 2);
-	double half_b = dot(oc, r->direction) - dot(oc, cyl->axis) * dot(r->direction, cyl->axis);
-	double c = length_squared(oc) - pow(dot(oc, cyl->axis), 2) - radius * radius;
+	t_vector oc = sub_(r->origine, cyl->center);
+	double a = length_squared(r->direction) - pow(dot(r->direction, cyl->dir_ax), 2);
+	double half_b = dot(oc, r->direction) - dot(oc, cyl->dir_ax) * dot(r->direction, cyl->dir_ax);
+	double c = length_squared(oc) - pow(dot(oc, cyl->dir_ax), 2) - cyl->radius * cyl->radius;
 	double delta = half_b * half_b - a * c;
 	if (delta < 0)
 	return (0);
@@ -20,12 +19,13 @@ int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_
 	}
 	rec->t = root;
 	rec->p = add_(r->origine, mul_(r->direction, rec->t));
-	t_vector normal = sub_(rec->p, cyl->axis);
-	normal = sub_(normal, mul_(cyl->axis, dot(normal, cyl->axis)));
-	normal = vec3_unit_vector(normal);
-	rec->normal = normal;
-	rec->front_face = dot(r->direction, normal) < 0;
-	if (!rec->front_face)
-	rec->normal = mul_(rec->normal, -1);
+	t_vector p = sub_(rec->p, cyl->center);
+	double v = dot(p, cyl->dir_ax);
+	if (v < 0 || cyl->height < v)
+	return (0);
+	t_vector normal = sub_(rec->p, cyl->center);
+	normal = sub_(normal, mul_(cyl->dir_ax, dot(normal, cyl->dir_ax)));
+	normal = div_(normal, cyl->radius);
+	set_face_normal(r, rec, normal);
 	return (1);
 }

@@ -33,11 +33,13 @@ t_vector 	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsign
 	return (v_color);
 }
 
+
 t_color map_color(t_color color)
 {
 	return ((t_color) {color.r / 255.0, color.g / 255.0, color.b / 255.0});
 
 }
+
 
 int	write_color(t_color	 pixel_color, int sample_per_pixel)
 {

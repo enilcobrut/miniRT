@@ -18,8 +18,8 @@
 # define LEAKS 0
 # define PRINT 0
 # define EXEC 1
-# define INTERVAL 0.3
-# define INTERVAL_VEC 0.01
+# define INTERVAL 0.1
+# define INTERVAL_VEC 0.1
 # define PI M_PI
 # define INF DBL_MAX
 

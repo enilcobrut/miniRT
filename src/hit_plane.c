@@ -1,5 +1,6 @@
 #include "miniRT.h"
 
+
 int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
 {
 	t_vector norm = vec3_unit_vector(p->norm_or_vector);
@@ -14,24 +15,3 @@ int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, dou
 		rec->normal = mul_(rec->normal, -1);
 	return (1);
 }
-
-// int	hit_plane(t_plane *pl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-// {
-// 	(void)rec;
-// 	double denom = dot(vec3_unit_vector(pl->norm_or_vector), r->direction);
-// 	if (denom > 1e-6)
-// 	{
-// 		t_vector p = sub_(pl->axis, r->origine);
-// 		double t = dot(p, pl->axis);
-// 		if (t < t_min || t_max < t)
-// 		{
-// 			t = dot(p, pl->axis);
-// 			if (t < t_min || t_max < t)
-// 				return (0);
-// 		}
-// 		return (t >= 0);
-// 	}
-// 	return (0);
-//       //  t_vector p0l0 = sub_(pl->axis, r->origine);
-//         //t = dot(get_normalize_vector(p0l0), get_normalize_vector(pl->norm_or_vector)) / denom;
-// }
