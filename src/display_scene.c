@@ -496,7 +496,7 @@ void	get_multi_threading(t_minirt *s)
 	int i = 0;
 	while (i < s->nt)
 	{
-		pthread_create(&t[i], NULL, &dispatch_thread, s);
+		while (pthread_create(&t[i], NULL, &dispatch_thread, s));
 		i++;
 	}
 	i = 0;

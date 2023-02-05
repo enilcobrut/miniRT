@@ -33,7 +33,6 @@ void	get_prompt(t_minirt *s, int key)
 {
 	char *tmp = NULL;
 
-	printf("%d\n", key);
 	push_img_to_win(s, PROMPT);
 	if (key == ESCAPE)
 		red_cross(s);
@@ -41,7 +40,6 @@ void	get_prompt(t_minirt *s, int key)
 		key_backspace(s, tmp);
 	else if (key == ENTER && s->prompt)
 		key_enter(s);
-	
 	else if (key >= 0 && key < 53)
 		type_key(s, tmp, key);
 	if (s->prompt)
@@ -66,7 +64,7 @@ void key_down_vec(double *value)
 
 int	key_press(int key, t_minirt *s)
 {
-	if (is_key_move(key))
+	if (is_key_move(key) && s->prompt_stat == 0)
 	{
 		if (key == 126) // haut
 			s->cam_origin.y += INTERVAL;

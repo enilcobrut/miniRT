@@ -109,7 +109,5 @@ int	main(int argc, char **argv)
 		print_params(s);
 	if (EXEC == 1)
 		start_ray_tracing(s);
-	if (LEAKS == 1)
-		system("leaks miniRT");
 	exit(EXIT_SUCCESS);
 }
