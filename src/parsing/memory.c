@@ -3,6 +3,11 @@
 
 void	init_set(t_minirt *s)
 {
+	s->on = 0;
+	s->prompt_stat = 1;
+	s->nt = NUMBER_THREAD;
+	s->samples_per_pixel = SAMPLE_P_PIX;
+	s->depth = DEPTH;
 	s->params = NULL;
 	s->prompt = NULL;
 	s->amb_light_ratio = 0;

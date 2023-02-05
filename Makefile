@@ -34,6 +34,7 @@ SRCS =			src/linked_lists/buf.c \
 				src/hit.c \
 				src/main.c \
 				src/maths_tools.c \
+				src/multi_threading.c \
 				src/tools.c \
 				src/vector_tools.c \
 
@@ -74,7 +75,7 @@ INCLUDES =		-I./libs/includes
 CC = 			gcc
 AR = 			ar rsc
 FLAGS =		 	-Wall -Wextra -Werror   -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
-FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -fsanitize=address
+FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lpthread #-fsanitize=thread -fsanitize=address 
 
 NAME =			miniRT
 
@@ -124,9 +125,9 @@ re_bonus:
 	make bonus
 
 run:
-	./$(NAME) #example.rt
+	./$(NAME) plante.rt
 run_bonus:
-	./$(NAME)_bonus #example.rt
+	./$(NAME)_bonus example.rt
 
 rr:
 	make re

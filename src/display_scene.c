@@ -488,49 +488,29 @@ int	near_zero(const t_vector *vec)
 	return ((fabs(vec->x) < s) && (fabs(vec->y) < s) && fabs(vec->z) < s);
 }
 
-void	get_buffer(t_minirt *s)
+void	get_multi_threading(t_minirt *s)
 {
-	t_vector horizon;
-	t_vector vertical;
-	t_vector lower_left_corner;
-	t_vector origin;
-	const t_vector vup = init_vector(0, 1, 0);
-	double	theta = degrees_to_radians(s->cam_fov);
-	double h = tan(theta/2);
-	double mul_t_u;
-	double mul_t_v;
-	// Image
-	t_rayon		r;
-	t_color	 pixel_color;
-	double viewport_height = 2.0 * h;
-	double viewport_width = ((double)WIDTH/HEIGHT) * viewport_height;
-	// horizon.x = viewport_width;
-	// horizon.y = 0;
-	// horizon.z = 0;
-	// vertical.x = 0;
-	// vertical.y = viewport_height;
-	// vertical.z = 0;
-	//t_vector lookat = add_(s->cam_origin, s->cam_vec_dir);
-	//t_vector lookfrom = s->cam_origin;
-	t_vector w = vec3_unit_vector(mul_(s->cam_vec_dir, -1));
-	t_vector u = vec3_unit_vector(vec_cross(vup, w));
-	t_vector v = vec_cross(w, u);
-	origin = s->cam_origin;
-	horizon = mul_(u, viewport_width);
-	vertical = mul_(v, viewport_height);
-	s->samples_per_pixel = 1;
-	s->depth = 5;
-	// Camera
-	//double focal_length = 1.0;
-	// origin.x = s->cam_origin.x;
-	// origin.y = s->cam_origin.y;
-	// origin.z = s->cam_origin.z;
-	lower_left_corner = sub_(sub_(sub_(origin, mul_(horizon, 0.5)), mul_(vertical, 0.5)), w);
-	//lower_left_corner = sub_(sub_(origin, div_(horizon, 2)), sub_(div_(vertical, 2), s->cam_vec_dir/*init_vector(0, 0, focal_length*/));
-	
-	// Render
-	//t_buf *b = s->b;
+	pthread_mutex_init(&s->count, NULL);
+	s->on = 0;
+	pthread_t *t = ft_calloc(s->nt, sizeof(pthread_t));
+	int i = 0;
+	while (i < s->nt)
+	{
+		pthread_create(&t[i], NULL, &dispatch_thread, s);
+		i++;
+	}
+	i = 0;
+	while (i < s->nt)
+	{
+		pthread_join(t[i], NULL);
+		i++;
+	}
+	pthread_mutex_destroy(&s->count);
+	free (t);
+}
 
+void get_no_multi_threading(t_minirt *s)
+{
 	int y = HEIGHT - 1;
 	int x = 0;
 	int i = 0;
@@ -539,23 +519,69 @@ void	get_buffer(t_minirt *s)
 		x = 0;
 		while (x < WIDTH)
 		{
-			pixel_color.r = 0;
-			pixel_color.g = 0;
-			pixel_color.b = 0;
+			s->r.pixel_color.r = 0;
+			s->r.pixel_color.g = 0;
+			s->r.pixel_color.b = 0;
 			i = 0;
 			while (i < s->samples_per_pixel)
 			{
-				mul_t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
-				mul_t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
-				r = init_rayon(origin, sub_(add_(add_(lower_left_corner, mul_(horizon, mul_t_u)), mul_(vertical, mul_t_v)), origin));
-				pixel_color = color_add_(pixel_color, ray_color(&r, s, s->depth));
+				s->r.mul_t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
+				s->r.mul_t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
+				s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner, mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical, s->r.mul_t_v)), s->cam_origin));
+				s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s, s->depth));
 				i++;
 			}
-			// b = lst_add_buf(&s->b, lst_new_buf(x, (HEIGHT - y - 1), write_color(pixel_color, s->samples_per_pixel), 0));
-			// printf("%d-%d ", b->hexa, b->n_object);
-			s->buf[HEIGHT - y - 1][x] = write_color(pixel_color, s->samples_per_pixel);
+			s->buf[HEIGHT - y - 1][x] = write_color(s->r.pixel_color, s->samples_per_pixel);
 			x++;
 		}
 		y--;
 	}
 }
+
+int	get_buffer(t_minirt *s)
+{
+
+	const t_vector vup = init_vector(0, 1, 0);
+	s->r.w = vec3_unit_vector(mul_(s->cam_vec_dir, -1));
+	s->r.u = vec3_unit_vector(vec_cross(vup, s->r.w));
+	s->r.v = vec_cross(s->r.w, s->r.u);
+	s->r.theta = degrees_to_radians(s->cam_fov);
+	s->r.h = tan(s->r.theta/2);
+	s->r.viewport_height = 2.0 * s->r.h;
+	s->r.viewport_width = ((double)WIDTH/HEIGHT) * s->r.viewport_height;
+	s->r.horizon = mul_(s->r.u, s->r.viewport_width);
+	s->r.vertical = mul_(s->r.v, s->r.viewport_height);
+	s->r.lower_left_corner = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)), mul_(s->r.vertical, 0.5)), s->r.w);
+	get_multi_threading(s);
+	//get_no_multi_threading(s); //sans thread pour la mandatory	
+	return (0);
+}
+
+/* TEST AVEC DES LISTES CHAINEES
+
+//t_buf *b = s->b;
+// b = lst_add_buf(&s->b, lst_new_buf(x, (HEIGHT - y - 1), write_color(pixel_color, s->samples_per_pixel), 0));
+// printf("%d-%d ", b->hexa, b->n_object);
+
+*/
+
+/* BAZAR CELINE
+
+	//t_vector origin;
+		//origin = s->cam_origin;
+	// horizon.x = viewport_width;
+	// horizon.y = 0;
+	// horizon.z = 0;
+	// vertical.x = 0;
+	// vertical.y = viewport_height;
+	// vertical.z = 0;
+	//t_vector lookat = add_(s->cam_origin, s->cam_vec_dir);
+	//t_vector lookfrom = s->cam_origin;
+
+	// Camera
+	//double focal_length = 1.0;
+	// origin.x = s->cam_origin.x;
+	// origin.y = s->cam_origin.y;
+	// origin.z = s->cam_origin.z;*/
+		//lower_left_corner = sub_(sub_(origin, div_(horizon, 2)), sub_(div_(vertical, 2), s->cam_vec_dir/*init_vector(0, 0, focal_length*/));
+	

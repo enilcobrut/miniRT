@@ -25,6 +25,10 @@
 
 #define HEIGHT 768
 #define WIDTH 1024
+#define NUMBER_THREAD 4
+#define SAMPLE_P_PIX 5
+#define DEPTH 5
+
 
 typedef struct s_material t_material;
 
@@ -157,12 +161,41 @@ typedef struct s_buf
 
 } t_buf;
 
+typedef struct s_thread
+{
+	pthread_t		*t;
+	pthread_mutex_t count;
+} t_thread;
+
+typedef struct s_rtx
+{
+	t_vector horizon;
+	t_vector vertical;
+	t_vector lower_left_corner;
+	t_vector w;
+	t_vector u;
+	t_vector v;
+	double theta;
+	double h;
+	double mul_t_u;
+	double mul_t_v;
+	double viewport_height;
+	double viewport_width;
+	t_rayon		r;
+	t_color	 pixel_color;
+} t_rtx;
 
 typedef struct s_minirt
 {
+	int					on; // bool pour thread
+	int					nt; //nb thread
+	pthread_t			*t;
+	pthread_mutex_t		count;
+	int					prompt_stat;
+	t_rtx				r;
 	int					samples_per_pixel;
 	int					depth;
-	t_buf				*b;
+	// t_buf				*b;
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;
 	t_list				*params;
@@ -288,9 +321,6 @@ int		get_pixels_to_img(t_minirt *s, int h, int opt);
 int		push_img_to_win(t_minirt *s, int opt);
 void	start_ray_tracing(t_minirt *s);
 
-/* GET BUFFER *************************************************************** */
-void	get_buffer(t_minirt *s);
-
 /* DISPLAY SCENE ************************************************************ */
 
 void display_scene(t_minirt *s);
@@ -305,7 +335,7 @@ int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuatio
 double	reflectance(double cos, double ref_i);
 int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 int	near_zero(const t_vector *vec);
-void	get_buffer(t_minirt *s);
+int	get_buffer(t_minirt *s);
 
 /* HIT ********************************************************************** */
 int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
@@ -350,6 +380,9 @@ double clamp(double x, double min, double max);
 double	degrees_to_radians(double degree);
 double ft_sqrt(double number);
 t_vector vec_cross(const t_vector u, const t_vector v);
+
+/* MULTITHREADING ************************************************************ */
+void *dispatch_thread(void *arg);
 
 /* LINKEDLISTS *************************************************************** */
 
