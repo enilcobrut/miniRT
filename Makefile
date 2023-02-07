@@ -65,20 +65,24 @@ SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)
 
+
+
 INCLUDES =		-I./libs/includes
 
+CPUS :=			$(shell sysctl -n hw.ncpu)
 CC = 			gcc
 AR = 			ar rsc
-FLAGS =		 	-Wall -Wextra -Werror   -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
+FLAGS =		 	-Wall -Wextra -Werror -DNUM_THREADS=$(CPUS) -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
 FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lpthread -fsanitize=thread #-fsanitize=address 
 
 NAME =			miniRT
 
 %.o:			%.c $(HEADER)
 				@printf '\033[1m\033[38;95;13;64m'"\r\033[KCompiling miniRT objects... ⏳ "'\033[1m\033[38;217;0;83m'"<$<>"'\033[0m'
-				@$(CC) $(FLAGS)  $(INCLUDES) -o $@ -c $< 
+				@$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
 
 all: 			$(NAME)
+				
 
 bonus: 			$(NAME)_bonus
 
@@ -120,7 +124,7 @@ re_bonus:
 	make bonus
 
 run:
-	./$(NAME) example_3.rt
+	./$(NAME) example.rt
 run_bonus:
 	./$(NAME)_bonus example.rt
 

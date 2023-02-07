@@ -37,7 +37,7 @@ void *dispatch_thread(void *arg)
 	static int max;
 
 	s = (t_minirt *)arg;
-	pthread_mutex_lock(&s->count);
+	//pthread_mutex_lock(&s->count);
 	if (s->on == 0)
 	{
 		max = HEIGHT + (HEIGHT / s->nt);
@@ -45,14 +45,13 @@ void *dispatch_thread(void *arg)
 	}
 	max = max - (HEIGHT / s->nt);
 	get_pixels(s, max - (HEIGHT / s->nt), max);
-	pthread_mutex_unlock(&s->count);
+	//pthread_mutex_unlock(&s->count);
 	return (arg);
 }
 
 
 void	get_multi_threading(t_minirt *s)
 {
-	
 	pthread_mutex_init(&s->count, NULL);
 	s->on = 0;
 	pthread_t *t = NULL;

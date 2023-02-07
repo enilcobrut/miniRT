@@ -488,6 +488,26 @@ int	near_zero(const t_vector *vec)
 	return ((fabs(vec->x) < s) && (fabs(vec->y) < s) && fabs(vec->z) < s);
 }
 
+void	get_prompt_color(t_minirt *s)
+{
+	int x = 0;
+	int y = HEIGHT;
+	t_color color = init_color(100,100,100);
+
+	while (y < HEIGHT + 32)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			s->buf[y][x] = get_hexa_color(color);
+			x++;
+		}
+		y++;
+		color.r = color.r - 2;
+		color.g = color.g - 2;
+		color.b = color.b - 2;
+	}
+}
 
 int	get_buffer(t_minirt *s)
 {
@@ -507,8 +527,9 @@ int	get_buffer(t_minirt *s)
 	double elapsed;
 
 	start = clock(); 
-	get_multi_threading(s);
-	//get_no_multi_threading(s); //sans thread pour la mandatory	
+	//get_multi_threading(s);
+	get_no_multi_threading(s); //sans thread pour la mandatory
+	get_prompt_color(s);
 	end = clock();
    	elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
    	printf("Temps d'exécution : %lf secondes\n", elapsed);

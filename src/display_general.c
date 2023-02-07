@@ -69,10 +69,10 @@ void	start_ray_tracing(t_minirt *s)
 {
 	get_buffer(s);
 	init_rtx(s);
-	get_pixels_to_img(s, HEIGHT, ALL); //init image
-	push_img_to_win(s, ALL); // affiche image
+	get_pixels_to_img(s, HEIGHT, ALL);
+	push_img_to_win(s, ALL);
 	display_param_cam(s);
-	mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0x00FF00, "*");
+	mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xF00020, "*");
 	mlx_hook(s->win, 2, 1L << 0, key_press, s);
 	mlx_mouse_hook(s->win, button_press, s);
 	mlx_hook(s->win, 17, 1L << 0, red_cross, s);

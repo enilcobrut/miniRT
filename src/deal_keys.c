@@ -19,7 +19,7 @@ int	key_enter(t_minirt *s)
 		print_params(s);
 	else if (!ft_strncmp(s->prompt, "help", 5))
 	{
-		help = ft_strdup("[F1] X|0 prompt [F2] X|0 cam param [OTHER] help or print or leaks");
+		help = ft_strdup("[F1] prompt [F2] cam param [OTHER] help, print or leaks");
 		mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xFF0000, help);
 		ft_free(&help);
 	}

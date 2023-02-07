@@ -25,9 +25,12 @@
 
 #define HEIGHT 768
 #define WIDTH 1024
-#define NUMBER_THREAD 100
 #define SAMPLE_P_PIX 5
 #define DEPTH 5
+#ifndef NUM_THREADS
+#define NUM_THREADS 1
+#endif
+
 
 
 typedef struct s_material t_material;
@@ -290,6 +293,7 @@ t_color		color_mul_scalar(t_color a, double b);
 t_vector	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue);
 t_color		map_color(t_color color);
 int			write_color(t_color	 pixel_color, int sample_per_pixel);
+int	get_hexa_color(t_color color);
 
 /* DEAL KEY ***************************************************************** */
 

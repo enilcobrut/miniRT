@@ -82,7 +82,6 @@ void	print_params(t_minirt *s)
 	}
 }
 
-
 int	main(int argc, char **argv)
 {
 	t_minirt	*s;
@@ -104,6 +103,7 @@ int	main(int argc, char **argv)
 	get_identifiers(s, 0, 0, 0);
 	if (PRINT == 1)
 		print_params(s);
+	printf("CPU %d\n", NUM_THREADS);
 	if (EXEC == 1)
 		start_ray_tracing(s);
 	exit(EXIT_SUCCESS);
