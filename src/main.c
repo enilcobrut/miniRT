@@ -14,7 +14,6 @@ void print_sphere(t_sphere *sp, int nb)
 	printf("[%0.1f]", sp->center_axis.y);
 	printf("[%0.1f]\n", sp->center_axis.z);
 	printf("\033[35m Diameter \033[0m[%0.1f]           ", sp->diameter);
-	// printf("\033[35m Color \033[0m[%x]\n\n", print_color(sp->color));
 }
 
 void print_plane(t_plane *pl, int nb)
@@ -28,7 +27,6 @@ void print_plane(t_plane *pl, int nb)
 	printf("[%0.1f]", pl->norm_or_vector.x);
 	printf("[%0.1f]", pl->norm_or_vector.y);
 	printf("[%0.1f]\n", pl->norm_or_vector.z);
-	// printf("\033[35m Color                            \033[0m[%x]\n\n", print_color(pl->color));
 }
 
 void	print_cylinder(t_cylinder *cy, int nb)
@@ -44,7 +42,6 @@ void	print_cylinder(t_cylinder *cy, int nb)
 	printf("[%0.1f]\n", cy->dir_ax.z);
 	printf("\033[35m Diameter \033[0m[%0.1f]", cy->diameter);
 	printf("\033[35m Height \033[0m[%0.2f]", cy->height);
-	// printf("\033[35m Color \033[0m[%x]\n\n", print_color(cy->color));
 }
 
 void	print_params(t_minirt *s)

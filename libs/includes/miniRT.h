@@ -25,7 +25,7 @@
 
 #define HEIGHT 768
 #define WIDTH 1024
-#define NUMBER_THREAD 4
+#define NUMBER_THREAD 100
 #define SAMPLE_P_PIX 5
 #define DEPTH 5
 
@@ -382,7 +382,9 @@ double ft_sqrt(double number);
 t_vector vec_cross(const t_vector u, const t_vector v);
 
 /* MULTITHREADING ************************************************************ */
-void *dispatch_thread(void *arg);
+void	*dispatch_thread(void *arg);
+void	get_multi_threading(t_minirt *s);
+void	get_no_multi_threading(t_minirt *s);
 
 /* LINKEDLISTS *************************************************************** */
 

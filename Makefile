@@ -60,12 +60,7 @@ SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/main_bonus.c \
 				src_bonus/maths_tools_bonus.c \
 				src_bonus/tools_bonus.c \
-				src_bonus/vector_tools_bonus.c \
-	
-				
-
-				
-				
+				src_bonus/vector_tools_bonus.c \	
 
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)
@@ -75,7 +70,7 @@ INCLUDES =		-I./libs/includes
 CC = 			gcc
 AR = 			ar rsc
 FLAGS =		 	-Wall -Wextra -Werror   -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
-FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lpthread #-fsanitize=thread -fsanitize=address 
+FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lpthread -fsanitize=thread #-fsanitize=address 
 
 NAME =			miniRT
 
@@ -125,7 +120,7 @@ re_bonus:
 	make bonus
 
 run:
-	./$(NAME) plante.rt
+	./$(NAME) example_3.rt
 run_bonus:
 	./$(NAME)_bonus example.rt
 

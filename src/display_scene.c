@@ -488,59 +488,9 @@ int	near_zero(const t_vector *vec)
 	return ((fabs(vec->x) < s) && (fabs(vec->y) < s) && fabs(vec->z) < s);
 }
 
-void	get_multi_threading(t_minirt *s)
-{
-	pthread_mutex_init(&s->count, NULL);
-	s->on = 0;
-	pthread_t *t = ft_calloc(s->nt, sizeof(pthread_t));
-	int i = 0;
-	while (i < s->nt)
-	{
-		while (pthread_create(&t[i], NULL, &dispatch_thread, s));
-		i++;
-	}
-	i = 0;
-	while (i < s->nt)
-	{
-		pthread_join(t[i], NULL);
-		i++;
-	}
-	pthread_mutex_destroy(&s->count);
-	free (t);
-}
-
-void get_no_multi_threading(t_minirt *s)
-{
-	int y = HEIGHT - 1;
-	int x = 0;
-	int i = 0;
-	while (y >= 0)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			s->r.pixel_color.r = 0;
-			s->r.pixel_color.g = 0;
-			s->r.pixel_color.b = 0;
-			i = 0;
-			while (i < s->samples_per_pixel)
-			{
-				s->r.mul_t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
-				s->r.mul_t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
-				s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner, mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical, s->r.mul_t_v)), s->cam_origin));
-				s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s, s->depth));
-				i++;
-			}
-			s->buf[HEIGHT - y - 1][x] = write_color(s->r.pixel_color, s->samples_per_pixel);
-			x++;
-		}
-		y--;
-	}
-}
 
 int	get_buffer(t_minirt *s)
 {
-
 	const t_vector vup = init_vector(0, 1, 0);
 	s->r.w = vec3_unit_vector(mul_(s->cam_vec_dir, -1));
 	s->r.u = vec3_unit_vector(vec_cross(vup, s->r.w));
@@ -552,8 +502,16 @@ int	get_buffer(t_minirt *s)
 	s->r.horizon = mul_(s->r.u, s->r.viewport_width);
 	s->r.vertical = mul_(s->r.v, s->r.viewport_height);
 	s->r.lower_left_corner = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)), mul_(s->r.vertical, 0.5)), s->r.w);
+
+	clock_t start, end;
+	double elapsed;
+
+	start = clock(); 
 	get_multi_threading(s);
 	//get_no_multi_threading(s); //sans thread pour la mandatory	
+	end = clock();
+   	elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
+   	printf("Temps d'exécution : %lf secondes\n", elapsed);
 	return (0);
 }
 
