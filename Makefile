@@ -37,6 +37,7 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/vector_tools.c \
 
 SRCS_BONUS =	src_bonus/linked_lists/buf_bonus.c \
+				src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/linked_lists/light_bonus.c \
 				src_bonus/linked_lists/obj_bonus.c \

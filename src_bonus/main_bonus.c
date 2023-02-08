@@ -59,6 +59,21 @@ void	print_lights(t_light *li)
 	}
 }
 
+void	print_cone(t_cone *co, int nb)
+{
+	printf("\033[45m 🍦 Cone #%d  \033[0m\n", nb);
+	printf("\033[35m Coordinates \033[0m                     ");
+	printf("[%0.1f]", co->center.x);
+	printf("[%0.1f]", co->center.y);
+	printf("[%0.1f]\n", co->center.z);
+	printf("\033[35m 3d normalized orientation vector \033[0m");
+	printf("[%0.1f]", co->dir_ax.x);
+	printf("[%0.1f]", co->dir_ax.y);
+	printf("[%0.1f]\n", co->dir_ax.z);
+	printf("\033[35m Diameter \033[0m[%0.1f]", co->diameter);
+	printf("\033[35m Height \033[0m[%0.2f]", co->height);
+}
+
 void	print_params(t_minirt *s)
 {
 	printf("\n\033[45m 🕯  Ambient lightning  \033[0m\n");
@@ -85,6 +100,8 @@ void	print_params(t_minirt *s)
 			print_plane(&obj->u.pl, obj->n);
 		else if (obj->type == CYLINDER)
 			print_cylinder(&obj->u.cy, obj->n);
+		else if (obj->type == CONE)
+			print_cone(&obj->u.co, obj->n);
 		printf("\033[35m Color \033[0m[%x]\n\n", print_color(obj->mat.albedo));
 		obj = obj->next;
 	}

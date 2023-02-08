@@ -48,6 +48,7 @@ typedef enum e_id
 	SPHERE = 1,
 	PLANE,
 	CYLINDER,
+	CONE,
 	PROMPT,
 	SCENE,
 	ALL
@@ -147,6 +148,17 @@ typedef struct s_cylinder
 	struct s_cylinder	*prev;
 }						t_cylinder;
 
+typedef struct s_cone
+{
+	t_vector			center;
+	t_vector			dir_ax;
+	float				diameter;
+	float				height;
+	int					radius;
+	struct s_cone		*next;
+	struct s_cone		*prev;
+}						t_cone;
+
 typedef struct s_buf
 {
 	int x;
@@ -169,6 +181,7 @@ typedef struct s_obj
 		t_cylinder		cy;
 		t_plane			pl;
 		t_sphere		sp;
+		t_cone			co;
 	} u;
 	struct s_obj *next;
 	struct s_obj *prev;
@@ -199,7 +212,6 @@ typedef struct s_minirt
 	int					obj_selected_stat;
 	int					game_mode;
 	int					nt;
-
 	pthread_t			*t;
 	pthread_mutex_t		count;
 	t_rtx				r;
@@ -250,6 +262,7 @@ void	get_objects(t_minirt *s, t_list *p);
 int		get_sphere(t_minirt *s, t_list *p);
 int		get_plane(t_minirt *s, t_list *p);
 int		get_cylinder(t_minirt *s, t_list *p);
+int		get_cone(t_minirt *s, t_list *p);
 
 /* -- GET PARAMETERS -- */
 void	get_params(t_minirt *s);
@@ -452,6 +465,12 @@ t_light		*init_light(t_light *new);
 t_light		*lst_new_light(int nb);
 t_light		*lst_add_light(t_light **lst, t_light *new);
 t_light		*lst_last_light(t_light **lst);
+
+/* -- CONE -- */
+t_cone	*lst_new_cone(void);
+t_cone	*lst_add_cone(t_cone **lst, t_cone *new);
+t_cone	*lst_last_cone(t_cone **lst);
+int		size_cone(t_cone *lst);
 
 /* -- BONUS -- */
 
