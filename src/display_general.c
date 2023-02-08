@@ -67,6 +67,7 @@ void	init_rtx(t_minirt *s)
 
 void	start_ray_tracing(t_minirt *s)
 {
+
 	get_buffer(s);
 	init_rtx(s);
 	get_pixels_to_img(s, HEIGHT, ALL);

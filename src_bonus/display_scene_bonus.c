@@ -20,6 +20,18 @@ t_color	color_mul_scalar(t_color a, double b)
 {
 	return ((t_color){a.r * b, a.g * b, a.b * b});
 }
+
+
+
+void display_scene(t_minirt *s)
+{
+	get_buffer(s);
+	get_pixels_to_img(s, HEIGHT, SCENE);
+	push_img_to_win(s, SCENE);
+	if (s->cam_param_display == 1)
+		display_param_cam(s);
+}
+
 // t_color	ray_color(const t_rayon *r, t_minirt *s, int depth)
 // {
 // 	//t_vector unit_dir;
@@ -122,7 +134,6 @@ t_color		clamp_color(t_color color)
 
 t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 {
-	//t_vector unit_dir;
 	t_hit_record rec;
 	t_hit_record rec2;
 
@@ -131,32 +142,25 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 
 	r->direction = vec3_unit_vector(r->direction);
 	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
-	 if (hit(r, 0.001, INF, &rec, s->obj))
+	 if (hit(r, INF, &rec, s->obj, s))
 	 {
 		t_rayon scattered;
 		t_color attenuation;
 		t_rayon	verif;
-		// t_vector light_ax = add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
-
-		// verif = init_rayon(rec.p, sub_(light_ax, rec.p));
-
-		// if (hit(&verif, 0.001, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
-		// {
-
-		// 	return (init_color(0, 0, 0));
-		// }
-		//return (rec.mat_ptr->albedo);
+		for (t_light *light1=s->li; light1; light1 = light1->next)
 		{
-			t_vector light_ax =s->li->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
+			t_vector light_ax =light1->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
 			t_vector light_dir = sub_(light_ax, rec.p);
 
-			verif = init_rayon(rec.p, light_dir);
+			verif = init_rayon(rec.p, vec3_unit_vector(light_dir));
 
-			if (!hit(&verif, 0.001, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
+			if (!hit(&verif, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj, s))
 			{
 				double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
-				double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal)));
-				light = color_add_(light, color_mul_scalar(s->li->light_color, s->li->light_brightness_ratio * (test + pow(speculaire, 100))));
+				double light_distance = vec3_length(light_dir)/1000;
+				//double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal)));
+				double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal))) / (1 + light_distance * light_distance);
+				light = color_add_(light, color_mul_scalar(light1->light_color, light1->light_brightness_ratio * (test + pow(speculaire, 100))));
 
 				 // pour toute les lights
 			}
@@ -166,16 +170,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 		return (color_mul(attenuation, clamp_color(light)));
 	 }
 	 return (init_color(0,0,0));
-	 //return (light);
-	// unit_dir = vec3_unit_vector(r->direction);
-	// double t = 0.5 * (unit_dir.y + 1.0);
-	// t_color white = (t_color) {1.0, 1.0, 1.0};
-	// t_color blue = (t_color) {0.5, 0.7, 1};
-	// return color_add_(color_mul_scalar(white, 1.0 - t), color_mul_scalar(blue, t));
-
-	//return (color_add_(color_mul_scalar(white, 1.0 - t), color_mul_scalar(blue, t)));
 }
-
 // int shadow(t_vector hit_point, t_minirt *s,  t_hit_record *rec)
 // {
 //     t_vector light_dir = sub_(s->light_axis, hit_point);
@@ -249,14 +244,12 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 // 		//return (color_add_(color_mul_scalar(attenuation, s->amb_light_ratio), color_mul(attenuation, ray_color(&scattered, s, depth - 1, background))));
 // }
 
-
 int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
 {
-	double radius = cyl->diameter / 2;
-	t_vector oc = sub_(r->origine, cyl->axis);
-	double a = length_squared(r->direction) - pow(dot(r->direction, cyl->axis), 2);
-	double half_b = dot(oc, r->direction) - dot(oc, cyl->axis) * dot(r->direction, cyl->axis);
-	double c = length_squared(oc) - pow(dot(oc, cyl->axis), 2) - radius * radius;
+	t_vector oc = sub_(r->origine, cyl->center);
+	double a = length_squared(r->direction) - pow(dot(r->direction, cyl->dir_ax), 2);
+	double half_b = dot(oc, r->direction) - dot(oc, cyl->dir_ax) * dot(r->direction, cyl->dir_ax);
+	double c = length_squared(oc) - pow(dot(oc, cyl->dir_ax), 2) - cyl->radius * cyl->radius;
 	double delta = half_b * half_b - a * c;
 	if (delta < 0)
 	return (0);
@@ -270,13 +263,14 @@ int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_
 	}
 	rec->t = root;
 	rec->p = add_(r->origine, mul_(r->direction, rec->t));
-	t_vector normal = sub_(rec->p, cyl->axis);
-	normal = sub_(normal, mul_(cyl->axis, dot(normal, cyl->axis)));
-	normal = vec3_unit_vector(normal);
-	rec->normal = normal;
-	rec->front_face = dot(r->direction, normal) < 0;
-	if (!rec->front_face)
-	rec->normal = mul_(rec->normal, -1);
+	t_vector p = sub_(rec->p, cyl->center);
+	double v = dot(p, cyl->dir_ax);
+	if (v < 0 || cyl->height < v)
+	return (0);
+	t_vector normal = sub_(rec->p, cyl->center);
+	normal = sub_(normal, mul_(cyl->dir_ax, dot(normal, cyl->dir_ax)));
+	normal = div_(normal, cyl->radius);
+	set_face_normal(r, rec, normal);
 	return (1);
 }
 
@@ -351,8 +345,14 @@ return (1);
 
 
 
+int	super_mod(int div, int mod)
+{
+	return (((div % mod) + mod) % mod);
 
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj)
+}
+
+
+int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s)
 {
 	t_hit_record temp_rec;
 	int	hit_anything = 0;
@@ -362,21 +362,22 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 	while (obj)
 	{
 
-		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, t_min, closest_so_far))
+		
+		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, T_MIN, closest_so_far))
 		{
 			hit_anything = 1;
 			closest_so_far = temp_rec.t;
 			*rec = temp_rec;
 			rec->mat_ptr = &obj->mat;
 		}
-		else if (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, t_min, closest_so_far))
+		else if (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, T_MIN, closest_so_far))
 		{
 			hit_anything = 1;
 			closest_so_far = temp_rec.t;
 			*rec = temp_rec;
 			rec->mat_ptr = &obj->mat;
 		}
-		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, t_min, closest_so_far))
+		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, T_MIN, closest_so_far))
 		{
 			hit_anything = 1;
 			closest_so_far = temp_rec.t;
@@ -387,7 +388,15 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 		obj = obj->next;
 	}
 	if (hit_anything)
+	{
 		rec->normal = vec3_unit_vector(rec->normal);
+		//printf("pos x : %lf pos y : %lf\n" ,rec->p.x, rec->p.z);
+		// printf("%d %d\n", super_mod((double)rec->p.x * 100.0, s->bump_height), (super_mod((double)rec->p.z * 100.0, s->bump_width)));
+		int col = s->bump_map_addr[(super_mod((double)rec->p.x * 100.0, s->bump_height)) * s->bump_width + (super_mod((double)rec->p.z * 100.0, s->bump_width))];
+		// printf("col : %x\n", col);
+		rec->p = add_(rec->p, mul_(rec->normal, ((double)(col & 0xff) / 255.0 - .5) / 100.0));
+		// printf("%lf\n", (double)(col & 0xff) / 1000.0);
+	}
 	return (hit_anything);
 }
 

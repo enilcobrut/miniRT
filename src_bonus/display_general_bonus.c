@@ -53,6 +53,11 @@ void	init_rtx(t_minirt *s)
 
 void	start_ray_tracing(t_minirt *s)
 {
+	int	null;
+	s->bump_map = mlx_xpm_file_to_image(s, "./papier.xpm", &s->bump_width, &s->bump_height);
+	if (!s->bump_map)
+		return ;
+	s->bump_map_addr = (int *)mlx_get_data_addr(s->bump_map, &null, &null, &null);
 	get_buffer(s);
 	init_rtx(s);
 	get_pixels_to_img(s, HEIGHT, ALL); //init image

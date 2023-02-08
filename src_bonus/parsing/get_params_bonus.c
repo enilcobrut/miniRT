@@ -26,7 +26,7 @@ void	get_params(t_minirt *s)
 	char	*tmp;
 
 	tmp = NULL;
-	fd_params = open(/*s->argv[1]*/"example.rt", O_RDONLY);
+	fd_params = open(s->argv[1], O_RDONLY);
 	if (fd_params == -1)
 		exit_error(s, 0, 0);
 	tmp = get_next_line(fd_params);

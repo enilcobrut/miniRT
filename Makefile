@@ -1,10 +1,12 @@
 MAKEFLAGS = "-j 10"
 
 HEADER = 		libs/includes/miniRT.h \
-				libs/includes/miniRT_bonus.h \
 				libs/includes/ft_printf_fd.h \
 				libs/includes/get_next_line.h \
 				libs/includes/libft.h
+
+HEADER_BONUS = libs/includes/miniRT_bonus.h
+
 
 SRCS =			src/linked_lists/buf.c \
 				src/linked_lists/cylinder.c \
@@ -60,7 +62,7 @@ SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/main_bonus.c \
 				src_bonus/maths_tools_bonus.c \
 				src_bonus/tools_bonus.c \
-				src_bonus/vector_tools_bonus.c \	
+				src_bonus/vector_tools_bonus.c
 
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)
@@ -77,7 +79,7 @@ FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lp
 
 NAME =			miniRT
 
-%.o:			%.c $(HEADER)
+%.o:			%.c $(HEADER) $(HEADER_BONUS)
 				@printf '\033[1m\033[38;95;13;64m'"\r\033[KCompiling miniRT objects... ⏳ "'\033[1m\033[38;217;0;83m'"<$<>"'\033[0m'
 				@$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
 
@@ -90,7 +92,7 @@ $(NAME): 		$(OBJS) $(HEADER)
 				@make all -C ./libs
 				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME) 
 					
-$(NAME)_bonus: 	$(OBJS_BONUS) $(HEADER)
+$(NAME)_bonus: 	$(OBJS_BONUS) 
 				@make all -C ./libs
 				@$(CC) $(OBJS_BONUS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME)_bonus
 

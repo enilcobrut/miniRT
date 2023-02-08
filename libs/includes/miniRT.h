@@ -19,13 +19,13 @@
 # define PRINT 0
 # define EXEC 1
 # define INTERVAL 0.1
-# define INTERVAL_VEC 0.1
+# define INTERVAL_VEC 0.01
 # define PI M_PI
 # define INF DBL_MAX
 
 #define HEIGHT 768
 #define WIDTH 1024
-#define SAMPLE_P_PIX 5
+#define SAMPLE_P_PIX 1
 #define DEPTH 5
 #ifndef NUM_THREADS
 #define NUM_THREADS 1

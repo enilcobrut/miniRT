@@ -22,7 +22,7 @@
 # define INTERVAL_VEC 0.01
 # define PI M_PI
 # define INF DBL_MAX
-
+# define T_MIN 0.001
 #define HEIGHT 768
 #define WIDTH 1024
 
@@ -131,10 +131,11 @@ typedef struct s_plane
 
 typedef struct s_cylinder
 {
-	t_vector			axis;
-	t_vector			norm_or_vector;
+	t_vector			center;
+	t_vector			dir_ax;
 	float				diameter;
 	float				height;
+	int					radius;
 	struct s_cylinder	*next;
 	struct s_cylinder	*prev;
 }						t_cylinder;
@@ -177,6 +178,10 @@ typedef struct s_minirt
 	void				*mlx;
 	void				*win;
 	char				*title;
+	void				*bump_map;
+	int					*bump_map_addr;
+	int					bump_height;
+	int					bump_width;
 }	t_minirt;
 
 void	print_spheres(t_minirt *s, int i);
@@ -276,7 +281,7 @@ float		intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n);
 void 			show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
 int				push_img_to_win(t_minirt *s, int opt);
 int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
+int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s);
 int	write_color(t_color	 pixel_color, int sample_per_pixel);
 void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
 int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
@@ -358,5 +363,5 @@ t_light		*lst_new_light(int nb);
 t_light		*lst_add_light(t_light **lst, t_light *new);
 t_light		*lst_last_light(t_light **lst);
 int			size_light(t_light *lst);
-
+void display_scene(t_minirt *s);
 #endif
