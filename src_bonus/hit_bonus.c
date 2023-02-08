@@ -1,15 +1,12 @@
 #include "miniRT_bonus.h"
+
 int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s)
 {
 	t_hit_record temp_rec;
 	int	hit_anything = 0;
 	double closest_so_far = t_max;
-	
-
 	while (obj)
 	{
-
-		
 		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, T_MIN, closest_so_far))
 		{
 			hit_anything = 1;
@@ -31,7 +28,6 @@ int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt 
 			*rec = temp_rec;
 			rec->mat_ptr = &obj->mat;
 		}
-		/*else if (obj->type == CYLINDER && hit_plane(&obj->u.cy, r, &temp_rec, t_min, t_max))*/
 		obj = obj->next;
 	}
 	if (hit_anything)

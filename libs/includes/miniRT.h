@@ -172,11 +172,8 @@ typedef struct s_rtx
 
 typedef struct s_minirt
 {
-	int					on; // bool pour thread
-	int					nt; //nb thread
-	pthread_t			*t;
-	pthread_mutex_t		count;
 	int					prompt_stat;
+	int					obj_selected_stat;
 	t_rtx				r;
 	int					samples_per_pixel;
 	int					depth;
@@ -321,6 +318,7 @@ double	reflectance(double cos, double ref_i);
 int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 int	near_zero(const t_vector *vec);
 int	get_buffer(t_minirt *s);
+void	get_prompt_color(t_minirt *s);
 
 /* HIT ********************************************************************** */
 int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);

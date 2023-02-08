@@ -7,9 +7,7 @@ HEADER = 		libs/includes/miniRT.h \
 
 HEADER_BONUS = libs/includes/miniRT_bonus.h
 
-
-SRCS =			src/linked_lists/buf.c \
-				src/linked_lists/cylinder.c \
+SRCS =			src/linked_lists/cylinder.c \
 				src/linked_lists/obj.c \
 				src/linked_lists/plane.c \
 				src/linked_lists/sphere.c \
@@ -35,11 +33,11 @@ SRCS =			src/linked_lists/buf.c \
 				src/hit.c \
 				src/main.c \
 				src/maths_tools.c \
-				src/multi_threading.c \
 				src/tools.c \
 				src/vector_tools.c \
 
-SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
+SRCS_BONUS =	src_bonus/linked_lists/buf_bonus.c \
+				src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/linked_lists/light_bonus.c \
 				src_bonus/linked_lists/obj_bonus.c \
 				src_bonus/linked_lists/plane_bonus.c \
@@ -54,6 +52,7 @@ SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/parsing/tools_rgb_bonus.c \
 				src_bonus/parsing/tools_rgb2_bonus.c \
 				src_bonus/parsing/tools_bonus.c \
+				src_bonus/color_tools_bonus.c \
 				src_bonus/deal_keys_bonus.c \
 				src_bonus/deal_keys_display_bonus.c \
 				src_bonus/deal_keys_tools_bonus.c \
@@ -66,6 +65,7 @@ SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/hit_sphere_bonus.c \
 				src_bonus/main_bonus.c \
 				src_bonus/maths_tools_bonus.c \
+				src_bonus/multi_threading_bonus.c \
 				src_bonus/tools_bonus.c \
 				src_bonus/vector_tools_bonus.c
 

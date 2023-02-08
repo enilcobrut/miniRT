@@ -196,6 +196,8 @@ typedef struct s_minirt
 {
 	int					on;
 	int					prompt_stat;
+	int					obj_selected_stat;
+	int					game_mode;
 	int					nt;
 
 	pthread_t			*t;
@@ -205,6 +207,7 @@ typedef struct s_minirt
 	int					depth;
 		// t_buf				*b;
 	int					buf[HEIGHT + 32][WIDTH];
+	//int *buf;
 	t_data				img;
 	t_list				*params;
 	char				*k;
@@ -340,6 +343,9 @@ int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *atten
 int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 t_vector	reflect(const t_vector v, const t_vector n);
 int	super_mod(int div, int mod);
+t_color		clamp_color(t_color color);
+void	get_prompt_color(t_minirt *s);
+void get_no_multi_threading(t_minirt *s);
 
 /* HIT ********************************************************************** */
 int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s);
@@ -370,6 +376,7 @@ t_color get_rgb(int color);
 float	get_norme_vector(t_vector v);
 int	near_zero(const t_vector *vec);
 t_color map_color(t_color color);
+int	get_hexa_color(t_color color);
 
 /* VECTOR TOOLS *************************************************************** */
 void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
@@ -391,6 +398,18 @@ double clamp(double x, double min, double max);
 double	degrees_to_radians(double degree);
 double ft_sqrt(double number);
 t_vector vec_cross(const t_vector u, const t_vector v);
+
+/*COLOR TOOLS*/
+int	write_color(t_color	 pixel_color, int sample_per_pixel);
+t_color map_color(t_color color);
+t_color color_add_(t_color a, t_color b);
+t_color color_mul(t_color a, t_color b);
+t_color init_color(double r, double g, double b);
+t_color	color_mul_scalar(t_color a, double b);
+t_vector 	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue);
+int	get_hexa_color(t_color color);
+t_color map_color(t_color color);
+int	write_color(t_color	 pixel_color, int sample_per_pixel);
 
 /* LINKEDLISTS *************************************************************** */
 
@@ -438,4 +457,9 @@ t_light		*lst_last_light(t_light **lst);
 
 int			size_light(t_light *lst);
 void		display_scene(t_minirt *s);
+
+void get_pixels(t_minirt *s, int min, int max);
+void *dispatch_thread(void *arg);
+void	get_multi_threading(t_minirt *s);
+void get_no_multi_threading(t_minirt *s);
 #endif

@@ -3,9 +3,8 @@
 
 void	init_set(t_minirt *s)
 {
-	s->on = 0;
-	s->prompt_stat = 0;
-	s->nt = NUM_THREADS;
+	s->obj_selected_stat = 0;
+	s->prompt_stat = 1;
 	s->samples_per_pixel = SAMPLE_P_PIX;
 	s->depth = DEPTH;
 	s->params = NULL;

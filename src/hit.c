@@ -1,4 +1,4 @@
-#include "miniRT_bonus.h"
+#include "miniRT.h"
 
 int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj)
 {

@@ -78,7 +78,7 @@ int	key_press(int key, t_minirt *s)
 {
 	if (key == ESCAPE)
 		red_cross(s);
-	else if (is_key_move(key) && s->prompt_stat == 0)
+	else if (is_key_move(key) && s->prompt_stat == 0 && s->obj_selected_stat == 1)
 	{
 		if (key == 126) // haut
 			s->cam_origin.y += INTERVAL;

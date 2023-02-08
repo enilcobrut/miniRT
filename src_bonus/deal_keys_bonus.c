@@ -78,32 +78,100 @@ int	key_press(int key, t_minirt *s)
 {
 	if (key == ESCAPE)
 		red_cross(s);
-	else if (is_key_move(key) && s->prompt_stat == 0)
+	else if (is_key_move(key) && s->prompt_stat == 0) // s->object_selected == 1
 	{
-		if (key == 126) // haut
-			s->cam_origin.y += INTERVAL;
-		else if (key == 123) // gauche
-			s->cam_origin.x -= INTERVAL;
-		else if (key == 124) // droite
-			s->cam_origin.x += INTERVAL;
-		else if (key == 125) // bas
-			s->cam_origin.y -= INTERVAL;
-		else if (key == 69) // +
-			s->cam_origin.z += INTERVAL;
-		else if (key == 78) // -
-			s->cam_origin.z -= INTERVAL;
-		else if (key == 91) // 8
-			key_up_vec(&s->cam_vec_dir.y);
-		else if (key == 86) // 4
-			key_down_vec(&s->cam_vec_dir.x);
-		else if (key == 84) // 2
-			key_down_vec(&s->cam_vec_dir.y);
-		else if (key == 88) // 6
-			key_up_vec(&s->cam_vec_dir.x);
-		else if (key == 83) // 1
-			key_down_vec(&s->cam_vec_dir.z);
-		else if (key == 85) // 3
-			key_up_vec(&s->cam_vec_dir.z);
+		if (s->game_mode == 0)
+		{
+			if (s->obj_selected_stat == 0)
+			{
+				if (key == 0) // A
+					s->cam_origin.x -= INTERVAL;
+				else if (key == 1) // S
+					s->cam_origin.z -= INTERVAL;
+				else if (key == 2) // D
+					s->cam_origin.x += INTERVAL;
+				else if (key == 13) // W
+					s->cam_origin.z += INTERVAL;
+				else if (key == SPACE) // +
+					s->cam_origin.y += INTERVAL;
+				else if (key == BACKSP) // -
+					s->cam_origin.y -= INTERVAL;
+				else if (key == 91) // 8
+					key_up_vec(&s->cam_vec_dir.y);
+				else if (key == 86) // 4
+					key_down_vec(&s->cam_vec_dir.x);
+				else if (key == 87) // 5
+					key_down_vec(&s->cam_vec_dir.y);
+				else if (key == 88) // 6
+					key_up_vec(&s->cam_vec_dir.x);
+				else if (key == 83) // 1
+					key_down_vec(&s->cam_vec_dir.z);
+				else if (key == 85) // 3
+					key_up_vec(&s->cam_vec_dir.z);
+				/*if (key == 126) // haut
+				s->cam_origin.y += INTERVAL;
+			else if (key == 123) // gauche
+				s->cam_origin.x -= INTERVAL;
+			else if (key == 124) // droite
+				s->cam_origin.x += INTERVAL;
+			else if (key == 125) // bas*/
+			}
+			else if (s->obj_selected_stat == 1) // si objet selectionne -> touches de la cam devienennt ceux de l'objet
+			{
+				if (key == 0) // A
+					s->cam_origin.x -= INTERVAL;
+				else if (key == 1) // S
+					s->cam_origin.z -= INTERVAL;
+				else if (key == 2) // D
+					s->cam_origin.x += INTERVAL;
+				else if (key == 13) // W
+					s->cam_origin.z += INTERVAL;
+				else if (key == SPACE) // +
+					s->cam_origin.y += INTERVAL;
+				else if (key == BACKSP) // -
+					s->cam_origin.y -= INTERVAL;
+				/*else if (key == 91) // 8
+					key_up_vec(&s->cam_vec_dir.y);
+				else if (key == 86) // 4
+					key_down_vec(&s->cam_vec_dir.x);
+				else if (key == 87) // 5
+					key_down_vec(&s->cam_vec_dir.y);
+				else if (key == 88) // 6
+					key_up_vec(&s->cam_vec_dir.x);
+				else if (key == 83) // 1
+					key_down_vec(&s->cam_vec_dir.z);
+				else if (key == 85) // 3
+					key_up_vec(&s->cam_vec_dir.z);*/
+			}
+		}
+		else if (s->game_mode == 1) // si mode jeu -> voir pour la direction de camera ? recalculer le vecteur directeur a zero et tourner a gauche comme si on changeait le vecteur
+		{
+			if (key == 0) // A
+					s->cam_origin.x -= INTERVAL;
+				else if (key == 1) // S
+					s->cam_origin.z -= INTERVAL;
+				else if (key == 2) // D
+					s->cam_origin.x += INTERVAL;
+				else if (key == 13) // W
+					s->cam_origin.z += INTERVAL;
+				else if (key == SPACE) // +
+					s->cam_origin.y += INTERVAL;
+				else if (key == BACKSP) // -
+					s->cam_origin.y -= INTERVAL;
+				else if (key == 91) // 8
+					key_up_vec(&s->cam_vec_dir.y);
+				else if (key == 86) // 4
+					key_down_vec(&s->cam_vec_dir.x);
+				else if (key == 87) // 5
+					key_down_vec(&s->cam_vec_dir.y);
+				else if (key == 88) // 6
+					key_up_vec(&s->cam_vec_dir.x);
+				else if (key == 83) // 1
+					key_down_vec(&s->cam_vec_dir.z);
+				else if (key == 85) // 3
+					key_up_vec(&s->cam_vec_dir.z);
+
+		}
 		display_scene(s);
 	}
 	else if (key == 120) //F2

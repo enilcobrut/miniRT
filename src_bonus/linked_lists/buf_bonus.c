@@ -1,5 +1,5 @@
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 t_buf	*lst_new_buf(int x, int y, int hexa, int n_object)
 {
