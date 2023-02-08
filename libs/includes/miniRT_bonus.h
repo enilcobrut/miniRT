@@ -176,6 +176,9 @@ typedef struct s_obj
 	t_id type;
 	int n;
 	t_material			mat;
+	char				*xpm;
+	void 				*bump_map;
+	void				*bump_map_addr;
 	union
 	{
 		t_cylinder		cy;
@@ -263,6 +266,7 @@ int		get_sphere(t_minirt *s, t_list *p);
 int		get_plane(t_minirt *s, t_list *p);
 int		get_cylinder(t_minirt *s, t_list *p);
 int		get_cone(t_minirt *s, t_list *p);
+void	check_xpm(t_minirt *s, t_obj *obj);
 
 /* -- GET PARAMETERS -- */
 void	get_params(t_minirt *s);

@@ -8,6 +8,9 @@ t_cylinder	*lst_new_cylinder(void)
 	new = ft_calloc(1, sizeof(t_cylinder));
 	if (new == NULL)
 		exit(EXIT_FAILURE);
+	new->diameter = 0;
+	new->height = 0;
+	new->radius = 0;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);

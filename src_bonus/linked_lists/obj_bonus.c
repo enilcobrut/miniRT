@@ -9,6 +9,10 @@ t_obj	*lst_new_obj(int type)
 	if (new == NULL)
 		exit(EXIT_FAILURE);
 	new->type = type;
+	new->n = 0;
+	new->xpm = NULL;
+	new->bump_map = NULL;
+	new->bump_map_addr = NULL;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
