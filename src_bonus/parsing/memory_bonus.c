@@ -3,6 +3,11 @@
 
 void	init_set(t_minirt *s)
 {
+	s->on = 0;
+	s->prompt_stat = 0;
+	s->nt = NUM_THREADS;
+	s->samples_per_pixel = SAMPLE_P_PIX;
+	s->depth = DEPTH;
 	s->params = NULL;
 	s->prompt = NULL;
 	s->amb_light_ratio = 0;
@@ -13,7 +18,7 @@ void	init_set(t_minirt *s)
 	s->win = NULL;
 	s->img.img = ft_calloc(2, sizeof(void *));
 	s->img.add_r = ft_calloc(2, sizeof(char *));
-	s->title = ft_strdup("miniRT");
+	s->title = ft_strdup("miniRT_bonus");
 	s->k = "asdfhgzxcv\0bqweryt123465+97-80]ou[ip\0lj'k;\\,/nm.\0 `\0";
 }
 

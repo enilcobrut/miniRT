@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 void	itof_to_win(t_minirt *s, double n, int x, int y)
 {

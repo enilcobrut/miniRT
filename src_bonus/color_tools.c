@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 t_color color_add_(t_color a, t_color b)
 {

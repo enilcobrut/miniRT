@@ -22,9 +22,16 @@
 # define INTERVAL_VEC 0.01
 # define PI M_PI
 # define INF DBL_MAX
+
 # define T_MIN 0.001
-#define HEIGHT 768
-#define WIDTH 1024
+# define HEIGHT 768
+# define WIDTH 1024
+# define SAMPLE_P_PIX 1
+# define DEPTH 5
+
+#ifndef NUM_THREADS
+# define NUM_THREADS 1
+#endif
 
 typedef struct s_material t_material;
 
@@ -140,6 +147,18 @@ typedef struct s_cylinder
 	struct s_cylinder	*prev;
 }						t_cylinder;
 
+typedef struct s_buf
+{
+	int x;
+	int y;
+	int hexa;
+	int n_object;
+	struct s_buf *next;
+	struct s_buf *prev;
+
+} t_buf;
+
+
 typedef struct s_obj
 {
 	t_id type;
@@ -155,10 +174,36 @@ typedef struct s_obj
 	struct s_obj *prev;
 } t_obj;
 
+typedef struct s_rtx
+{
+	t_vector horizon;
+	t_vector vertical;
+	t_vector lower_left_corner;
+	t_vector w;
+	t_vector u;
+	t_vector v;
+	double theta;
+	double h;
+	double mul_t_u;
+	double mul_t_v;
+	double viewport_height;
+	double viewport_width;
+	t_rayon		r;
+	t_color	 pixel_color;
+} t_rtx;
+
 typedef struct s_minirt
 {
+	int					on;
+	int					prompt_stat;
+	int					nt;
+
+	pthread_t			*t;
+	pthread_mutex_t		count;
+	t_rtx				r;
 	int					samples_per_pixel;
 	int					depth;
+		// t_buf				*b;
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;
 	t_list				*params;
@@ -247,11 +292,20 @@ int		nb_arg_tab(char **tab);
 int		check_float_atof(t_minirt *s, char *str, int i);
 
 /* DEAL KEY ***************************************************************** */
-int		key_release(int key, t_minirt *s);
 int		button_press(int i, int y, int x, t_minirt *s);
 int		key_press(int key, t_minirt *s);
 void	get_prompt_bar(t_minirt *s);
 void	display_param_cam(t_minirt *s);
+
+void	key_backspace(t_minirt *s, char *tmp);
+int	key_enter(t_minirt *s);
+void	get_prompt(t_minirt *s, int key);
+void key_up_vec(double *value);
+void key_down_vec(double *value);
+int	key_press(int key, t_minirt *s);
+int	is_key_move(int key);
+int	vec_limit(double value);
+void	type_key(t_minirt *s, char *tmp, int key);
 
 /* DISPLAY GENERAL*********************************************************** */
 void	scene_loop(t_minirt *s);
@@ -280,13 +334,25 @@ t_vector random_in_unit_sphere();
 float		intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n);
 void 			show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
 int				push_img_to_win(t_minirt *s, int opt);
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
-int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s);
 int	write_color(t_color	 pixel_color, int sample_per_pixel);
 void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
 int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 t_vector	reflect(const t_vector v, const t_vector n);
+int	super_mod(int div, int mod);
+
+/* HIT ********************************************************************** */
+int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s);
+/* -- HIT CYLINDER -- */
+int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+
+/* -- HIT PLANE -- */
+int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+
+/* -- HIT SHPERE -- */
+int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+
+
 
 /* TOOLS ******************************************************************** */
 int			red_cross(t_minirt *s);
@@ -356,12 +422,20 @@ t_sphere	*lst_add__sphere(t_sphere **lst, t_sphere *new);
 t_sphere	*lst_last_sphere(t_sphere **lst);
 int			size_sphere(t_sphere *lst);
 
-/* BONUS ******************************************************************** */
+/* -- BUF -- */
+t_buf	*lst_new_buf(int x, int y, int hexa, int n_object);
+t_buf	*lst_add_buf(t_buf **lst, t_buf *new);
+t_buf	*lst_last_buf(t_buf **lst);
+int		size_buf(t_buf *lst);
 
+/* -- LIGHT -- */
 t_light		*init_light(t_light *new);
 t_light		*lst_new_light(int nb);
 t_light		*lst_add_light(t_light **lst, t_light *new);
 t_light		*lst_last_light(t_light **lst);
+
+/* -- BONUS -- */
+
 int			size_light(t_light *lst);
-void display_scene(t_minirt *s);
+void		display_scene(t_minirt *s);
 #endif

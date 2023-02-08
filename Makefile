@@ -29,7 +29,6 @@ SRCS =			src/linked_lists/buf.c \
 				src/deal_mouse.c \
 				src/display_general.c \
 				src/display_scene.c \
-				src/get_buffer.c \
 				src/hit_cylinder.c \
 				src/hit_plane.c \
 				src/hit_sphere.c \
@@ -56,9 +55,15 @@ SRCS_BONUS =	src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/parsing/tools_rgb2_bonus.c \
 				src_bonus/parsing/tools_bonus.c \
 				src_bonus/deal_keys_bonus.c \
+				src_bonus/deal_keys_display_bonus.c \
+				src_bonus/deal_keys_tools_bonus.c \
+				src_bonus/deal_mouse_bonus.c \
 				src_bonus/display_general_bonus.c \
 				src_bonus/display_scene_bonus.c \
-				src_bonus/get_buffer_bonus.c \
+				src_bonus/hit_bonus.c \
+				src_bonus/hit_cylinder_bonus.c \
+				src_bonus/hit_plane_bonus.c \
+				src_bonus/hit_sphere_bonus.c \
 				src_bonus/main_bonus.c \
 				src_bonus/maths_tools_bonus.c \
 				src_bonus/tools_bonus.c \
@@ -75,7 +80,7 @@ CPUS :=			$(shell sysctl -n hw.ncpu)
 CC = 			gcc
 AR = 			ar rsc
 FLAGS =		 	-Wall -Wextra -Werror -DNUM_THREADS=$(CPUS) -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
-FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lpthread -fsanitize=thread #-fsanitize=address 
+FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lpthread -fsanitize=address  #-fsanitize=thread #
 
 NAME =			miniRT
 

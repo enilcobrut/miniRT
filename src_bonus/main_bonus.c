@@ -107,15 +107,11 @@ int	main(int argc, char **argv)
 		check_extension_rt(s);
 	}
 	init_set(s);
-
 	get_params(s);
-
 	get_identifiers(s, 0, 0, 0);
 	if (PRINT == 1)
 		print_params(s);
 	if (EXEC == 1)
 		start_ray_tracing(s);
-	if (LEAKS == 1)
-		system("leaks miniRT");
 	exit(EXIT_SUCCESS);
 }

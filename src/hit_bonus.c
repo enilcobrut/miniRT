@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj)
 {
@@ -6,7 +6,6 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 	int	hit_anything = 0;
 	double closest_so_far = t_max;
 	
-
 	while (obj)
 	{
 
@@ -31,7 +30,6 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 			*rec = temp_rec;
 			rec->mat_ptr = &obj->mat;
 		}
-		/*else if (obj->type == CYLINDER && hit_plane(&obj->u.cy, r, &temp_rec, t_min, t_max))*/
 		obj = obj->next;
 	}
 	if (hit_anything)

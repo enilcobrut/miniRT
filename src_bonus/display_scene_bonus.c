@@ -244,35 +244,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 // 		//return (color_add_(color_mul_scalar(attenuation, s->amb_light_ratio), color_mul(attenuation, ray_color(&scattered, s, depth - 1, background))));
 // }
 
-int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-{
-	t_vector oc = sub_(r->origine, cyl->center);
-	double a = length_squared(r->direction) - pow(dot(r->direction, cyl->dir_ax), 2);
-	double half_b = dot(oc, r->direction) - dot(oc, cyl->dir_ax) * dot(r->direction, cyl->dir_ax);
-	double c = length_squared(oc) - pow(dot(oc, cyl->dir_ax), 2) - cyl->radius * cyl->radius;
-	double delta = half_b * half_b - a * c;
-	if (delta < 0)
-	return (0);
-	double sqrtd = sqrt(delta);
-	double root = (-half_b - sqrtd) / a;
-	if (root < t_min || t_max < root)
-	{
-	root = (-half_b + sqrtd) / a;
-	if (root < t_min || t_max < root)
-	return (0);
-	}
-	rec->t = root;
-	rec->p = add_(r->origine, mul_(r->direction, rec->t));
-	t_vector p = sub_(rec->p, cyl->center);
-	double v = dot(p, cyl->dir_ax);
-	if (v < 0 || cyl->height < v)
-	return (0);
-	t_vector normal = sub_(rec->p, cyl->center);
-	normal = sub_(normal, mul_(cyl->dir_ax, dot(normal, cyl->dir_ax)));
-	normal = div_(normal, cyl->radius);
-	set_face_normal(r, rec, normal);
-	return (1);
-}
+
 
 
 
@@ -305,20 +277,7 @@ t_color map_color(t_color color)
 
 }
 
-int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-{
-	t_vector norm = vec3_unit_vector(p->norm_or_vector);
-double t = dot(norm, sub_(p->axis, r->origine)) / dot(norm, r->direction);
-if (t < t_min || t > t_max)
-return (0);
-rec->t = t;
-rec->p = add_(r->origine, mul_(r->direction, t));
-rec->normal = norm;
-rec->front_face = dot(r->direction, rec->normal) < 0;
-if (!rec->front_face)
-rec->normal = mul_(rec->normal, -1);
-return (1);
-}
+
 
 
 // int	hit_plane(t_plane *pl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
@@ -352,77 +311,8 @@ int	super_mod(int div, int mod)
 }
 
 
-int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s)
-{
-	t_hit_record temp_rec;
-	int	hit_anything = 0;
-	double closest_so_far = t_max;
-	
 
-	while (obj)
-	{
 
-		
-		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, T_MIN, closest_so_far))
-		{
-			hit_anything = 1;
-			closest_so_far = temp_rec.t;
-			*rec = temp_rec;
-			rec->mat_ptr = &obj->mat;
-		}
-		else if (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, T_MIN, closest_so_far))
-		{
-			hit_anything = 1;
-			closest_so_far = temp_rec.t;
-			*rec = temp_rec;
-			rec->mat_ptr = &obj->mat;
-		}
-		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, T_MIN, closest_so_far))
-		{
-			hit_anything = 1;
-			closest_so_far = temp_rec.t;
-			*rec = temp_rec;
-			rec->mat_ptr = &obj->mat;
-		}
-		/*else if (obj->type == CYLINDER && hit_plane(&obj->u.cy, r, &temp_rec, t_min, t_max))*/
-		obj = obj->next;
-	}
-	if (hit_anything)
-	{
-		rec->normal = vec3_unit_vector(rec->normal);
-		//printf("pos x : %lf pos y : %lf\n" ,rec->p.x, rec->p.z);
-		// printf("%d %d\n", super_mod((double)rec->p.x * 100.0, s->bump_height), (super_mod((double)rec->p.z * 100.0, s->bump_width)));
-		int col = s->bump_map_addr[(super_mod((double)rec->p.x * 100.0, s->bump_height)) * s->bump_width + (super_mod((double)rec->p.z * 100.0, s->bump_width))];
-		// printf("col : %x\n", col);
-		rec->p = add_(rec->p, mul_(rec->normal, ((double)(col & 0xff) / 255.0 - .5) / 100.0));
-		// printf("%lf\n", (double)(col & 0xff) / 1000.0);
-	}
-	return (hit_anything);
-}
-
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
-{
-	t_vector oc = sub_(r->origine, sp->center_axis);
-	double a = length_squared(r->direction);
-	double half_b = dot(oc, r->direction);
-	double c = length_squared(oc) -  sp->radius *  sp->radius;
-	double delta = half_b*half_b - a*c;
-	if (delta < 0)
-		return (0);
-	double sqrtd = sqrt(delta);
-	double root = (-half_b - sqrtd) / a;
-	if (root < t_min || t_max < root)
-	{
-		root = (-half_b + sqrtd) / a;
-		if (root < t_min || t_max < root)
-			return (0);
-	}
-	rec->t = root;
-	rec->p = add_(r->origine, mul_(r->direction, rec->t));
-	set_face_normal(r, rec, div_(sub_(rec->p, sp->center_axis), sp->radius));
-	//rec->normal = div_(sub_(rec->p, sp->center_axis), sp->radius);
-	return (1);
-}
 
 int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
 {

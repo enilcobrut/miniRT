@@ -152,24 +152,6 @@ typedef struct s_obj
 	struct s_obj *prev;
 } t_obj;
 
-
-typedef struct s_buf
-{
-	int x;
-	int y;
-	int hexa;
-	int n_object;
-	struct s_buf *next;
-	struct s_buf *prev;
-
-} t_buf;
-
-typedef struct s_thread
-{
-	pthread_t		*t;
-	pthread_mutex_t count;
-} t_thread;
-
 typedef struct s_rtx
 {
 	t_vector horizon;
@@ -198,7 +180,6 @@ typedef struct s_minirt
 	t_rtx				r;
 	int					samples_per_pixel;
 	int					depth;
-	// t_buf				*b;
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;
 	t_list				*params;
@@ -420,10 +401,6 @@ t_sphere	*lst_add__sphere(t_sphere **lst, t_sphere *new);
 t_sphere	*lst_last_sphere(t_sphere **lst);
 int			size_sphere(t_sphere *lst);
 
-/* -- BUF -- */
-t_buf	*lst_new_buf(int x, int y, int hexa, int n_object);
-t_buf	*lst_add_buf(t_buf **lst, t_buf *new);
-t_buf	*lst_last_buf(t_buf **lst);
-int		size_buf(t_buf *lst);
+
 
 #endif
