@@ -7,7 +7,6 @@ void	display_hit_obj_params(t_minirt *s)
 	// diam sp cy co
 	// height cy, co
 	
-	printf("%d\n", s->hit_obj->n);
 	mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xBA55D3, "OBJECT SELECTED #");
 	itoa_to_win(s, s->hit_obj->n, 200, HEIGHT + 2);
 	if (s->hit_obj->type == PLANE)
@@ -52,7 +51,6 @@ void hit_something(t_minirt *s, int x, int y)
 	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner, mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical, s->r.mul_t_v)), s->cam_origin));
 	if (hit(&s->r.r, INF, &rec, s->obj, s))
 	{
-		
 		s->hit_obj = rec.hit_obj;
 	}
 }

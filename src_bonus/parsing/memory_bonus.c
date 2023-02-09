@@ -3,11 +3,18 @@
 
 void	init_set(t_minirt *s)
 {
+	int null;
+	int width = 0;
+	int height = 0;
+
+	s->hit_obj_xpm = mlx_xpm_file_to_image(s, "hit_obj.xpm", &width, &height);
+	if (!s->hit_obj_xpm)
+		exit_error(s, "Error with the xpm file" , 1);
+	s->hit_obj_xpm_addr = (int *)mlx_get_data_addr(s->hit_obj_xpm, &null, &null, &null);
 	s->hit_obj = NULL;
 	s->on = 0;
 	s->prompt_stat = 0;
 	s->samples_per_pixel = SAMPLE_P_PIX;
-
 	s->depth = DEPTH;
 	s->params = NULL;
 	s->prompt = NULL;

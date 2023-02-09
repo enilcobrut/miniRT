@@ -212,6 +212,8 @@ typedef struct s_rtx
 
 typedef struct s_minirt
 {
+	void 				*hit_obj_xpm;
+	void				*hit_obj_xpm_addr;
 	t_obj				*hit_obj;
 	int					on;
 	int					prompt_stat;
