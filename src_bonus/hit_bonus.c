@@ -1,8 +1,8 @@
 #include "miniRT_bonus.h"
 
-int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s)
+int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj)
 {
-	(void)s;
+
 	t_hit_record temp_rec;
 	int	hit_anything = 0;
 	double closest_so_far = t_max;
@@ -35,7 +35,7 @@ int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt 
 		}
 		obj = obj->next;
 	}
-	if (hit_anything && (rec->hit_obj->bump_map /*|| rec->hit_obj->n == s->hit_obj->n*/))
+	if (hit_anything && (rec->hit_obj->bump_map /*|| (s->hit_obj && rec->hit_obj->n == s->hit_obj->n)*/))
 	{
 
 		rec->normal = vec3_unit_vector(rec->normal);

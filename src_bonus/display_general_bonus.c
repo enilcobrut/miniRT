@@ -1,5 +1,5 @@
 #include "miniRT_bonus.h"
-
+/*
 int get_pixels_to_img(t_minirt *s, int h, int opt)
 {
 	int		x;
@@ -24,7 +24,7 @@ int get_pixels_to_img(t_minirt *s, int h, int opt)
 		}
 	}
 	return (0);
-}
+}*/
 
 int push_img_to_win(t_minirt *s, int opt)
 {
@@ -53,15 +53,9 @@ void	init_rtx(t_minirt *s)
 
 void	start_ray_tracing(t_minirt *s)
 {
-	// int	null;
-	// s->bump_map = mlx_xpm_file_to_image(s, "", &s->bump_width, &s->bump_height);
-	// if (!s->bump_map)
-	// 	return ;
-	// s->bump_map_addr = (int *)mlx_get_data_addr(s->bump_map, &null, &null, &null);
+	init_rtx(s);
 	get_prompt_color(s);
 	get_buffer(s);
-	init_rtx(s);
-	get_pixels_to_img(s, HEIGHT, ALL);
 	push_img_to_win(s, ALL);
 	display_param_cam(s);
 	mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xF00020, "*");

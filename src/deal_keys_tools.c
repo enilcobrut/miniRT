@@ -2,7 +2,7 @@
 
 int	is_key_move(int key)
 {
-	if (key == 126 || key == 123 || key == 124 || key == 125 || key == 69
+	if (/*key == 126 || key == 123 || key == 124 || key == 125 || */key == 69
 		|| key == 78|| key == 91|| key == 86|| key == 84 || key == 88
 		|| key == 83 || key == 85)
 		return (1);

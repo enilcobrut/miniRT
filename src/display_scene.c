@@ -3,7 +3,6 @@
 void display_scene(t_minirt *s)
 {
 	get_buffer(s);
-	get_pixels_to_img(s, HEIGHT, SCENE);
 	push_img_to_win(s, SCENE);
 	if (s->cam_param_display == 1)
 		display_param_cam(s);
@@ -219,6 +218,8 @@ void	get_prompt_color(t_minirt *s)
 {
 	int x = 0;
 	int y = HEIGHT;
+	char *dst;
+	
 	t_color color = init_color(100,100,100);
 
 	while (y < HEIGHT + 32)
@@ -226,7 +227,9 @@ void	get_prompt_color(t_minirt *s)
 		x = 0;
 		while (x < WIDTH)
 		{
-			s->buf[y][x] = get_hexa_color(color);
+			dst = s->img.add_r[1] + ((y - HEIGHT - 1) * s->img.line_length[1] 
+					+ x * (s->img.bits_per_pixel[1] / 8));
+			*(unsigned int *)dst = get_hexa_color(color);
 			x++;
 		}
 		y++;
@@ -238,6 +241,8 @@ void	get_prompt_color(t_minirt *s)
 
 void get_no_multi_threading(t_minirt *s)
 {
+	char *dst;
+
 	int y = HEIGHT - 1;
 	int x = 0;
 	int i = 0;
@@ -258,7 +263,10 @@ void get_no_multi_threading(t_minirt *s)
 				s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s, s->depth));
 				i++;
 			}
-			s->buf[HEIGHT - y - 1][x] = write_color(s->r.pixel_color, s->samples_per_pixel);
+			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
+					+ x * (s->img.bits_per_pixel[0] / 8));
+			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
+			//s->buf[HEIGHT - y - 1][x] = write_color(s->r.pixel_color, s->samples_per_pixel);
 			x++;
 		}
 		y--;

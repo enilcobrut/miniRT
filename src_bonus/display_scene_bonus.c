@@ -3,9 +3,7 @@
 void display_scene(t_minirt *s)
 {
 	get_buffer(s);
-	get_pixels_to_img(s, HEIGHT, SCENE);
 	push_img_to_win(s, SCENE);
-	
 	if (s->cam_param_display == 1)
 		display_param_cam(s);
 	if (s->hit_obj)
@@ -27,7 +25,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 
 	r->direction = vec3_unit_vector(r->direction);
 	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
-	 if (hit(r, INF, &rec, s->obj, s))
+	 if (hit(r, INF, &rec, s->obj))
 	 {
 		t_rayon scattered;
 		t_color attenuation;
@@ -39,7 +37,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 
 			verif = init_rayon(rec.p, vec3_unit_vector(light_dir));
 
-			if (!hit(&verif, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj, s))
+			if (!hit(&verif, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
 			{
 				double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
 				double light_distance = vec3_length(light_dir)/1000;
@@ -163,6 +161,8 @@ void	get_prompt_color(t_minirt *s)
 {
 	int x = 0;
 	int y = HEIGHT;
+	char *dst;
+	
 	t_color color = init_color(100,100,100);
 
 	while (y < HEIGHT + 32)
@@ -170,7 +170,9 @@ void	get_prompt_color(t_minirt *s)
 		x = 0;
 		while (x < WIDTH)
 		{
-			s->buf[y][x] = get_hexa_color(color);
+			dst = s->img.add_r[1] + ((y - HEIGHT - 1) * s->img.line_length[1] 
+					+ x * (s->img.bits_per_pixel[1] / 8));
+			*(unsigned int *)dst = get_hexa_color(color);
 			x++;
 		}
 		y++;

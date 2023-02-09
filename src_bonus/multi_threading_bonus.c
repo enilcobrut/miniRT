@@ -2,11 +2,10 @@
 
 void get_pixels(t_minirt *s, int min, int max)
 {
-
-
 	int y = max - 1;
 	int x = 0;
 	int i = 0;
+	char *dst;
 	t_rtx r;
 
 	while (y >= min)
@@ -26,7 +25,9 @@ void get_pixels(t_minirt *s, int min, int max)
 				r.pixel_color = color_add_(r.pixel_color, ray_color(&r.r, s, s->depth));
 				i++;
 			}
-			s->buf[HEIGHT - y - 1][x] = write_color(r.pixel_color, s->samples_per_pixel);
+			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
+					+ x * (s->img.bits_per_pixel[0] / 8));
+			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
 			x++;
 		}
 		y--;
@@ -39,6 +40,7 @@ void get_pixels2(t_minirt *s, t_vector co)
 	/*int size_x = 10;
 	int size_y = 10;
 */
+	char *dst;
 	int y = co.y + 100 - 1;
 	int x = 0;
 	int i = 0;
@@ -61,9 +63,11 @@ void get_pixels2(t_minirt *s, t_vector co)
 				r.pixel_color = color_add_(r.pixel_color, ray_color(&r.r, s, s->depth));
 				i++;
 			}
-			s->buf[HEIGHT - y - 1][x] = write_color(r.pixel_color, s->samples_per_pixel);
-			if (y == 1024 - 1 && x == 768 - 1)
-				printf("%d\n", s->buf[HEIGHT - y - 1][x]);
+			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
+					+ x * (s->img.bits_per_pixel[0] / 8));
+			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
+			/*if (y == 1024 - 1 && x == 768 - 1)
+				printf("%d\n", s->buf[HEIGHT - y - 1][x]);*/
 			x++;
 		}
 		y--;
@@ -111,12 +115,12 @@ void	get_multi_threading(t_minirt *s)
 	pthread_t *t = NULL;
 	t = ft_calloc(NUM_THREADS, sizeof(pthread_t));
 	int i = 0;
-	s->buf[HEIGHT - 1][WIDTH - 1] = -1;
+	//s->buf[HEIGHT - 1][WIDTH - 1] = -1;
 	//printf("%d\n", s->buf[HEIGHT - 1][WIDTH - 1]);
 	while (1)
 	{
-		if (s->buf[HEIGHT - 1][WIDTH - 1] != -1)
-			break;
+		/*if (s->buf[HEIGHT - 1][WIDTH - 1] != -1)
+			break;*/
 		pthread_create(&t[i], NULL, &dispatch_thread, s);
 		pthread_join(t[i], NULL);
 		i++;
@@ -130,6 +134,7 @@ void	get_multi_threading(t_minirt *s)
 
 void get_no_multi_threading(t_minirt *s)
 {
+	char *dst;
 	int y = HEIGHT - 1;
 	int x = 0;
 	int i = 0;
@@ -150,7 +155,9 @@ void get_no_multi_threading(t_minirt *s)
 				s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s, s->depth));
 				i++;
 			}
-			s->buf[HEIGHT - y - 1][x] = write_color(s->r.pixel_color, s->samples_per_pixel);
+			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
+					+ x * (s->img.bits_per_pixel[0] / 8));
+			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
 			x++;
 		}
 		y--;

@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int get_pixels_to_img(t_minirt *s, int h, int opt)
+/*int get_pixels_to_img(t_minirt *s, int h, int opt)
 {
 	int		x;
 	int		y;
@@ -22,7 +22,7 @@ int get_pixels_to_img(t_minirt *s, int h, int opt)
 					+ x * (s->img.bits_per_pixel[0] / 8));
 			*(unsigned int *)dst = s->buf[y][x];
 		}
-	}
+	}*/
 	/*
 	t_buf *b = s->b;
 	if (opt == ALL)
@@ -37,8 +37,6 @@ int get_pixels_to_img(t_minirt *s, int h, int opt)
 		*(unsigned int *)dst = b->hexa;
 		b = b->next;
 	}*/
-	return (0);
-}
 
 int push_img_to_win(t_minirt *s, int opt)
 {
@@ -67,10 +65,9 @@ void	init_rtx(t_minirt *s)
 
 void	start_ray_tracing(t_minirt *s)
 {
+	init_rtx(s);
 	get_prompt_color(s);
 	get_buffer(s);
-	init_rtx(s);
-	get_pixels_to_img(s, HEIGHT, ALL);
 	push_img_to_win(s, ALL);
 	display_param_cam(s);
 	mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0x00FF00, "*");

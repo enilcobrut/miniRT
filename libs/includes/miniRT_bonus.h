@@ -366,7 +366,7 @@ void	get_prompt_color(t_minirt *s);
 void get_no_multi_threading(t_minirt *s);
 
 /* HIT ********************************************************************** */
-int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt *s);
+int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj);
 /* -- HIT CYLINDER -- */
 int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
 
