@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 
 int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)

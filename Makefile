@@ -132,9 +132,9 @@ re_bonus:
 	make bonus
 
 run:
-	./$(NAME) example.rt
+	./$(NAME) cylinder.rt
 run_bonus:
-	./$(NAME)_bonus example.rt
+	./$(NAME)_bonus cylinder.rt
 
 rr:
 	make re

@@ -45,7 +45,7 @@ enum e_keyboard_key
 
 typedef enum e_id
 {
-	SPHERE = 1,
+	SPHERE,
 	PLANE,
 	CYLINDER,
 	PROMPT,

@@ -267,7 +267,6 @@ void get_no_multi_threading(t_minirt *s)
 
 int	get_buffer(t_minirt *s)
 {
-
 	const t_vector vup = init_vector(0, 1, 0);
 
 	s->r.w = vec3_unit_vector(mul_(s->cam_vec_dir, -1));

@@ -1,4 +1,4 @@
-#include "miniRT_bonus.h"
+#include "miniRT.h"
 
 int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
 {

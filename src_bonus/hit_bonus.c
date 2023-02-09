@@ -23,6 +23,7 @@ int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt 
 		}
 		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, T_MIN, closest_so_far))
 		{
+
 			hit_anything = 1;
 			closest_so_far = temp_rec.t;
 			*rec = temp_rec;

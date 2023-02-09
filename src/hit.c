@@ -8,7 +8,6 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 	
 	while (obj)
 	{
-
 		if (obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, t_min, closest_so_far))
 		{
 			hit_anything = 1;
@@ -25,6 +24,7 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 		}
 		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, t_min, closest_so_far))
 		{
+			
 			hit_anything = 1;
 			closest_so_far = temp_rec.t;
 			*rec = temp_rec;
