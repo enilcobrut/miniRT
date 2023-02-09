@@ -9,12 +9,12 @@ int gi = 0;
 
 void	check_xpm(t_minirt *s, t_obj *obj)
 {
-	int null;
+	int	null;
 
-	obj->bump_map = mlx_xpm_file_to_image(s, "./papier.xpm", &s->bump_width, &s->bump_height);
-	if (!s->bump_map)
+	obj->bump_map = mlx_xpm_file_to_image(s, obj->xpm, &obj->bump_width, &obj->bump_height);
+	if (!obj->bump_map)
 		exit_error(s, "Error with the xpm file" , 1);
-	obj->bump_map_addr = (int *)mlx_get_data_addr(s->bump_map, &null, &null, &null);
+	obj->bump_map_addr = (int *)mlx_get_data_addr(obj->bump_map, &null, &null, &null);
 }
 
 int	get_sphere(t_minirt *s, t_list *p)
@@ -36,9 +36,9 @@ int	get_sphere(t_minirt *s, t_list *p)
 	new_obj->mat.ir = IR;
 	if (new_obj->mat.fuzz > 1)
 		new_obj->mat.fuzz = 1;
-	if (p->content[5])
+	if (p->content[4])
 	{
-		new_obj->xpm = p->content[5];
+		new_obj->xpm = p->content[4];
 		check_xpm(s, new_obj);
 	}
 	

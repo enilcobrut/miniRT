@@ -179,8 +179,10 @@ typedef struct s_obj
 	int n;
 	t_material			mat;
 	char				*xpm;
+	int					bump_height;
+	int					bump_width;
 	void 				*bump_map;
-	void				*bump_map_addr;
+	int					*bump_map_addr;
 	union
 	{
 		t_cylinder		cy;
@@ -242,10 +244,6 @@ typedef struct s_minirt
 	void				*mlx;
 	void				*win;
 	char				*title;
-	void				*bump_map;
-	int					*bump_map_addr;
-	int					bump_height;
-	int					bump_width;
 }	t_minirt;
 
 void	print_spheres(t_minirt *s, int i);
