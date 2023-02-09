@@ -23,20 +23,6 @@ int get_pixels_to_img(t_minirt *s, int h, int opt)
 			*(unsigned int *)dst = s->buf[y][x];
 		}
 	}
-	/*
-	t_buf *b = s->b;
-	if (opt == ALL)
-		h += 32;
-	while (b)
-	{
-		printf("%x ", b->hexa);
-		if (opt == ALL && b->y >= HEIGHT && b->y < h)
-			dst = s->img.add_r[1] + ((b->y - HEIGHT) * s->img.line_length[1] + b->x * (s->img.bits_per_pixel[1] / 8));
-		else if ((opt == SCENE || opt == ALL) && b->y < HEIGHT && b->y < h)
-			dst = s->img.add_r[0] + (b->y * s->img.line_length[0] + b->x * (s->img.bits_per_pixel[0] / 8));
-		*(unsigned int *)dst = b->hexa;
-		b = b->next;
-	}*/
 	return (0);
 }
 
@@ -67,7 +53,6 @@ void	init_rtx(t_minirt *s)
 
 void	start_ray_tracing(t_minirt *s)
 {
-	
 	int	null;
 	s->bump_map = mlx_xpm_file_to_image(s, "./bump_map.xpm", &s->bump_width, &s->bump_height);
 	if (!s->bump_map)

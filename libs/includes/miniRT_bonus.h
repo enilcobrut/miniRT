@@ -34,6 +34,7 @@
 #endif
 
 typedef struct s_material t_material;
+typedef struct s_obj t_obj;
 
 enum e_keyboard_key
 {
@@ -84,6 +85,7 @@ typedef struct s_rayon
 
 typedef struct s_hit_record
 {
+	t_obj		*hit_obj;
 	t_vector	p;
 	t_vector	normal;
 	double		t;
@@ -210,19 +212,16 @@ typedef struct s_rtx
 
 typedef struct s_minirt
 {
+	t_obj				*hit_obj;
 	int					on;
 	int					prompt_stat;
-	int					obj_selected_stat;
-	int					game_mode;
 	int					nt;
 	pthread_t			*t;
 	pthread_mutex_t		count;
 	t_rtx				r;
 	int					samples_per_pixel;
 	int					depth;
-		// t_buf				*b;
 	int					buf[HEIGHT + 32][WIDTH];
-	//int *buf;
 	t_data				img;
 	t_list				*params;
 	char				*k;
@@ -326,7 +325,9 @@ int	key_press(int key, t_minirt *s);
 int	is_key_move(int key);
 int	vec_limit(double value);
 void	type_key(t_minirt *s, char *tmp, int key);
-
+void	itof_to_win(t_minirt *s, double n, int x, int y);
+void	itoa_to_win(t_minirt *s, int n, int x, int y);
+void	display_hit_obj_params(t_minirt *s);
 /* DISPLAY GENERAL*********************************************************** */
 void	scene_loop(t_minirt *s);
 void	start_ray_tracing(t_minirt *s);
@@ -457,12 +458,6 @@ t_sphere	*lst_new_sphere(void);
 t_sphere	*lst_add__sphere(t_sphere **lst, t_sphere *new);
 t_sphere	*lst_last_sphere(t_sphere **lst);
 int			size_sphere(t_sphere *lst);
-
-/* -- BUF -- */
-t_buf	*lst_new_buf(int x, int y, int hexa, int n_object);
-t_buf	*lst_add_buf(t_buf **lst, t_buf *new);
-t_buf	*lst_last_buf(t_buf **lst);
-int		size_buf(t_buf *lst);
 
 /* -- LIGHT -- */
 t_light		*init_light(t_light *new);

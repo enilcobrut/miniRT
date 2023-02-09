@@ -1,13 +1,15 @@
 #include "miniRT_bonus.h"
 
-
 void display_scene(t_minirt *s)
 {
 	get_buffer(s);
 	get_pixels_to_img(s, HEIGHT, SCENE);
 	push_img_to_win(s, SCENE);
+	
 	if (s->cam_param_display == 1)
 		display_param_cam(s);
+	if (s->hit_obj)
+		display_hit_obj_params(s);
 }
 
 t_color		clamp_color(t_color color)

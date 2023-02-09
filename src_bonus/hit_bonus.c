@@ -13,6 +13,7 @@ int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt 
 			closest_so_far = temp_rec.t;
 			*rec = temp_rec;
 			rec->mat_ptr = &obj->mat;
+			rec->hit_obj = obj;
 		}
 		else if (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, T_MIN, closest_so_far))
 		{
@@ -20,6 +21,7 @@ int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt 
 			closest_so_far = temp_rec.t;
 			*rec = temp_rec;
 			rec->mat_ptr = &obj->mat;
+			rec->hit_obj = obj;
 		}
 		else if (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, T_MIN, closest_so_far))
 		{
@@ -28,6 +30,7 @@ int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj, t_minirt 
 			closest_so_far = temp_rec.t;
 			*rec = temp_rec;
 			rec->mat_ptr = &obj->mat;
+			rec->hit_obj = obj;
 		}
 		obj = obj->next;
 	}

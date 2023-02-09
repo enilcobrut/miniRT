@@ -44,7 +44,6 @@ void	get_prompt(t_minirt *s, int key)
 			type_key(s, tmp, key);
 		if (s->prompt)
 			mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xBA55D3, s->prompt);
-		
 	}
 	else if (key == 122) // F1
 	{
@@ -78,6 +77,14 @@ int	key_press(int key, t_minirt *s)
 {
 	if (key == ESCAPE)
 		red_cross(s);
+	else if (key == 120) //F2
+	{
+		if (s->cam_param_display == 1)
+			s->cam_param_display = 0;
+		else
+			s->cam_param_display = 1;
+		display_scene(s);
+	}
 	else if (is_key_move(key) && s->prompt_stat == 0 && s->obj_selected_stat == 1)
 	{
 		if (key == 126) // haut
@@ -104,14 +111,6 @@ int	key_press(int key, t_minirt *s)
 			key_down_vec(&s->cam_vec_dir.z);
 		else if (key == 85) // 3
 			key_up_vec(&s->cam_vec_dir.z);
-		display_scene(s);
-	}
-	else if (key == 120) //F2
-	{
-		if (s->cam_param_display == 1)
-			s->cam_param_display = 0;
-		else
-			s->cam_param_display = 1;
 		display_scene(s);
 	}
 	else
