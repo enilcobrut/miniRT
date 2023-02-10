@@ -15,14 +15,17 @@ int	get_cone(t_minirt *s, t_list *p)
 	get_axis(s, &co->center, p->content[1], 0);
 	get_axis(s, &co->dir_ax, p->content[2], 0);
 	check_vector_range(s, &co->dir_ax);
+	co->dir_ax = vec3_unit_vector(co->dir_ax);
 	check_float_format(s, p->content[3]);
 	co->diameter = ft_atof(s, p->content[3], 0, 0);
 	co->radius = co->diameter / 2;
 	check_float_format(s, p->content[4]);
 	co->height = ft_atof(s, p->content[4], 0, 0);
-	co->sin_angle = co->radius / co->height;
+	//co->sin_angle = co->radius / co->height;
 	co->cos_angle = cos(asin(co->sin_angle));
-	co->tan_angle = tan(asin(co->sin_angle));
+	co->tan_angle = co->radius / co->height;
+	co->center = add_(co->center, mul_(co->dir_ax, co->height));
+	co->dir_ax = mul_(co->dir_ax, -1);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
 	new_obj->mat.scatter = MATERIAL(new_obj);
 	if (p->content[6])

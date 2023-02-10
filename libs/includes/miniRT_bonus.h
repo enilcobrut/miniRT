@@ -502,4 +502,5 @@ void *dispatch_thread(void *arg);
 void	get_multi_threading(t_minirt *s);
 void get_no_multi_threading(t_minirt *s);
 int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_min, double t_max, t_hit_record *rec);
 #endif
