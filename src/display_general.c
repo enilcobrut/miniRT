@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_general.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/10 17:37:43 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/10 17:37:45 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT.h"
 
-int push_img_to_win(t_minirt *s, int opt)
+int	push_img_to_win(t_minirt *s, int opt)
 {
 	if (opt == PROMPT || opt == ALL)
 		mlx_put_image_to_window(s->mlx, s->win, s->img.img[1], 0, HEIGHT);
@@ -18,11 +30,11 @@ void	init_rtx(t_minirt *s)
 	if (s->win == NULL)
 		exit_error(s, 0, -1);
 	s->img.img[0] = mlx_new_image(s->mlx, WIDTH, HEIGHT);
-	s->img.add_r[0] = mlx_get_data_addr(s->img.img[0], &s->img.bits_per_pixel[0],
-								&s->img.line_length[0], &s->img.endian[0]);
+	s->img.add_r[0] = mlx_get_data_addr(s->img.img[0], &s->img.bits_ppix[0],
+			&s->img.line_length[0], &s->img.endian[0]);
 	s->img.img[1] = mlx_new_image(s->mlx, WIDTH, 32);
-	s->img.add_r[1] = mlx_get_data_addr(s->img.img[1], &s->img.bits_per_pixel[1],
-								&s->img.line_length[1], &s->img.endian[1]);
+	s->img.add_r[1] = mlx_get_data_addr(s->img.img[1], &s->img.bits_ppix[1],
+			&s->img.line_length[1], &s->img.endian[1]);
 }
 
 void	start_ray_tracing(t_minirt *s)

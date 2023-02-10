@@ -26,7 +26,7 @@ void get_pixels(t_minirt *s, int min, int max)
 				i++;
 			}
 			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
-					+ x * (s->img.bits_per_pixel[0] / 8));
+					+ x * (s->img.bits_ppix[0] / 8));
 			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
 			x++;
 		}
@@ -64,7 +64,7 @@ void get_pixels2(t_minirt *s, t_vector co)
 				i++;
 			}
 			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
-					+ x * (s->img.bits_per_pixel[0] / 8));
+					+ x * (s->img.bits_ppix[0] / 8));
 			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
 			/*if (y == 1024 - 1 && x == 768 - 1)
 				printf("%d\n", s->buf[HEIGHT - y - 1][x]);*/
@@ -156,7 +156,7 @@ void get_no_multi_threading(t_minirt *s)
 				i++;
 			}
 			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
-					+ x * (s->img.bits_per_pixel[0] / 8));
+					+ x * (s->img.bits_ppix[0] / 8));
 			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
 			x++;
 		}

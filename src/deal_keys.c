@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deal_keys.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/10 17:31:50 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/10 17:31:51 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT.h"
 
 void	function_keys(int key, t_minirt *s)
@@ -19,10 +31,11 @@ void	function_keys(int key, t_minirt *s)
 		}
 		else if (s->prompt_stat == 0)
 			s->prompt_stat = 1;
+		push_img_to_win(s, PROMPT);
 	}
 }
 
-void movement_keys(int key, t_minirt *s)
+void	movement_keys(int key, t_minirt *s)
 {
 	if (!s->hit_obj)
 	{
@@ -56,52 +69,52 @@ void movement_keys(int key, t_minirt *s)
 		if (s->hit_obj->type == SPHERE)
 		{
 			if (key == A)
-				s->hit_obj->u.sp.center_axis.x -= INTERVAL;
+				s->hit_obj->u_.sp.center_axis.x -= INTERVAL;
 			else if (key == S)
-				s->hit_obj->u.sp.center_axis.z -= INTERVAL;
+				s->hit_obj->u_.sp.center_axis.z -= INTERVAL;
 			else if (key == D)
-				s->hit_obj->u.sp.center_axis.x += INTERVAL;
+				s->hit_obj->u_.sp.center_axis.x += INTERVAL;
 			else if (key == W)
-				s->hit_obj->u.sp.center_axis.z += INTERVAL;
+				s->hit_obj->u_.sp.center_axis.z += INTERVAL;
 			else if (key == SPACE)
-				s->hit_obj->u.sp.center_axis.y += INTERVAL;
+				s->hit_obj->u_.sp.center_axis.y += INTERVAL;
 			else if (key == BACKSP)
-				s->hit_obj->u.sp.center_axis.y -= INTERVAL;
+				s->hit_obj->u_.sp.center_axis.y -= INTERVAL;
 		}
 		else if (s->hit_obj->type == PLANE)
 		{
 			if (key == A)
-				s->hit_obj->u.pl.axis.x -= INTERVAL;
+				s->hit_obj->u_.pl.axis.x -= INTERVAL;
 			else if (key == S)
-				s->hit_obj->u.pl.axis.z -= INTERVAL;
+				s->hit_obj->u_.pl.axis.z -= INTERVAL;
 			else if (key == D)
-				s->hit_obj->u.pl.axis.x += INTERVAL;
+				s->hit_obj->u_.pl.axis.x += INTERVAL;
 			else if (key == W)
-				s->hit_obj->u.pl.axis.z += INTERVAL;
+				s->hit_obj->u_.pl.axis.z += INTERVAL;
 			else if (key == SPACE)
-				s->hit_obj->u.pl.axis.y += INTERVAL;
+				s->hit_obj->u_.pl.axis.y += INTERVAL;
 			else if (key == BACKSP)
-				s->hit_obj->u.pl.axis.y -= INTERVAL;
+				s->hit_obj->u_.pl.axis.y -= INTERVAL;
 		}
 		else if (s->hit_obj->type == CYLINDER)
 		{
 			if (key == A)
-				s->hit_obj->u.cy.center.x -= INTERVAL;
+				s->hit_obj->u_.cy.center.x -= INTERVAL;
 			else if (key == S)
-				s->hit_obj->u.cy.center.z -= INTERVAL;
+				s->hit_obj->u_.cy.center.z -= INTERVAL;
 			else if (key == D)
-				s->hit_obj->u.cy.center.x += INTERVAL;
+				s->hit_obj->u_.cy.center.x += INTERVAL;
 			else if (key == W)
-				s->hit_obj->u.cy.center.z += INTERVAL;
+				s->hit_obj->u_.cy.center.z += INTERVAL;
 			else if (key == SPACE)
-				s->hit_obj->u.cy.center.y += INTERVAL;
+				s->hit_obj->u_.cy.center.y += INTERVAL;
 			else if (key == BACKSP)
-				s->hit_obj->u.cy.center.y -= INTERVAL;
+				s->hit_obj->u_.cy.center.y -= INTERVAL;
 		}
 	}
 }
 
-int key_press(int key, t_minirt *s)
+int	key_press(int key, t_minirt *s)
 {
 	if (key == ESCAPE)
 		red_cross(s);

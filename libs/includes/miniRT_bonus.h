@@ -79,7 +79,7 @@ typedef struct s_data
 {
 	void	**img;
 	char	**add_r;
-	int		bits_per_pixel[2];
+	int		bits_ppix[2];
 	int		line_length[2];
 	int		endian[2];
 }				t_data;
@@ -186,25 +186,24 @@ typedef struct s_cone
 
 typedef struct s_buf
 {
-	int x;
-	int y;
-	int hexa;
-	int n_object;
-	struct s_buf *next;
-	struct s_buf *prev;
+	int				x;
+	int				y;
+	int				hexa;
+	int				n_object;
+	struct s_buf	*next;
+	struct s_buf	*prev;
 
-} t_buf;
-
+}					t_buf;
 
 typedef struct s_obj
 {
-	t_id type;
-	int n;
+	t_id				type;
+	int					n;
 	t_material			mat;
 	char				*xpm;
 	int					bump_height;
 	int					bump_width;
-	void 				*bump_map;
+	void				*bump_map;
 	int					*bump_map_addr;
 	union
 	{
@@ -212,32 +211,32 @@ typedef struct s_obj
 		t_plane			pl;
 		t_sphere		sp;
 		t_cone			co;
-	} u;
-	struct s_obj *next;
-	struct s_obj *prev;
-} t_obj;
+	} u_;
+	struct s_obj		*next;
+	struct s_obj		*prev;
+}						t_obj;
 
 typedef struct s_rtx
 {
-	t_vector horizon;
-	t_vector vertical;
-	t_vector lower_left_corner;
-	t_vector w;
-	t_vector u;
-	t_vector v;
-	double theta;
-	double h;
-	double mul_t_u;
-	double mul_t_v;
-	double viewport_height;
-	double viewport_width;
+	t_vector	horizon;
+	t_vector	vertical;
+	t_vector	lower_left_corner;
+	t_vector	w;
+	t_vector	u;
+	t_vector	v;
+	double		theta;
+	double		h;
+	double		mul_t_u;
+	double		mul_t_v;
+	double		viewport_height;
+	double		viewport_width;
 	t_rayon		r;
-	t_color	 pixel_color;
-} t_rtx;
+	t_color		pixel_color;
+}				t_rtx;
 
 typedef struct s_minirt
 {
-	void 				*hit_obj_xpm;
+	void				*hit_obj_xpm;
 	void				*hit_obj_xpm_addr;
 	t_obj				*hit_obj;
 	int					on;

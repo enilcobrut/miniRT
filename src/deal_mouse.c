@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deal_mouse.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/10 17:37:01 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/10 17:37:12 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT.h"
 
 void display_hit_obj_params(t_minirt *s)
@@ -18,9 +30,9 @@ void display_hit_obj_params(t_minirt *s)
 		mlx_string_put(s->mlx, s->win, 250, HEIGHT + 2, 0xBA55D3, "CYLINDER");
 
 		/*mlx_string_put(s->mlx, s->win, 30, 10, 0xFFFFFF, "CENTER [");
-		itof_to_win(s, s->hit_obj->u.cy.center.x, 125, HEIGHT + 2);
-		itof_to_win(s, s->hit_obj->u.cy.center.y, 125, HEIGHT + 2);
-		itof_to_win(s, s->hit_obj->u.cy.center.z, 125, HEIGHT + 2);
+		itof_to_win(s, s->hit_obj->u_.cy.center.x, 125, HEIGHT + 2);
+		itof_to_win(s, s->hit_obj->u_.cy.center.y, 125, HEIGHT + 2);
+		itof_to_win(s, s->hit_obj->u_.cy.center.z, 125, HEIGHT + 2);
 
 		mlx_string_put(s->mlx, s->win, 30, 30, 0xFFFFFF, "2");
 		itof_to_win(s, s->cam_origin.y, 125, 30);
@@ -40,20 +52,22 @@ void display_hit_obj_params(t_minirt *s)
 	itof_to_win(s, s->cam_vec_dir.x, 125, HEIGHT - 20);*/
 }
 
-void hit_something(t_minirt *s, int x, int y)
+void	hit_something(t_minirt *s, int x, int y)
 {
-	t_hit_record rec;
+	t_hit_record	rec;
 
 	s->r.mul_t_u = 1 - (double)x / (double)(WIDTH - 1);
 	s->r.mul_t_v = 1 - (double)y / (double)(HEIGHT - 1);
-	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner, mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical, s->r.mul_t_v)), s->cam_origin));
+	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner,
+			mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical, s->r.mul_t_v)),
+			s->cam_origin));
 	if (hit(&s->r.r, 0.001, INF, &rec, s->obj))
 	{
 		s->hit_obj = rec.hit_obj;
 	}
 }
 
-int button_press(int i, int x, int y, t_minirt *s)
+int	button_press(int i, int x, int y, t_minirt *s)
 {
 	push_img_to_win(s, PROMPT);
 	if (i == RIGHT_MOUSE || i == LEFT_MOUSE)
@@ -76,23 +90,23 @@ int button_press(int i, int x, int y, t_minirt *s)
 			if (s->hit_obj->type == SPHERE)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u.sp.radius += INTERVAL;
-				else if (i == SCROLL_DOWN && s->hit_obj->u.sp.radius > 0)
-					s->hit_obj->u.sp.radius -= INTERVAL;
+					s->hit_obj->u_.sp.radius += INTERVAL;
+				else if (i == SCROLL_DOWN && s->hit_obj->u_.sp.radius > 0)
+					s->hit_obj->u_.sp.radius -= INTERVAL;
 			}
 			/*else if (s->hit_obj->type == PLANE)
 			{
 				if (i == 4)
-					s->hit_obj->u.pl.radius += INTERVAL;
-				else if (i == SCROLL_DOWN && s->hit_obj->u.sp.radius > 0)
-					s->hit_obj->u.sp.radius -= INTERVAL;
+					s->hit_obj->u_.pl.radius += INTERVAL;
+				else if (i == SCROLL_DOWN && s->hit_obj->u_.sp.radius > 0)
+					s->hit_obj->u_.sp.radius -= INTERVAL;
 			}*/
 			else if (s->hit_obj->type == CYLINDER)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u.cy.radius += INTERVAL;
-				else if (i == SCROLL_DOWN && s->hit_obj->u.cy.radius > 0)
-					s->hit_obj->u.cy.radius -= INTERVAL;
+					s->hit_obj->u_.cy.radius += INTERVAL;
+				else if (i == SCROLL_DOWN && s->hit_obj->u_.cy.radius > 0)
+					s->hit_obj->u_.cy.radius -= INTERVAL;
 			}
 		}
 	}

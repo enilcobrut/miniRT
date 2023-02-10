@@ -3,6 +3,7 @@
 t_color	ray_color_1(t_rayon *r, t_minirt *s, int depth)
 {
 	t_hit_record rec;
+	
 	if (depth <= 0)
 		return (init_color(0, 0, 0));
 

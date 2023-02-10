@@ -13,24 +13,22 @@
 # include <float.h>
 # include <pthread.h>
 
-
 # define PARSING 0
 # define LEAKS 0
 # define INTERVAL 0.1
 # define INTERVAL_VEC 0.01
 # define PI M_PI
 # define INF DBL_MAX
-
-#define HEIGHT 768
-#define WIDTH 1024
-#define SAMPLE_P_PIX 1
-#define DEPTH 5
+# define HEIGHT 768
+# define WIDTH 1024
+# define SAMPLE_P_PIX 1
+# define DEPTH 5
 #ifndef NUM_THREADS
 #define NUM_THREADS 1
 #endif
 
-typedef struct s_material t_material;
-typedef struct s_obj t_obj;
+typedef struct s_material	t_material;
+typedef struct s_obj		t_obj;
 
 enum e_keyboard_key
 {
@@ -71,19 +69,20 @@ typedef enum e_id
 	ALL
 }			t_id;
 
-typedef struct	s_data {
+typedef struct s_data
+{
 	void	**img;
 	char	**add_r;
-	int		bits_per_pixel[2];
+	int		bits_ppix[2];
 	int		line_length[2];
 	int		endian[2];
 }				t_data;
 
 typedef struct s_color
 {
-	double 	r;
-	double 	g;
-	double 	b;
+	double	r;
+	double	g;
+	double	b;
 }	t_color;
 
 typedef struct s_vector
@@ -97,7 +96,7 @@ typedef struct s_rayon
 {
 	t_vector	origine;
 	t_vector	direction;
-} 			t_rayon;
+}				t_rayon;
 
 typedef struct s_hit_record
 {
@@ -116,7 +115,6 @@ typedef struct s_light_scene
 	double		lum;
 }	t_light_scene;
 
-
 typedef struct s_material
 {
 	int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
@@ -125,7 +123,7 @@ typedef struct s_material
 	t_color	albedo1;
 	double	fuzz;
 	double	ir;
-} t_material;
+}			t_material;
 
 typedef struct s_sphere
 {
@@ -163,31 +161,31 @@ typedef struct s_obj
 	t_material			mat;
 	union
 	{
-		t_cylinder cy;
-		t_plane pl;
-		t_sphere sp;
-	} u;
-	struct s_obj *next;
-	struct s_obj *prev;
-} t_obj;
+		t_cylinder		cy;
+		t_plane			pl;
+		t_sphere		sp;
+	} u_;
+	struct s_obj		*next;
+	struct s_obj		*prev;
+}						t_obj;
 
 typedef struct s_rtx
 {
-	t_vector horizon;
-	t_vector vertical;
-	t_vector lower_left_corner;
-	t_vector w;
-	t_vector u;
-	t_vector v;
-	double theta;
-	double h;
-	double mul_t_u;
-	double mul_t_v;
-	double viewport_height;
-	double viewport_width;
+	t_vector	horizon;
+	t_vector	vertical;
+	t_vector	lower_left_corner;
+	t_vector	w;
+	t_vector	u;
+	t_vector	v;
+	double		theta;
+	double		h;
+	double		mul_t_u;
+	double		mul_t_v;
+	double		viewport_height;
+	double		viewport_width;
 	t_rayon		r;
-	t_color	 pixel_color;
-} t_rtx;
+	t_color		pixel_color;
+}				t_rtx;
 
 typedef struct s_minirt
 {
@@ -265,7 +263,7 @@ void	check_vector_range(t_minirt *s, t_vector *p);
 char	**get_next_rgb(char **rgb, int *color);
 int		is_rgb(int color);
 void	check_integer_format(t_minirt *s, char *str);
-t_color	get_rgb_str_to_color(t_minirt *s,  char *str, char *tmp);
+t_color	get_rgb_str_to_color(t_minirt *s, char *str, char *tmp);
 void	check_format_rgb(t_minirt *s, char *str);
 
 int		create_trgb(int t, int r, int g, int b);
@@ -282,15 +280,15 @@ int		nb_arg_tab(char **tab);
 int		check_float_atof(t_minirt *s, char *str, int i);
 
 /* COLOR TOOLS ************************************************************** */
-t_color		clamp_color(t_color color);
-t_color color_mul(t_color a, t_color b);
-t_color color_add_(t_color a, t_color b);
-int	write_color(t_color	 pixel_color, int sample_per_pixel);
-t_color init_color(double r, double g, double b);
+t_color	clamp_color(t_color color);
+t_color	color_mul(t_color a, t_color b);
+t_color	color_add_(t_color a, t_color b);
+int		write_color(t_color pixel_color, int sample_per_pixel);
+t_color	init_color(double r, double g, double b);
 t_color	color_mul_scalar(t_color a, double b);
-int	get_hexa_color(t_color color);
-t_color map_color(t_color color);
-int	print_color(t_color color);
+int		get_hexa_color(t_color color);
+t_color	map_color(t_color color);
+int		print_color(t_color color);
 
 /* DEAL KEY ***************************************************************** */
 void	key_backspace(t_minirt *s, char *tmp);
@@ -312,7 +310,7 @@ void key_down_vec(double *value);
 void	type_key(t_minirt *s, char *tmp, int key);
 
 /* -- MOUSE -- */
-int	button_press(int i, int y, int x, t_minirt *s);
+int		button_press(int i, int y, int x, t_minirt *s);
 void	display_hit_obj_params(t_minirt *s);
 
 /* DISPLAY GENERAL*********************************************************** */
@@ -325,10 +323,10 @@ t_color	ray_color_1(t_rayon *r, t_minirt *s, int depth);
 t_color	ray_color(t_rayon *r, t_minirt *s, int depth);
 t_color	ray_color_3(t_rayon *r, t_minirt *s, int depth);
 
-/* DISPLAY SCENE MAT ********************************************************* */
+/* DISPLAY SCENE MAT ******************************************************** */
 
-void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
-int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+void	set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
+int		scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 int scatter_light(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 t_vector	refract(const t_vector uv, const t_vector n, double etai_over_etat);
 t_vector	reflect(const t_vector v, const t_vector n);
@@ -338,36 +336,41 @@ int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *atten
 int	near_zero(const t_vector *vec);
 
 /* DISPLAY SCENE ************************************************************ */
-void display_scene(t_minirt *s);
+void	display_scene(t_minirt *s);
 void	get_prompt_color(t_minirt *s);
-void get_no_multi_threading(t_minirt *s);
-int	get_pixels_to_img(t_minirt *s);
+void	get_no_multi_threading(t_minirt *s);
+int		get_pixels_to_img(t_minirt *s);
 
 /* HIT ********************************************************************** */
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj);
+int		hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec,
+		t_obj *obj);
 
 /* -- HIT CYLINDER -- */
-int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int		hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec,
+		double t_min, double t_max);
 
 /* -- HIT PLANE -- */
-int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int		hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec,
+		double t_min, double t_max);
 
 /* -- HIT SHPERE -- */
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
-int	hit_sphere_2(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int		hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec,
+		double t_min, double t_max);
+int		hit_sphere_2(t_sphere *sp, const t_rayon *r, t_hit_record *rec,
+		double t_min, double t_max);
 
-/* RAYON *************************************************************** */
+/* RAYON ***************************************************************** */
 t_rayon	init_rayon(t_vector origine, t_vector direction);
 
 /* TOOLS ******************************************************************** */
-int			red_cross(t_minirt *s);
+int		red_cross(t_minirt *s);
 
-/* VECTOR OPERATION *********************************************************** */
+/* VECTOR OPERATION ******************************************************** */
 t_vector	sub_(t_vector v1, t_vector v2);
 t_vector	add_(t_vector v1, t_vector v2);
 t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
-t_vector vec_cross(const t_vector u, const t_vector v);
+t_vector	vec_cross(const t_vector u, const t_vector v);
 
 /* VECTOR RANDOM ************************************************************* */
 t_vector vec_random(void);
@@ -383,14 +386,14 @@ t_vector	vec3_unit_vector(t_vector a);
 double	vec3_length(t_vector a);
 
 /* MATHS RANDOM *************************************************************** */
-double random_double_2(double min, double max);
+double	random_double_2(double min, double max);
 double	random_double(void);
 
 /* MATHS TOOLS *************************************************************** */
-double degrees_to_radians(double degrees);
-double clamp(double x, double min, double max);
-double ft_sqrt(double number);
-double length_squared(t_vector v);
+double	degrees_to_radians(double degrees);
+double	clamp(double x, double min, double max);
+double	ft_sqrt(double number);
+double	length_squared(t_vector v);
 double	dot(t_vector u, t_vector v);
 
 /* LINKEDLISTS *************************************************************** */
@@ -407,14 +410,14 @@ t_obj	*init_obj_lst(t_obj *new);
 t_obj	*lst_new_obj(int type);
 t_obj	*lst_add_obj(t_obj **lst, t_obj *new);
 t_obj	*lst_last_obj(t_obj **lst);
-int	size_obj(t_obj *lst);
+int		size_obj(t_obj *lst);
 
 /* -- PLANE -- */
-t_plane		*init_plane(t_plane *new);
-t_plane		*lst_new_plane(void);
-t_plane		*lst_add__plane(t_plane **lst, t_plane *new);
-t_plane		*lst_last_plane(t_plane **lst);
-int			size_plane(t_plane *lst);
+t_plane	*init_plane(t_plane *new);
+t_plane	*lst_new_plane(void);
+t_plane	*lst_add__plane(t_plane **lst, t_plane *new);
+t_plane	*lst_last_plane(t_plane **lst);
+int		size_plane(t_plane *lst);
 
 /* -- SPHERE -- */
 t_sphere	*init_sphere_lst(t_sphere *new);

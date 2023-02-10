@@ -171,7 +171,7 @@ void	get_prompt_color(t_minirt *s)
 		while (x < WIDTH)
 		{
 			dst = s->img.add_r[1] + (y * s->img.line_length[1] 
-					+ x * (s->img.bits_per_pixel[1] / 8));
+					+ x * (s->img.bits_ppix[1] / 8));
 			*(unsigned int *)dst = get_hexa_color(color);
 			x++;
 		}

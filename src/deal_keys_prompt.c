@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deal_keys_prompt.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/10 17:18:16 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/10 17:18:21 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT.h"
 
 void	type_key(t_minirt *s, char *tmp, int key)
@@ -25,17 +37,15 @@ int	key_enter(t_minirt *s)
 {
 	char	*help;
 
+	help = ft_strdup("[F1] prompt [F2] cam param [OTHER] help, print or leaks");
 	if (!ft_strncmp(s->prompt, "print", 6))
 		print_params(s);
 	else if (!ft_strncmp(s->prompt, "help", 5))
-	{
-		help = ft_strdup("[F1] prompt [F2] cam param [OTHER] help, print or leaks");
 		mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xFF0000, help);
-		ft_free(&help);
-	}
 	else if (!ft_strncmp(s->prompt, "leaks", 4))
 		system("leaks miniRT");
 	ft_free(&s->prompt);
+	ft_free(&help);
 	return (1);
 }
 

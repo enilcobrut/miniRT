@@ -95,13 +95,13 @@ void	print_params(t_minirt *s)
 	while (obj)
 	{
 		if (obj->type == SPHERE)
-			print_sphere(&obj->u.sp, obj->n);
+			print_sphere(&obj->u_.sp, obj->n);
 		else if (obj->type == PLANE)
-			print_plane(&obj->u.pl, obj->n);
+			print_plane(&obj->u_.pl, obj->n);
 		else if (obj->type == CYLINDER)
-			print_cylinder(&obj->u.cy, obj->n);
+			print_cylinder(&obj->u_.cy, obj->n);
 		else if (obj->type == CONE)
-			print_cone(&obj->u.co, obj->n);
+			print_cone(&obj->u_.co, obj->n);
 		printf("\033[35m Color \033[0m[%x]\n\n", print_color(obj->mat.albedo));
 		obj = obj->next;
 	}

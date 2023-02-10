@@ -8,10 +8,10 @@ int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj)
 	double closest_so_far = t_max;
 	while (obj)
 	{
-		if ((obj->type == SPHERE && hit_sphere(&obj->u.sp, r, &temp_rec, T_MIN, closest_so_far))
-			|| (obj->type == PLANE && hit_plane(&obj->u.pl, r, &temp_rec, T_MIN, closest_so_far))
-			|| (obj->type == CYLINDER && hit_cylinder(&obj->u.cy, r, &temp_rec, T_MIN, closest_so_far))
-			|| (obj->type == CONE && hit_cone(&obj->u.co, r, &temp_rec, T_MIN, closest_so_far)))
+		if ((obj->type == SPHERE && hit_sphere(&obj->u_.sp, r, &temp_rec, T_MIN, closest_so_far))
+			|| (obj->type == PLANE && hit_plane(&obj->u_.pl, r, &temp_rec, T_MIN, closest_so_far))
+			|| (obj->type == CYLINDER && hit_cylinder(&obj->u_.cy, r, &temp_rec, T_MIN, closest_so_far))
+			/*|| (obj->type == CONE && hit_cone(&obj->u_.co, r, &temp_rec, T_MIN, closest_so_far))*/)
 		{
 
 			hit_anything = 1;

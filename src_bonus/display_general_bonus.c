@@ -16,10 +16,10 @@ int get_pixels_to_img(t_minirt *s, int h, int opt)
 		{
 			if (opt == ALL && y >= HEIGHT)
 				dst = s->img.add_r[1] + ((y - HEIGHT) * s->img.line_length[1] 
-					+ x * (s->img.bits_per_pixel[1] / 8));
+					+ x * (s->img.bits_ppix[1] / 8));
 			else if ((opt == SCENE || opt == ALL) && y < HEIGHT)
 				dst = s->img.add_r[0] + (y * s->img.line_length[0]
-					+ x * (s->img.bits_per_pixel[0] / 8));
+					+ x * (s->img.bits_ppix[0] / 8));
 			*(unsigned int *)dst = s->buf[y][x];
 		}
 	}
@@ -44,10 +44,10 @@ void	init_rtx(t_minirt *s)
 	if (s->win == NULL)
 		exit_error(s, 0, -1);
 	s->img.img[0] = mlx_new_image(s->mlx, WIDTH, HEIGHT);
-	s->img.add_r[0] = mlx_get_data_addr(s->img.img[0], &s->img.bits_per_pixel[0],
+	s->img.add_r[0] = mlx_get_data_addr(s->img.img[0], &s->img.bits_ppix[0],
 								&s->img.line_length[0], &s->img.endian[0]);
 	s->img.img[1] = mlx_new_image(s->mlx, WIDTH, 32);
-	s->img.add_r[1] = mlx_get_data_addr(s->img.img[1], &s->img.bits_per_pixel[1],
+	s->img.add_r[1] = mlx_get_data_addr(s->img.img[1], &s->img.bits_ppix[1],
 								&s->img.line_length[1], &s->img.endian[1]);
 }
 

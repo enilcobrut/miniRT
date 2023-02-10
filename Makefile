@@ -38,6 +38,7 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/main.c \
 				src/maths_random.c \
 				src/maths_tools.c \
+				src/print.c \
 				src/rayon.c \
 				src/tools.c \
 				src/vector_operation.c \
@@ -76,7 +77,7 @@ SRCS_BONUS =	src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/multi_threading_bonus.c \
 				src_bonus/tools_bonus.c \
 				src_bonus/vector_tools_bonus.c \
-				src_bonus/hit_cone_bonus.c
+
 
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)

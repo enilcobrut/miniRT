@@ -18,9 +18,9 @@ void display_hit_obj_params(t_minirt *s)
 		mlx_string_put(s->mlx, s->win, 250, HEIGHT + 2, 0xBA55D3, "CYLINDER");
 
 		/*mlx_string_put(s->mlx, s->win, 30, 10, 0xFFFFFF, "CENTER [");
-		itof_to_win(s, s->hit_obj->u.cy.center.x, 125, HEIGHT + 2);
-		itof_to_win(s, s->hit_obj->u.cy.center.y, 125, HEIGHT + 2);
-		itof_to_win(s, s->hit_obj->u.cy.center.z, 125, HEIGHT + 2);
+		itof_to_win(s, s->hit_obj->u_.cy.center.x, 125, HEIGHT + 2);
+		itof_to_win(s, s->hit_obj->u_.cy.center.y, 125, HEIGHT + 2);
+		itof_to_win(s, s->hit_obj->u_.cy.center.z, 125, HEIGHT + 2);
 
 		mlx_string_put(s->mlx, s->win, 30, 30, 0xFFFFFF, "2");
 		itof_to_win(s, s->cam_origin.y, 125, 30);
@@ -78,30 +78,30 @@ int button_press(int i, int x, int y, t_minirt *s)
 			if (s->hit_obj->type == SPHERE)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u.sp.radius += INTERVAL;
-				else if (i == SCROLL_DOWN && s->hit_obj->u.sp.radius > 0)
-					s->hit_obj->u.sp.radius -= INTERVAL;
+					s->hit_obj->u_.sp.radius += INTERVAL;
+				else if (i == SCROLL_DOWN && s->hit_obj->u_.sp.radius > 0)
+					s->hit_obj->u_.sp.radius -= INTERVAL;
 			}
 			/*else if (s->hit_obj->type == PLANE)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u.pl.radius += INTERVAL;
-				else if (i == 5 && s->hit_obj->u.sp.radius > 0)
-					s->hit_obj->u.sp.radius -= INTERVAL;
+					s->hit_obj->u_.pl.radius += INTERVAL;
+				else if (i == 5 && s->hit_obj->u_.sp.radius > 0)
+					s->hit_obj->u_.sp.radius -= INTERVAL;
 			}*/
 			else if (s->hit_obj->type == CYLINDER)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u.cy.radius += INTERVAL;
-				else if (i == SCROLL_DOWN && s->hit_obj->u.cy.radius > 0)
-					s->hit_obj->u.cy.radius -= INTERVAL;
+					s->hit_obj->u_.cy.radius += INTERVAL;
+				else if (i == SCROLL_DOWN && s->hit_obj->u_.cy.radius > 0)
+					s->hit_obj->u_.cy.radius -= INTERVAL;
 			}
 			else if (s->hit_obj->type == CONE)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u.co.radius += INTERVAL;
-				else if (i == SCROLL_DOWN  && s->hit_obj->u.co.radius > 0)
-					s->hit_obj->u.co.radius -= INTERVAL;
+					s->hit_obj->u_.co.radius += INTERVAL;
+				else if (i == SCROLL_DOWN  && s->hit_obj->u_.co.radius > 0)
+					s->hit_obj->u_.co.radius -= INTERVAL;
 			}
 		}
 	}
