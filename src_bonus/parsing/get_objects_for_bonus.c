@@ -22,6 +22,7 @@ int	get_cone(t_minirt *s, t_list *p)
 	co->height = ft_atof(s, p->content[4], 0, 0);
 	co->sin_angle = co->radius / co->height;
 	co->cos_angle = cos(asin(co->sin_angle));
+	co->tan_angle = tan(asin(co->sin_angle));
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
 	new_obj->mat.scatter = MATERIAL(new_obj);
 	if (p->content[6])

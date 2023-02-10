@@ -13,17 +13,17 @@ void display_scene(t_minirt *s)
 void	get_prompt_color(t_minirt *s)
 {
 	int x = 0;
-	int y = HEIGHT;
+	int y = 0;
 	char *dst;
 	
 	t_color color = init_color(100,100,100);
 
-	while (y < HEIGHT + 32)
+	while (y < 32)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
-			dst = s->img.add_r[1] + ((y - HEIGHT - 1) * s->img.line_length[1] 
+			dst = s->img.add_r[1] + (y * s->img.line_length[1] 
 					+ x * (s->img.bits_per_pixel[1] / 8));
 			*(unsigned int *)dst = get_hexa_color(color);
 			x++;

@@ -179,6 +179,7 @@ typedef struct s_cone
 	double				radius;
 	double				sin_angle;
 	double				cos_angle;
+	double				tan_angle;
 	struct s_cone		*next;
 	struct s_cone		*prev;
 }						t_cone;
