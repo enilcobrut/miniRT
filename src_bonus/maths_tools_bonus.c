@@ -1,6 +1,6 @@
 #include "miniRT_bonus.h"
 
-double	random_double()
+double	random_double(void)
 {
 	  // Returns a random real in [0,1).
 	return ((double)rand() / (RAND_MAX + 1.0));

@@ -64,11 +64,9 @@ void key_down_vec(double *value)
 		*value = -1;
 }
 
-int	key_press(int key, t_minirt *s)
+void	function_keys(int key, t_minirt *s)
 {
-	if (key == ESCAPE)
-		red_cross(s);
-	else if (key == 120) // F2
+	if (key == F2)
 	{
 		if (s->cam_param_display == 1)
 			s->cam_param_display = 0;
@@ -76,10 +74,8 @@ int	key_press(int key, t_minirt *s)
 			s->cam_param_display = 1;
 		display_scene(s);
 	}
-	else if (key == 122) // F1
+	else if (key == F1)
 	{
-		s->hit_obj = NULL;
-		push_img_to_win(s, PROMPT);
 		if (s->prompt_stat == 1)
 		{
 			s->prompt_stat = 0;
@@ -88,33 +84,42 @@ int	key_press(int key, t_minirt *s)
 		else if (s->prompt_stat == 0)
 			s->prompt_stat = 1;
 	}
+}
+
+
+int	key_press(int key, t_minirt *s)
+{
+	if (key == ESCAPE)
+		red_cross(s);
+	else if (key == F1 || key == F2)
+		function_keys(key, s);
 	else if (is_key_move(key) && s->prompt_stat == 0)
 	{
 		if (!s->hit_obj)
 		{
-			if (key == 0) // A
+			if (key == A) // A
 				s->cam_origin.x -= INTERVAL;
-			else if (key == 1) // S
+			else if (key == S) // S
 				s->cam_origin.z -= INTERVAL;
-			else if (key == 2) // D
+			else if (key == D) // D
 				s->cam_origin.x += INTERVAL;
-			else if (key == 13) // W
+			else if (key == W) // W
 				s->cam_origin.z += INTERVAL;
 			else if (key == SPACE) // +
 				s->cam_origin.y += INTERVAL;
 			else if (key == BACKSP) // -
 				s->cam_origin.y -= INTERVAL;
-			else if (key == 91) // 8
+			else if (key == EIGHT) // 8
 				key_up_vec(&s->cam_vec_dir.y);
-			else if (key == 86) // 4
+			else if (key == FOUR) // 4
 				key_down_vec(&s->cam_vec_dir.x);
-			else if (key == 87) // 5
+			else if (key == FIVE) // 5
 				key_down_vec(&s->cam_vec_dir.y);
-			else if (key == 88) // 6
+			else if (key == SIX) // 6
 				key_up_vec(&s->cam_vec_dir.x);
-			else if (key == 83) // 1
+			else if (key == ONE) // 1
 				key_down_vec(&s->cam_vec_dir.z);
-			else if (key == 85) // 3
+			else if (key == THREE) // 3
 				key_up_vec(&s->cam_vec_dir.z);
 		}
 		else if (s->hit_obj)
@@ -128,13 +133,13 @@ int	key_press(int key, t_minirt *s)
 			// else if (key == 125) // bas
 			if (s->hit_obj->type == SPHERE)
 			{
-				if (key == 0) // A
+				if (key == A) // A
 					s->hit_obj->u.sp.center_axis.x -= INTERVAL;
-				else if (key == 1) // S
+				else if (key == S) // S
 					s->hit_obj->u.sp.center_axis.z -= INTERVAL;
-				else if (key == 2) // D
+				else if (key == D) // D
 					s->hit_obj->u.sp.center_axis.x += INTERVAL;
-				else if (key == 13) // W
+				else if (key == W) // W
 					s->hit_obj->u.sp.center_axis.z += INTERVAL;
 				else if (key == SPACE) // +
 					s->hit_obj->u.sp.center_axis.y += INTERVAL;
@@ -143,13 +148,13 @@ int	key_press(int key, t_minirt *s)
 			}
 			else if (s->hit_obj->type == PLANE)
 			{
-				if (key == 0) // A
+				if (key == A) // A
 					s->hit_obj->u.pl.axis.x -= INTERVAL;
-				else if (key == 1) // S
+				else if (key == S) // S
 					s->hit_obj->u.pl.axis.z -= INTERVAL;
-				else if (key == 2) // D
+				else if (key == D) // D
 					s->hit_obj->u.pl.axis.x += INTERVAL;
-				else if (key == 13) // W
+				else if (key == W) // W
 					s->hit_obj->u.pl.axis.z += INTERVAL;
 				else if (key == SPACE) // +
 					s->hit_obj->u.pl.axis.y += INTERVAL;
@@ -158,13 +163,13 @@ int	key_press(int key, t_minirt *s)
 			}
 			else if (s->hit_obj->type == CYLINDER)
 			{
-				if (key == 0) // A
+				if (key == A) // A
 					s->hit_obj->u.cy.center.x -= INTERVAL;
-				else if (key == 1) // S
+				else if (key == S) // S
 					s->hit_obj->u.cy.center.z -= INTERVAL;
-				else if (key == 2) // D
+				else if (key == D) // D
 					s->hit_obj->u.cy.center.x += INTERVAL;
-				else if (key == 13) // W
+				else if (key == W) // W
 					s->hit_obj->u.cy.center.z += INTERVAL;
 				else if (key == SPACE) // +
 					s->hit_obj->u.cy.center.y += INTERVAL;
@@ -173,13 +178,13 @@ int	key_press(int key, t_minirt *s)
 			}
 			else if (s->hit_obj->type == CONE)
 			{
-				if (key == 0) // A
+				if (key == A) // A
 					s->hit_obj->u.co.center.x -= INTERVAL;
-				else if (key == 1) // S
+				else if (key == S) // S
 					s->hit_obj->u.co.center.z -= INTERVAL;
-				else if (key == 2) // D
+				else if (key == D) // D
 					s->hit_obj->u.co.center.x += INTERVAL;
-				else if (key == 13) // W
+				else if (key == W) // W
 					s->hit_obj->u.co.center.z += INTERVAL;
 				else if (key == SPACE) // +
 					s->hit_obj->u.co.center.y += INTERVAL;

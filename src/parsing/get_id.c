@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_id.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/10 11:57:25 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/10 11:57:56 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT.h"
 
@@ -69,8 +80,8 @@ int	get_light_scene_par(t_minirt *s, t_list *p)
 
 void	get_objects(t_minirt *s, t_list *p)
 {
-	static int nb;
-	t_obj *curr;
+	static int	nb;
+	t_obj		*curr;
 
 	nb++;
 	if (!ft_strncmp(p->content[0], "pl", 3))

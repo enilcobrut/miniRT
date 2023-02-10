@@ -2,7 +2,7 @@
 
 void display_scene(t_minirt *s)
 {
-	get_buffer(s);
+	get_pixels_to_img(s);
 	push_img_to_win(s, SCENE);
 	if (s->cam_param_display == 1)
 		display_param_cam(s);
@@ -182,7 +182,7 @@ void	get_prompt_color(t_minirt *s)
 	}
 }
 
-void	get_buffer(t_minirt *s)
+void	get_pixels_to_img(t_minirt *s)
 {
 	const t_vector vup = init_vector(0, 1, 0);
 	clock_t	start;

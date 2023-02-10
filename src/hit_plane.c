@@ -1,6 +1,5 @@
 #include "miniRT.h"
 
-
 int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
 {
 	t_vector norm = vec3_unit_vector(p->norm_or_vector);

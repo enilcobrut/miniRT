@@ -21,19 +21,27 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/parsing/tools_rgb2.c \
 				src/parsing/tools.c \
 				src/color_tools.c \
+				src/color_tools2.c \
 				src/deal_keys_display.c \
+				src/deal_keys_prompt.c \
 				src/deal_keys_tools.c \
 				src/deal_keys.c \
 				src/deal_mouse.c \
 				src/display_general.c \
+				src/display_scene_mat.c \
+				src/display_scene_ray_color.c \
 				src/display_scene.c \
 				src/hit_cylinder.c \
 				src/hit_plane.c \
 				src/hit_sphere.c \
 				src/hit.c \
 				src/main.c \
+				src/maths_random.c \
 				src/maths_tools.c \
+				src/rayon.c \
 				src/tools.c \
+				src/vector_operation.c \
+				src/vector_random.c \
 				src/vector_tools.c \
 
 SRCS_BONUS =	src_bonus/linked_lists/cone_bonus.c \

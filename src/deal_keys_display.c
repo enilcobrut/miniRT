@@ -2,7 +2,7 @@
 
 void	itof_to_win(t_minirt *s, double n, int x, int y)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = ft_itof(n);
 	mlx_string_put(s->mlx, s->win, x, y, 0xFFFFFF, tmp);
@@ -11,7 +11,7 @@ void	itof_to_win(t_minirt *s, double n, int x, int y)
 
 void	itoa_to_win(t_minirt *s, int n, int x, int y)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = ft_itoa(n);
 	mlx_string_put(s->mlx, s->win, x, y, 0xFFFFFF, tmp);

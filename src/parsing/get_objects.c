@@ -1,4 +1,3 @@
-
 #include "miniRT.h"
 
 int gi = 0;
@@ -7,10 +6,9 @@ int gi = 0;
 #define IR 1.5
 //#define MATERIAL scatter_metal
 
-
 int	get_sphere(t_minirt *s, t_list *p)
 {
-	t_obj 		*new_obj;
+	t_obj		*new_obj;
 	t_sphere	*sp;
 
 	new_obj = NULL;
@@ -51,7 +49,7 @@ int	get_plane(t_minirt *s, t_list *p)
 int	get_cylinder(t_minirt *s, t_list *p)
 {
 	t_obj		*new_obj;
-	t_cylinder		*cy;
+	t_cylinder	*cy;
 
 	new_obj = NULL;
 	if (nb_arg_tab(p->content) != 6)

@@ -13,7 +13,6 @@
 # include <float.h>
 # include <pthread.h>
 
-# define MAX_PATH 1024
 # define PARSING 0
 # define LEAKS 0
 # define PRINT 1
@@ -42,6 +41,27 @@ enum e_keyboard_key
 	ESCAPE = 53,
 	ENTER = 36,
 	BACKSP = 51,
+	F1 = 122,
+	F2 = 120,
+	A = 0,
+	W = 13,
+	D = 2,
+	S = 1,
+	LEFT = 123,
+	UP = 126,
+	RIGHT = 124,
+	DOWN = 125,
+	EIGHT = 91,
+	FOUR = 86,
+	TWO = 84,
+	SIX = 88,
+	ONE = 83,
+	THREE = 85,
+	FIVE = 87,
+	SCROLL_UP = 4,
+	SCROLL_DOWN = 5,
+	RIGHT_MOUSE = 2,
+	LEFT_MOUSE = 1,
 };
 
 typedef enum e_id
@@ -55,7 +75,8 @@ typedef enum e_id
 	ALL
 }			t_id;
 
-typedef struct	s_data {
+typedef struct s_data
+{
 	void	**img;
 	char	**add_r;
 	int		bits_per_pixel[2];
@@ -63,11 +84,11 @@ typedef struct	s_data {
 	int		endian[2];
 }				t_data;
 
-typedef struct	s_color
+typedef struct s_color
 {
-	double 	r;
-	double 	g;
-	double 	b;
+	double	r;
+	double	g;
+	double	b;
 }				t_color;
 
 typedef struct s_vector
@@ -81,7 +102,7 @@ typedef struct s_rayon
 {
 	t_vector	origine;
 	t_vector	direction;
-} 				t_rayon;
+}				t_rayon;
 
 typedef struct s_hit_record
 {
@@ -99,7 +120,6 @@ typedef struct s_light_scene
 	t_vector	pos;
 	double		lum;
 }	t_light_scene;
-
 
 typedef struct s_material
 {
@@ -331,11 +351,10 @@ void	display_hit_obj_params(t_minirt *s);
 /* DISPLAY GENERAL*********************************************************** */
 void	scene_loop(t_minirt *s);
 void	start_ray_tracing(t_minirt *s);
-int 	get_pixels_to_img(t_minirt *s, int h, int opt);
 
 
 /* GET BUFFER *************************************************************** */
-void	get_buffer(t_minirt *s);
+void	get_pixels_to_img(t_minirt *s);
 
 /* DISPLAY SCENE ************************************************************ */
 int				rgb_to_int(unsigned char r, unsigned char g, unsigned char b);

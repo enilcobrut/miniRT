@@ -58,49 +58,49 @@ void hit_something(t_minirt *s, int x, int y)
 int button_press(int i, int x, int y, t_minirt *s)
 {
 	push_img_to_win(s, PROMPT);
-	if (i == 1 || i == 2)
+	if (i == RIGHT_MOUSE || i == LEFT_MOUSE)
 	{
 		s->hit_obj = NULL;
-		if (i == 1)
+		if (i == LEFT_MOUSE)
 			hit_something(s, x, y);
 	}
-	else if (i == 4 || i == 5) // scroll
+	else if (i == SCROLL_UP || i == SCROLL_DOWN)
 	{
 		if (!s->hit_obj)
 		{
-			if (i == 4)
+			if (i == SCROLL_UP)
 				s->cam_origin.z += INTERVAL;
-			else if (i == 5)
+			else if (i == SCROLL_DOWN)
 				s->cam_origin.z -= INTERVAL;
 		}
 		else if (s->hit_obj)
 		{
 			if (s->hit_obj->type == SPHERE)
 			{
-				if (i == 4)
+				if (i == SCROLL_UP)
 					s->hit_obj->u.sp.radius += INTERVAL;
-				else if (i == 5 && s->hit_obj->u.sp.radius > 0)
+				else if (i == SCROLL_DOWN && s->hit_obj->u.sp.radius > 0)
 					s->hit_obj->u.sp.radius -= INTERVAL;
 			}
 			/*else if (s->hit_obj->type == PLANE)
 			{
-				if (i == 4)
+				if (i == SCROLL_UP)
 					s->hit_obj->u.pl.radius += INTERVAL;
 				else if (i == 5 && s->hit_obj->u.sp.radius > 0)
 					s->hit_obj->u.sp.radius -= INTERVAL;
 			}*/
 			else if (s->hit_obj->type == CYLINDER)
 			{
-				if (i == 4)
+				if (i == SCROLL_UP)
 					s->hit_obj->u.cy.radius += INTERVAL;
-				else if (i == 5 && s->hit_obj->u.cy.radius > 0)
+				else if (i == SCROLL_DOWN && s->hit_obj->u.cy.radius > 0)
 					s->hit_obj->u.cy.radius -= INTERVAL;
 			}
 			else if (s->hit_obj->type == CONE)
 			{
-				if (i == 4)
+				if (i == SCROLL_UP)
 					s->hit_obj->u.co.radius += INTERVAL;
-				else if (i == 5  && s->hit_obj->u.co.radius > 0)
+				else if (i == SCROLL_DOWN  && s->hit_obj->u.co.radius > 0)
 					s->hit_obj->u.co.radius -= INTERVAL;
 			}
 		}

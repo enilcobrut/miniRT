@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memory.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/10 11:51:21 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/10 11:51:24 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT.h"
 
 void	init_set(t_minirt *s)
 {
-	s->obj_selected_stat = 0;
+	s->hit_obj = NULL;
 	s->prompt_stat = 1;
 	s->samples_per_pixel = SAMPLE_P_PIX;
 	s->depth = DEPTH;
