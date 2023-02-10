@@ -1,8 +1,7 @@
 
 #include "miniRT_bonus.h"
 
-int gi = 0;
-#define MATERIAL(obj) (gi++ % 2 ? &scatter_lambertian : &scatter_lambertian)
+
 #define FUZZ 0.5
 #define IR 1.5
 //#define MATERIAL scatter_metal
@@ -60,9 +59,9 @@ int	get_plane(t_minirt *s, t_list *p)
 	check_vector_range(s, &pl->norm_or_vector);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
 	new_obj->mat.scatter = MATERIAL(new_obj);
-	if (p->content[5])
+	if (p->content[4])
 	{
-		new_obj->xpm = p->content[5];
+		new_obj->xpm = p->content[4];
 		check_xpm(s, new_obj);
 	}
 	return (1);
@@ -88,9 +87,9 @@ int	get_cylinder(t_minirt *s, t_list *p)
 	cy->height = ft_atof(s, p->content[4], 0, 0);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
 	new_obj->mat.scatter = MATERIAL(new_obj);
-	if (p->content[7])
+	if (p->content[6])
 	{
-		new_obj->xpm = p->content[7];
+		new_obj->xpm = p->content[6];
 		check_xpm(s, new_obj);
 	}
 	return (1);

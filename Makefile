@@ -75,7 +75,8 @@ SRCS_BONUS =	src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/maths_tools_bonus.c \
 				src_bonus/multi_threading_bonus.c \
 				src_bonus/tools_bonus.c \
-				src_bonus/vector_tools_bonus.c
+				src_bonus/vector_tools_bonus.c \
+				src_bonus/hit_cone_bonus.c
 
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)
@@ -88,7 +89,8 @@ CPUS :=			$(shell sysctl -n hw.ncpu)
 CC = 			gcc
 AR = 			ar rsc
 FLAGS =		 	-Wall -Wextra -Werror -DNUM_THREADS=$(CPUS) -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
-FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -g -lpthread -fsanitize=address  #-fsanitize=thread #
+#FLAGS +=        -fsanitize=address -g #-fsanitize=thread #
+FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -lpthread
 
 NAME =			miniRT
 
@@ -103,11 +105,11 @@ bonus: 			$(NAME)_bonus
 
 $(NAME): 		$(OBJS) $(HEADER)
 				@make all -C ./libs
-				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME) 
+				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS) $(FLAGS_MLX) -o $(NAME) 
 					
 $(NAME)_bonus: 	$(OBJS_BONUS) 
 				@make all -C ./libs
-				@$(CC) $(OBJS_BONUS) ./libs/libft.a $(INCLUDES) $(FLAGS_MLX) -o $(NAME)_bonus
+				@$(CC) $(OBJS_BONUS) ./libs/libft.a $(INCLUDES) $(FLAGS) $(FLAGS_MLX) -o $(NAME)_bonus
 
 #palmi:
 #		@echo

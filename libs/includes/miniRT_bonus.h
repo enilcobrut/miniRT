@@ -27,7 +27,7 @@
 # define WIDTH 1024
 # define SAMPLE_P_PIX 1
 # define DEPTH 5
-
+# define MATERIAL(obj) (scatter_lambertian)
 #ifndef NUM_THREADS
 # define NUM_THREADS 1
 #endif
@@ -163,9 +163,9 @@ typedef struct s_cylinder
 {
 	t_vector			center;
 	t_vector			dir_ax;
-	float				diameter;
-	float				height;
-	int					radius;
+	double				diameter;
+	double				height;
+	double				radius;
 	struct s_cylinder	*next;
 	struct s_cylinder	*prev;
 }						t_cylinder;
@@ -174,9 +174,11 @@ typedef struct s_cone
 {
 	t_vector			center;
 	t_vector			dir_ax;
-	float				diameter;
-	float				height;
-	int					radius;
+	double				diameter;
+	double				height;
+	double				radius;
+	double				sin_angle;
+	double				cos_angle;
 	struct s_cone		*next;
 	struct s_cone		*prev;
 }						t_cone;
@@ -499,4 +501,5 @@ void get_pixels(t_minirt *s, int min, int max);
 void *dispatch_thread(void *arg);
 void	get_multi_threading(t_minirt *s);
 void get_no_multi_threading(t_minirt *s);
+int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
 #endif
