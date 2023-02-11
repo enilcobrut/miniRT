@@ -64,7 +64,6 @@ SRCS_BONUS =	src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/color_tools_bonus.c \
 				src_bonus/deal_keys_bonus.c \
 				src_bonus/deal_keys_display_bonus.c \
-				src_bonus/deal_keys_prompt_bonus.c \
 				src_bonus/deal_keys_tools_bonus.c \
 				src_bonus/deal_mouse_bonus.c \
 				src_bonus/display_general_bonus.c \

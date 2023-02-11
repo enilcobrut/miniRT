@@ -2,10 +2,9 @@
 
 int	is_key_move(int key)
 {
-	if (/*key == 126 || key == 123 || key == 124 || key == 125 || */key == 69
-		|| key == 78|| key == 91|| key == 86|| key == 87 || key == 88
-		|| key == 83 || key == 85 || key == 0 || key == 1 || key == 2
-		|| key == 13 || key == SPACE || key == BACKSP)
+	if (key == A || key == S || key == D || key == W || key == BACKSP
+		|| key == SPACE || key == EIGHT || key == FOUR || key == SIX
+		|| key == FIVE || key == ONE || key == THREE)
 		return (1);
 	return (0);
 }

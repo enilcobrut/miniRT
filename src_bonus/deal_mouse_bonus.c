@@ -50,9 +50,7 @@ void hit_something(t_minirt *s, int x, int y)
 	s->r.mul_t_v = 1 - (double)y / (double)(HEIGHT - 1);
 	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner, mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical, s->r.mul_t_v)), s->cam_origin));
 	if (hit(&s->r.r, INF, &rec, s->obj))
-	{
 		s->hit_obj = rec.hit_obj;
-	}
 }
 
 int button_press(int i, int x, int y, t_minirt *s)
@@ -78,30 +76,34 @@ int button_press(int i, int x, int y, t_minirt *s)
 			if (s->hit_obj->type == SPHERE)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u_.sp.radius += INTERVAL;
+					s->hit_obj->u_.sp.diameter += INTERVAL;
 				else if (i == SCROLL_DOWN && s->hit_obj->u_.sp.radius > 0)
-					s->hit_obj->u_.sp.radius -= INTERVAL;
+					s->hit_obj->u_.sp.diameter -= INTERVAL;
+				s->hit_obj->u_.sp.radius = s->hit_obj->u_.sp.diameter / 2;
 			}
-			/*else if (s->hit_obj->type == PLANE)
-			{
-				if (i == SCROLL_UP)
-					s->hit_obj->u_.pl.radius += INTERVAL;
-				else if (i == 5 && s->hit_obj->u_.sp.radius > 0)
-					s->hit_obj->u_.sp.radius -= INTERVAL;
-			}*/
 			else if (s->hit_obj->type == CYLINDER)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u_.cy.radius += INTERVAL;
+				{
+					s->hit_obj->u_.cy.diameter += INTERVAL;
+				}
 				else if (i == SCROLL_DOWN && s->hit_obj->u_.cy.radius > 0)
-					s->hit_obj->u_.cy.radius -= INTERVAL;
+				{
+					s->hit_obj->u_.cy.diameter -= INTERVAL;
+				}
+				s->hit_obj->u_.cy.radius = s->hit_obj->u_.cy.diameter / 2;
 			}
 			else if (s->hit_obj->type == CONE)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u_.co.radius += INTERVAL;
+				{
+					s->hit_obj->u_.co.diameter += INTERVAL;
+				}
 				else if (i == SCROLL_DOWN  && s->hit_obj->u_.co.radius > 0)
-					s->hit_obj->u_.co.radius -= INTERVAL;
+				{
+					s->hit_obj->u_.co.diameter -= INTERVAL;
+				}
+				s->hit_obj->u_.co.radius = s->hit_obj->u_.co.diameter / 2;
 			}
 		}
 	}

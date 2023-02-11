@@ -1,64 +1,5 @@
 #include "miniRT_bonus.h"
 
-int	print_color(t_color color)
-{	
-	return ((int)color.r << 16 | (int)color.g << 8 | (int)color.b);
-}
-
-void print_sphere(t_sphere *sp, int nb)
-{
-	printf("\033[45m ⚪️ Sphere #%d  \033[0m\n", nb);
-	printf("\033[35m Coordinates of the sphere center \033[0m");
-	printf("[%0.1f]", sp->center_axis.x);
-	printf("[%0.1f]", sp->center_axis.y);
-	printf("[%0.1f]\n", sp->center_axis.z);
-	printf("\033[35m Diameter \033[0m[%0.1f]           ", sp->diameter);
-}
-
-void print_plane(t_plane *pl, int nb)
-{
-	printf("\033[45m 🛩  Plane #%d  \033[0m\n", nb);
-	printf("\033[35m Coordinates\033[0m                      ");
-	printf("[%0.1f]", pl->axis.x);
-	printf("[%0.1f]", pl->axis.y);
-	printf("[%0.1f]\n", pl->axis.z);
-	printf("\033[35m 3d normalized orientation vector \033[0m");
-	printf("[%0.1f]", pl->norm_or_vector.x);
-	printf("[%0.1f]", pl->norm_or_vector.y);
-	printf("[%0.1f]\n", pl->norm_or_vector.z);
-}
-
-void	print_cylinder(t_cylinder *cy, int nb)
-{
-	printf("\033[45m 🧨 Cylinder #%d  \033[0m\n", nb);
-	printf("\033[35m Coordinates \033[0m                     ");
-	printf("[%0.1f]", cy->center.x);
-	printf("[%0.1f]", cy->center.y);
-	printf("[%0.1f]\n", cy->center.z);
-	printf("\033[35m 3d normalized orientation vector \033[0m");
-	printf("[%0.1f]", cy->dir_ax.x);
-	printf("[%0.1f]", cy->dir_ax.y);
-	printf("[%0.1f]\n", cy->dir_ax.z);
-	printf("\033[35m Diameter \033[0m[%0.1f]", cy->diameter);
-	printf("\033[35m Height \033[0m[%0.2f]", cy->height);
-}
-
-void	print_lights(t_light *li)
-{
-	while (li)
-	{
-		printf("\033[45m 🔦 Light #%d  \033[0m\n", li->n);
-		printf("\033[35m Light point \033[0m");
-		printf("[%0.1f]", li->light_axis.x);
-		printf("[%0.1f]", li->light_axis.y);
-		printf("[%0.1f]", li->light_axis.z);
-		printf("\033[35m View point \033[0m");
-		printf("[%0.1f]\n", li->light_brightness_ratio);
-		printf("\033[35m Color\033[0m       [%x]\n\n", print_color(li->light_color));
-		li = li->next;
-	}
-}
-
 void	print_cone(t_cone *co, int nb)
 {
 	printf("\033[45m 🍦 Cone #%d  \033[0m\n", nb);
@@ -72,6 +13,23 @@ void	print_cone(t_cone *co, int nb)
 	printf("[%0.1f]\n", co->dir_ax.z);
 	printf("\033[35m Diameter \033[0m[%0.1f]", co->diameter);
 	printf("\033[35m Height \033[0m[%0.2f]", co->height);
+}
+
+void	print_obj(t_obj *obj)
+{
+	while (obj)
+	{
+		if (obj->type == SPHERE)
+			print_sphere(&obj->u_.sp, obj->n);
+		else if (obj->type == PLANE)
+			print_plane(&obj->u_.pl, obj->n);
+		else if (obj->type == CYLINDER)
+			print_cylinder(&obj->u_.cy, obj->n);
+		else if (obj->type == CONE)
+			print_cone(&obj->u_.co, obj->n);
+		printf("\033[35m Color \033[0m[%x]\n\n", print_color(obj->mat.albedo));
+		obj = obj->next;
+	}
 }
 
 void	print_params(t_minirt *s)
@@ -91,20 +49,7 @@ void	print_params(t_minirt *s)
 	printf("\033[35m Horizontal field of view \033[0m     ");
 	printf("[%d]°\n\n", s->cam_fov);
 	print_lights(s->li);
-	t_obj *obj = s->obj;
-	while (obj)
-	{
-		if (obj->type == SPHERE)
-			print_sphere(&obj->u_.sp, obj->n);
-		else if (obj->type == PLANE)
-			print_plane(&obj->u_.pl, obj->n);
-		else if (obj->type == CYLINDER)
-			print_cylinder(&obj->u_.cy, obj->n);
-		else if (obj->type == CONE)
-			print_cone(&obj->u_.co, obj->n);
-		printf("\033[35m Color \033[0m[%x]\n\n", print_color(obj->mat.albedo));
-		obj = obj->next;
-	}
+	print_obj(s->obj);
 }
 
 int	main(int argc, char **argv)

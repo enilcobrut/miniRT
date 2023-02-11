@@ -17,8 +17,8 @@
 # define LEAKS 0
 # define PRINT 1
 # define EXEC 1
-# define INTERVAL 0.3
-# define INTERVAL_VEC 0.01
+# define INTERVAL 1
+# define INTERVAL_VEC 0.3
 # define PI M_PI
 # define INF DBL_MAX
 
@@ -26,7 +26,7 @@
 # define HEIGHT 768
 # define WIDTH 1024
 # define SAMPLE_P_PIX 1
-# define DEPTH 5
+# define DEPTH 1
 # define MATERIAL(obj) (scatter_lambertian)
 #ifndef NUM_THREADS
 # define NUM_THREADS 1
@@ -124,12 +124,12 @@ typedef struct s_light_scene
 typedef struct s_material
 {
 	int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
-	t_color	albedo;
-	double	specular;
-	t_color	albedo1;
-	double	fuzz;
-	double	ir;
-} t_material;
+	t_color		albedo;
+	double		specular;
+	t_color		albedo1;
+	double		fuzz;
+	double		ir;
+}				t_material;
 
 typedef struct s_light
 {
@@ -183,17 +183,6 @@ typedef struct s_cone
 	struct s_cone		*next;
 	struct s_cone		*prev;
 }						t_cone;
-
-typedef struct s_buf
-{
-	int				x;
-	int				y;
-	int				hexa;
-	int				n_object;
-	struct s_buf	*next;
-	struct s_buf	*prev;
-
-}					t_buf;
 
 typedef struct s_obj
 {
@@ -316,7 +305,7 @@ void	check_vector_range(t_minirt *s, t_vector *p);
 char	**get_next_rgb(char **rgb, int *color);
 int		is_rgb(int color);
 void	check_integer_format(t_minirt *s, char *str);
-t_color	get_rgb_str_to_color(t_minirt *s,  char *str, char *tmp);
+t_color	get_rgb_str_to_color(t_minirt *s, char *str, char *tmp);
 void	check_format_rgb(t_minirt *s, char *str);
 
 int		create_trgb(int t, int r, int g, int b);
@@ -332,6 +321,17 @@ int		is_void(char *str, int end);
 int		nb_arg_tab(char **tab);
 int		check_float_atof(t_minirt *s, char *str, int i);
 
+/* PRINT ******************************************************************** */
+
+void	print_cone(t_cone *co, int nb);
+void	print_obj(t_obj *obj);
+void	print_params(t_minirt *s);
+int		print_color(t_color color);
+void	print_sphere(t_sphere *sp, int nb);
+void	print_plane(t_plane *pl, int nb);
+void	print_cylinder(t_cylinder *cy, int nb);
+void	print_lights(t_light *li);
+
 /* DEAL KEY ***************************************************************** */
 int		button_press(int i, int y, int x, t_minirt *s);
 int		key_press(int key, t_minirt *s);
@@ -339,13 +339,13 @@ void	get_prompt_bar(t_minirt *s);
 void	display_param_cam(t_minirt *s);
 
 void	key_backspace(t_minirt *s, char *tmp);
-int	key_enter(t_minirt *s);
+int		key_enter(t_minirt *s);
 void	get_prompt(t_minirt *s, int key);
-void key_up_vec(double *value);
-void key_down_vec(double *value);
-int	key_press(int key, t_minirt *s);
-int	is_key_move(int key);
-int	vec_limit(double value);
+void	key_up_vec(double *value);
+void	key_down_vec(double *value);
+int		key_press(int key, t_minirt *s);
+int		is_key_move(int key);
+int		vec_limit(double value);
 void	type_key(t_minirt *s, char *tmp, int key);
 void	itof_to_win(t_minirt *s, double n, int x, int y);
 void	itoa_to_win(t_minirt *s, int n, int x, int y);

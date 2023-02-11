@@ -1,53 +1,5 @@
 #include "miniRT_bonus.h"
 
-void	key_backspace(t_minirt *s, char *tmp)
-{
-	if (s->prompt)
-	{
-		tmp = ft_strdup(s->prompt);
-		ft_free(&s->prompt);
-		s->prompt = ft_substr(tmp, 0, ft_strlen(tmp) - 1);
-		ft_free(&tmp);
-	}
-}
-
-int	key_enter(t_minirt *s)
-{
-	char	*help;
-
-	help = ft_strdup("[F1] prompt [F2] cam param [OTHER] help, print or leaks");
-	if (!ft_strncmp(s->prompt, "print", 6))
-		print_params(s);
-	else if (!ft_strncmp(s->prompt, "help", 5))
-	{
-		mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xFF0000, help);
-	}
-	else if (!ft_strncmp(s->prompt, "leaks", 4))
-		system("leaks miniRT");
-	ft_free(&s->prompt);
-	ft_free(&help);
-	return (1);
-}
-
-void	get_prompt(t_minirt *s, int key)
-{
-	char	*tmp;
-
-	tmp = NULL;
-	push_img_to_win(s, PROMPT);
-	if (s->prompt_stat == 1 && key != 122)
-	{
-		if (key == BACKSP)
-			key_backspace(s, tmp);
-		else if (key == ENTER && s->prompt)
-			key_enter(s);
-		else if (key >= 0 && key < 53)
-			type_key(s, tmp, key);
-		if (s->prompt)
-			mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xBA55D3, s->prompt);
-	}
-}
-
 void	key_up_vec(double *value)
 {
 	if (vec_limit(*value + INTERVAL_VEC))
@@ -154,6 +106,18 @@ int	key_press(int key, t_minirt *s)
 					s->hit_obj->u_.pl.axis.y += INTERVAL;
 				else if (key == BACKSP)
 					s->hit_obj->u_.pl.axis.y -= INTERVAL;
+				if (key == FOUR)
+					s->hit_obj->u_.pl.norm_or_vector.x -= INTERVAL_VEC;
+				else if (key == SIX)
+					s->hit_obj->u_.pl.norm_or_vector.x += INTERVAL_VEC;
+				else if (key == EIGHT)
+					s->hit_obj->u_.pl.norm_or_vector.z += INTERVAL_VEC;
+				else if (key == FIVE)
+					s->hit_obj->u_.pl.norm_or_vector.z -= INTERVAL_VEC;
+				else if (key == ONE)
+					s->hit_obj->u_.pl.norm_or_vector.y -= INTERVAL_VEC;
+				else if (key == THREE)
+					s->hit_obj->u_.pl.norm_or_vector.y += INTERVAL_VEC;
 			}
 			else if (s->hit_obj->type == CYLINDER)
 			{
@@ -169,6 +133,18 @@ int	key_press(int key, t_minirt *s)
 					s->hit_obj->u_.cy.center.y += INTERVAL;
 				else if (key == BACKSP)
 					s->hit_obj->u_.cy.center.y -= INTERVAL;
+				if (key == FOUR)
+					s->hit_obj->u_.cy.dir_ax.x -= INTERVAL_VEC;
+				else if (key == SIX)
+					s->hit_obj->u_.cy.dir_ax.x += INTERVAL_VEC;
+				else if (key == EIGHT)
+					s->hit_obj->u_.cy.dir_ax.z += INTERVAL_VEC;
+				else if (key == FIVE)
+					s->hit_obj->u_.cy.dir_ax.z -= INTERVAL_VEC;
+				else if (key == ONE)
+					s->hit_obj->u_.cy.dir_ax.y -= INTERVAL_VEC;
+				else if (key == THREE)
+					s->hit_obj->u_.cy.dir_ax.y += INTERVAL_VEC;
 			}
 			else if (s->hit_obj->type == CONE)
 			{
@@ -184,6 +160,18 @@ int	key_press(int key, t_minirt *s)
 					s->hit_obj->u_.co.center.y += INTERVAL;
 				else if (key == BACKSP)
 					s->hit_obj->u_.co.center.y -= INTERVAL;
+				if (key == FOUR)
+					s->hit_obj->u_.co.dir_ax.x -= INTERVAL_VEC;
+				else if (key == SIX)
+					s->hit_obj->u_.co.dir_ax.x += INTERVAL_VEC;
+				else if (key == EIGHT)
+					s->hit_obj->u_.co.dir_ax.z += INTERVAL_VEC;
+				else if (key == FIVE)
+					s->hit_obj->u_.co.dir_ax.z -= INTERVAL_VEC;
+				else if (key == ONE)
+					s->hit_obj->u_.co.dir_ax.y -= INTERVAL_VEC;
+				else if (key == THREE)
+					s->hit_obj->u_.co.dir_ax.y += INTERVAL_VEC;
 			}
 			display_scene(s);
 		}

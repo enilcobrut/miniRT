@@ -67,7 +67,8 @@ void	hit_something(t_minirt *s, int x, int y)
 	}
 }
 
-int	button_press(int i, int x, int y, t_minirt *s)
+
+int button_press(int i, int x, int y, t_minirt *s)
 {
 	push_img_to_win(s, PROMPT);
 	if (i == RIGHT_MOUSE || i == LEFT_MOUSE)
@@ -90,25 +91,23 @@ int	button_press(int i, int x, int y, t_minirt *s)
 			if (s->hit_obj->type == SPHERE)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u_.sp.radius += INTERVAL;
+					s->hit_obj->u_.sp.diameter += INTERVAL;
 				else if (i == SCROLL_DOWN && s->hit_obj->u_.sp.radius > 0)
-					s->hit_obj->u_.sp.radius -= INTERVAL;
+					s->hit_obj->u_.sp.diameter -= INTERVAL;
+				s->hit_obj->u_.sp.radius = s->hit_obj->u_.sp.diameter / 2;
 			}
-			/*else if (s->hit_obj->type == PLANE)
-			{
-				if (i == 4)
-					s->hit_obj->u_.pl.radius += INTERVAL;
-				else if (i == SCROLL_DOWN && s->hit_obj->u_.sp.radius > 0)
-					s->hit_obj->u_.sp.radius -= INTERVAL;
-			}*/
 			else if (s->hit_obj->type == CYLINDER)
 			{
 				if (i == SCROLL_UP)
-					s->hit_obj->u_.cy.radius += INTERVAL;
+				{
+					s->hit_obj->u_.cy.diameter += INTERVAL;
+				}
 				else if (i == SCROLL_DOWN && s->hit_obj->u_.cy.radius > 0)
-					s->hit_obj->u_.cy.radius -= INTERVAL;
+				{
+					s->hit_obj->u_.cy.diameter -= INTERVAL;
+				}
+				s->hit_obj->u_.cy.radius = s->hit_obj->u_.cy.diameter / 2;
 			}
-		}
 	}
 	display_scene(s);
 	if (s->prompt_stat == 1)
