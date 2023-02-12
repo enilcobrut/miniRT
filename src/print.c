@@ -30,9 +30,9 @@ void	print_plane(t_plane *pl, int nb)
 	printf("[%0.1f]", pl->axis.y);
 	printf("[%0.1f]\n", pl->axis.z);
 	printf("\033[35m 3d normalized orientation vector \033[0m");
-	printf("[%0.1f]", pl->norm_or_vector.x);
-	printf("[%0.1f]", pl->norm_or_vector.y);
-	printf("[%0.1f]\n", pl->norm_or_vector.z);
+	printf("[%0.1f]", pl->dir_ax.x);
+	printf("[%0.1f]", pl->dir_ax.y);
+	printf("[%0.1f]\n", pl->dir_ax.z);
 }
 
 void	print_cylinder(t_cylinder *cy, int nb)

@@ -7,7 +7,16 @@ HEADER = 		libs/includes/miniRT.h \
 
 HEADER_BONUS = libs/includes/miniRT_bonus.h
 
-SRCS =			src/linked_lists/cylinder.c \
+SRCS =			src/keyboard_mouse/deal_keys.c \
+				src/keyboard_mouse/deal_keys_cam_mov.c \
+				src/keyboard_mouse/deal_keys_display.c \
+				src/keyboard_mouse/deal_keys_obj_mov.c \
+				src/keyboard_mouse/deal_keys_obj_mov_2.c \
+				src/keyboard_mouse/deal_keys_prompt.c \
+				src/keyboard_mouse/deal_keys_tools.c \
+				src/keyboard_mouse/deal_mouse.c \
+				src/keyboard_mouse/deal_mouse_hit_obj.c \
+				src/linked_lists/cylinder.c \
 				src/linked_lists/obj.c \
 				src/linked_lists/plane.c \
 				src/linked_lists/sphere.c \
@@ -22,11 +31,6 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/parsing/tools.c \
 				src/color_tools.c \
 				src/color_tools2.c \
-				src/deal_keys_display.c \
-				src/deal_keys_prompt.c \
-				src/deal_keys_tools.c \
-				src/deal_keys.c \
-				src/deal_mouse.c \
 				src/display_general.c \
 				src/display_scene_mat.c \
 				src/display_scene_ray_color.c \
@@ -45,7 +49,16 @@ SRCS =			src/linked_lists/cylinder.c \
 				src/vector_random.c \
 				src/vector_tools.c \
 
-SRCS_BONUS =	src_bonus/linked_lists/cone_bonus.c \
+SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
+				src_bonus/keyboard_mouse/deal_keys_cam_mov_bonus.c \
+				src_bonus/keyboard_mouse/deal_keys_display_bonus.c \
+				src_bonus/keyboard_mouse/deal_keys_obj_mov_bonus.c \
+				src_bonus/keyboard_mouse/deal_keys_obj_mov_2_bonus.c \
+				src_bonus/keyboard_mouse/deal_keys_prompt_bonus.c \
+				src_bonus/keyboard_mouse/deal_keys_tools_bonus.c \
+				src_bonus/keyboard_mouse/deal_mouse_bonus.c \
+				src_bonus/keyboard_mouse/deal_mouse_hit_obj_bonus.c \
+				src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/linked_lists/light_bonus.c \
 				src_bonus/linked_lists/obj_bonus.c \
@@ -61,15 +74,12 @@ SRCS_BONUS =	src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/parsing/tools_rgb_bonus.c \
 				src_bonus/parsing/tools_rgb2_bonus.c \
 				src_bonus/parsing/tools_bonus.c \
+				src_bonus/color_functions_bonus.c \
 				src_bonus/color_tools_bonus.c \
-				src_bonus/deal_keys_bonus.c \
-				src_bonus/deal_keys_display_bonus.c \
-				src_bonus/deal_keys_prompt_bonus.c \
-				src_bonus/deal_keys_tools_bonus.c \
-				src_bonus/deal_mouse_bonus.c \
 				src_bonus/display_general_bonus.c \
 				src_bonus/display_scene_bonus.c \
 				src_bonus/hit_bonus.c \
+				src_bonus/hit_cone_bonus.c \
 				src_bonus/hit_cylinder_bonus.c \
 				src_bonus/hit_plane_bonus.c \
 				src_bonus/hit_sphere_bonus.c \

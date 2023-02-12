@@ -1,35 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_general_bonus.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:22:56 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:24:11 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT_bonus.h"
-/*
-int get_pixels_to_img(t_minirt *s, int h, int opt)
-{
-	int		x;
-	int		y;
-	char	*dst;
 
-	y = -1;
-	if (opt == ALL)
-		h += 32;
-	while (++y != h)
-	{
-		x = -1;
-		while (++x != WIDTH)
-		{
-			if (opt == ALL && y >= HEIGHT)
-				dst = s->img.add_r[1] + ((y - HEIGHT) * s->img.line_length[1] 
-					+ x * (s->img.bits_ppix[1] / 8));
-			else if ((opt == SCENE || opt == ALL) && y < HEIGHT)
-				dst = s->img.add_r[0] + (y * s->img.line_length[0]
-					+ x * (s->img.bits_ppix[0] / 8));
-			*(unsigned int *)dst = s->buf[y][x];
-		}
-	}
-	return (0);
-}*/
-
-int push_img_to_win(t_minirt *s, int opt)
+int	push_img_to_win(t_minirt *s, int opt)
 {
 	if (opt == PROMPT || opt == ALL)
+	{
 		mlx_put_image_to_window(s->mlx, s->win, s->img.img[1], 0, HEIGHT);
+		display_prompt_status(s);
+	}
 	if (opt == SCENE || opt == ALL)
 		mlx_put_image_to_window(s->mlx, s->win, s->img.img[0], 0, 0);
 	return (0);
@@ -45,10 +34,10 @@ void	init_rtx(t_minirt *s)
 		exit_error(s, 0, -1);
 	s->img.img[0] = mlx_new_image(s->mlx, WIDTH, HEIGHT);
 	s->img.add_r[0] = mlx_get_data_addr(s->img.img[0], &s->img.bits_ppix[0],
-								&s->img.line_length[0], &s->img.endian[0]);
+			&s->img.line_length[0], &s->img.endian[0]);
 	s->img.img[1] = mlx_new_image(s->mlx, WIDTH, 32);
 	s->img.add_r[1] = mlx_get_data_addr(s->img.img[1], &s->img.bits_ppix[1],
-								&s->img.line_length[1], &s->img.endian[1]);
+			&s->img.line_length[1], &s->img.endian[1]);
 }
 
 void	start_ray_tracing(t_minirt *s)

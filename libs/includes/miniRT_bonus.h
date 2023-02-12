@@ -17,7 +17,7 @@
 # define LEAKS 0
 # define PRINT 1
 # define EXEC 1
-# define INTERVAL 1
+# define INTERVAL 0.5
 # define INTERVAL_VEC 0.3
 # define PI M_PI
 # define INF DBL_MAX
@@ -83,6 +83,14 @@ typedef struct s_data
 	int		line_length[2];
 	int		endian[2];
 }				t_data;
+
+typedef struct s_quadratic_equation
+{
+	double a;
+	double half_b;
+	double c;
+	double delta;
+}	t_quadratic_equation;
 
 typedef struct s_color
 {
@@ -154,7 +162,7 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_vector			axis;
-	t_vector			norm_or_vector;
+	t_vector			dir_ax;
 	struct s_plane		*next;
 	struct s_plane		*prev;
 }						t_plane;
@@ -166,6 +174,7 @@ typedef struct s_cylinder
 	double				diameter;
 	double				height;
 	double				radius;
+	double				ratio;
 	struct s_cylinder	*next;
 	struct s_cylinder	*prev;
 }						t_cylinder;
@@ -180,6 +189,7 @@ typedef struct s_cone
 	double				sin_angle;
 	double				cos_angle;
 	double				tan_angle;
+	double				ratio;
 	struct s_cone		*next;
 	struct s_cone		*prev;
 }						t_cone;
@@ -232,7 +242,6 @@ typedef struct s_minirt
 	int					prompt_stat;
 	int					nt;
 	pthread_t			*t;
-	pthread_mutex_t		count;
 	t_rtx				r;
 	int					samples_per_pixel;
 	int					depth;
@@ -256,6 +265,14 @@ typedef struct s_minirt
 	void				*win;
 	char				*title;
 }	t_minirt;
+
+typedef struct s_th
+{
+	pthread_t		thread;
+	t_minirt		*s;
+	pthread_mutex_t	mutex;
+	pthread_mutex_t	counter_mutex;
+}					t_th;
 
 void	print_spheres(t_minirt *s, int i);
 void	print_planes(t_minirt *s, int i);
@@ -337,6 +354,7 @@ int		button_press(int i, int y, int x, t_minirt *s);
 int		key_press(int key, t_minirt *s);
 void	get_prompt_bar(t_minirt *s);
 void	display_param_cam(t_minirt *s);
+void	move_cam_or_obj(t_minirt *s, int key);
 
 void	key_backspace(t_minirt *s, char *tmp);
 int		key_enter(t_minirt *s);
@@ -350,18 +368,31 @@ void	type_key(t_minirt *s, char *tmp, int key);
 void	itof_to_win(t_minirt *s, double n, int x, int y);
 void	itoa_to_win(t_minirt *s, int n, int x, int y);
 void	display_hit_obj_params(t_minirt *s);
+void	display_prompt_status(t_minirt *s);
+
+/* CAM MOV */
+void	move_cam_or(t_minirt *s, int key);
+void	move_cam_vec(t_minirt *s, int key);
+
+/* OBJ MOV */
+void	move_sp_or(t_minirt *s, int key);
+void	move_pl_or(t_minirt *s, int key);
+void	move_pl_vec(t_minirt *s, int key);
+void	move_cy_or(t_minirt *s, int key);
+void	move_cy_vec(t_minirt *s, int key);
+void	move_co_or(t_minirt *s, int key);
+void	move_co_vec(t_minirt *s, int key);
 /* DISPLAY GENERAL*********************************************************** */
 void	scene_loop(t_minirt *s);
 void	start_ray_tracing(t_minirt *s);
-
 
 /* GET BUFFER *************************************************************** */
 void	get_pixels_to_img(t_minirt *s);
 
 /* DISPLAY SCENE ************************************************************ */
-int				rgb_to_int(unsigned char r, unsigned char g, unsigned char b);
+int			rgb_to_int(unsigned char r, unsigned char g, unsigned char b);
 float 		max(float t1, float t2);
-float 		min(float t1, float t2);
+float		min(float t1, float t2);
 t_vector 	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue);
 t_vector 	init_vector(float x, float y, float z);
 t_rayon		init_rayon(t_vector origine, t_vector direction);
@@ -370,21 +401,21 @@ t_vector	add_(t_vector v1, t_vector v2);
 t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
 t_vector	vector_director(t_minirt *s, int *x, int *y);
-void			normalize_vector(t_vector v);
-t_color			ray_color(t_rayon *r, t_minirt *s, int depth);
-t_vector random_in_unit_sphere();
+void		normalize_vector(t_vector v);
+t_color		ray_color(t_rayon *r, t_minirt *s, int depth);
+t_vector	random_in_unit_sphere(void);
 float		intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n);
-void 			show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
-int				push_img_to_win(t_minirt *s, int opt);
-int	write_color(t_color	 pixel_color, int sample_per_pixel);
-void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
-int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
-int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+void		show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
+int			push_img_to_win(t_minirt *s, int opt);
+int			write_color(t_color	pixel_color, int sample_per_pixel);
+void		set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
+int			scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int			scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 t_vector	reflect(const t_vector v, const t_vector n);
-int	super_mod(int div, int mod);
+int			super_mod(int div, int mod);
 t_color		clamp_color(t_color color);
-void	get_prompt_color(t_minirt *s);
-void get_no_multi_threading(t_minirt *s);
+void		get_prompt_color(t_minirt *s);
+void		get_no_multi_threading(t_minirt *s);
 
 /* HIT ********************************************************************** */
 int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj);
@@ -494,8 +525,8 @@ int		size_cone(t_cone *lst);
 
 /* -- BONUS -- */
 
-int			size_light(t_light *lst);
-void		display_scene(t_minirt *s);
+int		size_light(t_light *lst);
+void	display_scene(t_minirt *s);
 
 void get_pixels(t_minirt *s, int min, int max);
 void *dispatch_thread(void *arg);
@@ -503,4 +534,6 @@ void	get_multi_threading(t_minirt *s);
 void get_no_multi_threading(t_minirt *s);
 int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
 int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_min, double t_max, t_hit_record *rec);
+void	hit_something(t_minirt *s, int x, int y);
+
 #endif

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   light_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:16:21 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:16:23 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
@@ -45,7 +56,7 @@ t_light	*lst_last_light(t_light **lst)
 int	size_light(t_light *lst)
 {
 	t_light	*current;
-	int			size;
+	int		size;
 
 	size = 0;
 	if (lst)

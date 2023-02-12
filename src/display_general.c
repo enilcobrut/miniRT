@@ -18,6 +18,7 @@ int	push_img_to_win(t_minirt *s, int opt)
 		mlx_put_image_to_window(s->mlx, s->win, s->img.img[1], 0, HEIGHT);
 	if (opt == SCENE || opt == ALL)
 		mlx_put_image_to_window(s->mlx, s->win, s->img.img[0], 0, 0);
+	display_prompt_status(s);
 	return (0);
 }
 

@@ -1,44 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools_rgb2_bonus.c                                 :+:      :+:    :+:   */
+/*   color_functions_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/12 21:01:54 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:02:19 by flemaitr         ###   ########.fr       */
+/*   Created: 2023/02/12 21:25:55 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:26:15 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
-int	create_trgb(int t, int r, int g, int b)
+t_color	color_add_(t_color a, t_color b)
 {
-	if (r > 255)
-		r = 255;
-	if (g > 255)
-		g = 255;
-	if (b > 255)
-		b = 255;
-	return (t << 24 | r << 16 | g << 8 | b);
+	return ((t_color){a.r + b.r, a.g + b.g, a.b + b.b});
 }
 
-int	get_t(int trgb)
+t_color	color_mul(t_color a, t_color b)
 {
-	return ((trgb >> 24) & 0xFF);
+	return ((t_color){a.r * b.r, a.g * b.g, a.b * b.b});
 }
 
-int	get_r(int trgb)
+t_color	init_color(double r, double g, double b)
 {
-	return ((trgb >> 16) & 0xFF);
+	return ((t_color){r, g, b});
 }
 
-int	get_g(int trgb)
+t_color	color_mul_scalar(t_color a, double b)
 {
-	return ((trgb >> 8) & 0xFF);
-}
-
-int	get_b(int trgb)
-{
-	return (trgb & 0xFF);
+	return ((t_color){a.r * b, a.g * b, a.b * b});
 }

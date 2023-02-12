@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_id_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:14:21 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:15:08 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
@@ -6,7 +17,6 @@ void	get_identifiers(t_minirt *s, int a, int c, int l)
 	t_list	*cursor;
 
 	cursor = s->params;
-	printf("%d\n", ft_lstsize(s->params));
 	while (cursor)
 	{
 		if (!ft_strncmp(cursor->content[0], "A", 2)
@@ -57,9 +67,9 @@ int	get_camera_par(t_minirt *s, t_list *p)
 
 int	get_light_scene_par(t_minirt *s, t_list *p)
 {	
-	t_light *li;
-	static int nb;
-	
+	t_light		*li;
+	static int	nb;
+
 	nb++;
 	if (nb_arg_tab(p->content) != 4)
 		exit_error(s, "Light parameters not compliant", 1);
@@ -75,8 +85,8 @@ int	get_light_scene_par(t_minirt *s, t_list *p)
 
 void	get_objects(t_minirt *s, t_list *p)
 {
-	static int nb;
-	t_obj *curr;
+	static int	nb;
+	t_obj		*curr;
 
 	nb++;
 	if (!ft_strncmp(p->content[0], "pl", 3))

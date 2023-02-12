@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_params_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:04:23 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:04:27 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
@@ -39,5 +50,4 @@ void	get_params(t_minirt *s)
 			ft_lstadd_back(&s->params, ft_lstnew(ft_split(tmp, ' ')));
 	}
 	get_params_loop(s, tmp, fd_params);
-	printf("%d\n", ft_lstsize(s->params));
 }

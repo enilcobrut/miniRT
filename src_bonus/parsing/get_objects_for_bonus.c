@@ -1,6 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_objects_for_bonus.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:12:39 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:12:41 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT_bonus.h"
 
-
+void	get_cone_next(t_minirt *s, t_cone *co, t_list *p, t_obj *new_obj)
+{
+	//co->sin_angle = co->radius / co->height;
+	co->cos_angle = cos(asin(co->sin_angle));
+	co->tan_angle = co->radius / co->height;
+	co->center = add_(co->center, mul_(co->dir_ax, co->height));
+	co->dir_ax = mul_(co->dir_ax, -1);
+	co->ratio = co->height / co->diameter;
+	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
+	new_obj->mat.scatter = MATERIAL(new_obj);
+}
 
 int	get_cone(t_minirt *s, t_list *p)
 {
@@ -21,13 +43,7 @@ int	get_cone(t_minirt *s, t_list *p)
 	co->radius = co->diameter / 2;
 	check_float_format(s, p->content[4]);
 	co->height = ft_atof(s, p->content[4], 0, 0);
-	//co->sin_angle = co->radius / co->height;
-	co->cos_angle = cos(asin(co->sin_angle));
-	co->tan_angle = co->radius / co->height;
-	co->center = add_(co->center, mul_(co->dir_ax, co->height));
-	co->dir_ax = mul_(co->dir_ax, -1);
-	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
-	new_obj->mat.scatter = MATERIAL(new_obj);
+	get_cone_next(s, co, p, new_obj);
 	if (p->content[6])
 	{
 		new_obj->xpm = p->content[6];

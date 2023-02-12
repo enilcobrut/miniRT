@@ -39,8 +39,8 @@ int	get_plane(t_minirt *s, t_list *p)
 	new_obj = lst_add_obj(&s->obj, lst_new_obj(PLANE));
 	pl = &new_obj->u_.pl;
 	get_axis(s, &pl->axis, p->content[1], 0);
-	get_axis(s, &pl->norm_or_vector, p->content[2], 0);
-	check_vector_range(s, &pl->norm_or_vector);
+	get_axis(s, &pl->dir_ax, p->content[2], 0);
+	check_vector_range(s, &pl->dir_ax);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
 	new_obj->mat.scatter = MATERIAL(new_obj);
 	return (1);
@@ -66,5 +66,6 @@ int	get_cylinder(t_minirt *s, t_list *p)
 	cy->height = ft_atof(s, p->content[4], 0, 0);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
 	new_obj->mat.scatter = MATERIAL(new_obj);
+	cy->ratio = cy->height / cy->diameter;
 	return (1);
 }

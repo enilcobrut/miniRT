@@ -200,8 +200,7 @@ void	get_pixels_to_img(t_minirt *s)
 	s->r.horizon = mul_(s->r.u, s->r.viewport_width);
 	s->r.vertical = mul_(s->r.v, s->r.viewport_height);
 	s->r.lower_left_corner = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)), mul_(s->r.vertical, 0.5)), s->r.w);
-	get_no_multi_threading(s);
-	//get_multi_threading(s);
+	get_multi_threading(s);
 	end = clock();
    	elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
    	printf("Temps d'exécution : %lf secondes\n", elapsed);

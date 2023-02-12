@@ -37,12 +37,14 @@ int hit_cone_body(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_mi
 
 int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
 {
-    int	hit_anything = 0;
-	double closest_so_far = t_max;
-	t_hit_record temp_rec;
-
-    int t = hit_disk(add_(cone->center, mul_(cone->dir_ax, cone->height)), cone->dir_ax, cone->radius, r, t_min, closest_so_far, &temp_rec);
-
+    int				hit_anything;
+	double			closest_so_far;
+	t_hit_record	temp_rec;
+	int				t;
+	
+	hit_anything = 0;
+	closest_so_far = t_max;
+	t = hit_disk(add_(cone->center, mul_(cone->dir_ax, cone->height)), cone->dir_ax, cone->radius, r, t_min, closest_so_far, &temp_rec);
     if (t)
     {
         hit_anything = 1;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:21:46 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:21:48 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "miniRT_bonus.h"
 
@@ -24,9 +36,9 @@ void	print_plane(t_plane *pl, int nb)
 	printf("[%0.1f]", pl->axis.y);
 	printf("[%0.1f]\n", pl->axis.z);
 	printf("\033[35m 3d normalized orientation vector \033[0m");
-	printf("[%0.1f]", pl->norm_or_vector.x);
-	printf("[%0.1f]", pl->norm_or_vector.y);
-	printf("[%0.1f]\n", pl->norm_or_vector.z);
+	printf("[%0.1f]", pl->dir_ax.x);
+	printf("[%0.1f]", pl->dir_ax.y);
+	printf("[%0.1f]\n", pl->dir_ax.z);
 }
 
 void	print_cylinder(t_cylinder *cy, int nb)
@@ -55,7 +67,8 @@ void	print_lights(t_light *li)
 		printf("[%0.1f]", li->light_axis.z);
 		printf("\033[35m View point \033[0m");
 		printf("[%0.1f]\n", li->light_brightness_ratio);
-		printf("\033[35m Color\033[0m       [%x]\n\n", print_color(li->light_color));
+		printf("\033[35m Color\033[0m       [%x]\n\n",
+			print_color(li->light_color));
 		li = li->next;
 	}
 }

@@ -2,18 +2,21 @@
 
 int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
 {
-	t_vector oc = sub_(r->origine, sp->center_axis);
-	double a = length_squared(r->direction);
-	double half_b = dot(oc, r->direction);
-	double c = length_squared(oc) -  sp->radius *  sp->radius;
-	double delta = half_b*half_b - a*c;
-	if (delta < 0)
+	t_vector				oc;
+	t_quadratic_equation	qe;
+	double					root;
+
+	oc = sub_(r->origine, sp->center_axis);
+	qe.a = length_squared(r->direction);
+	qe.half_b = dot(oc, r->direction);
+	qe.c = length_squared(oc) - sp->radius *  sp->radius;
+	qe.delta = qe.half_b * qe.half_b - qe.a * qe.c;
+	if (qe.delta < 0)
 		return (0);
-	double sqrtd = sqrt(delta);
-	double root = (-half_b - sqrtd) / a;
+	root = (-qe.half_b - sqrt(qe.delta)) / qe.a;
 	if (root < t_min || t_max < root)
 	{
-		root = (-half_b + sqrtd) / a;
+		root = (-qe.half_b + sqrt(qe.delta)) / qe.a;
 		if (root < t_min || t_max < root)
 			return (0);
 	}

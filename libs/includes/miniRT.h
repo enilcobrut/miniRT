@@ -23,10 +23,6 @@
 # define WIDTH 1024
 # define SAMPLE_P_PIX 1
 # define DEPTH 5
-#ifndef NUM_THREADS
-#define NUM_THREADS 1
-#endif
-
 typedef struct s_material	t_material;
 typedef struct s_obj		t_obj;
 
@@ -68,6 +64,14 @@ typedef enum e_id
 	SCENE,
 	ALL
 }			t_id;
+
+typedef struct s_quadratic_equation
+{
+	double a;
+	double half_b;
+	double c;
+	double delta;
+}	t_quadratic_equation;
 
 typedef struct s_data
 {
@@ -138,7 +142,7 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_vector			axis;
-	t_vector			norm_or_vector;
+	t_vector			dir_ax;
 	struct s_plane		*next;
 	struct s_plane		*prev;
 }						t_plane;
@@ -150,6 +154,7 @@ typedef struct s_cylinder
 	double				diameter;
 	double				radius;
 	double				height;
+	double				ratio;
 	struct s_cylinder	*next;
 	struct s_cylinder	*prev;
 }						t_cylinder;
@@ -295,6 +300,18 @@ void	key_backspace(t_minirt *s, char *tmp);
 int		key_enter(t_minirt *s);
 int		key_press(int key, t_minirt *s);
 void	get_prompt(t_minirt *s, int key);
+/* CAM MOV */
+void	move_cam_or(t_minirt *s, int key);
+void	move_cam_vec(t_minirt *s, int key);
+
+/* OBJ MOV */
+void	move_sp_or(t_minirt *s, int key);
+void	move_pl_or(t_minirt *s, int key);
+void	move_pl_vec(t_minirt *s, int key);
+void	move_cy_or(t_minirt *s, int key);
+void	move_cy_vec(t_minirt *s, int key);
+void	move_co_or(t_minirt *s, int key);
+void	move_co_vec(t_minirt *s, int key);
 
 /* -- DISPLAY -- */
 void	itof_to_win(t_minirt *s, double n, int x, int y);
@@ -302,21 +319,23 @@ void	itoa_to_win(t_minirt *s, int n, int x, int y);
 void	display_param_cam(t_minirt *s);
 
 /* -- TOOLS -- */
-int	is_key_move(int key);
-int	vec_limit(double value);
+int		is_key_move(int key);
+int		vec_limit(double value);
 void	type_key(t_minirt *s, char *tmp, int key);
-void key_up_vec(double *value);
-void key_down_vec(double *value);
+void	key_up_vec(double *value);
+void	key_down_vec(double *value);
 void	type_key(t_minirt *s, char *tmp, int key);
 
 /* -- MOUSE -- */
 int		button_press(int i, int y, int x, t_minirt *s);
 void	display_hit_obj_params(t_minirt *s);
+void	hit_something(t_minirt *s, int x, int y);
 
 /* DISPLAY GENERAL*********************************************************** */
 int		push_img_to_win(t_minirt *s, int opt);
 void	init_rtx(t_minirt *s);
 void	start_ray_tracing(t_minirt *s);
+void	display_prompt_status(t_minirt *s);
 
 /* DISPLAY SCENE RAY COLOR*************************************************** */
 t_color	ray_color_1(t_rayon *r, t_minirt *s, int depth);
@@ -325,12 +344,12 @@ t_color	ray_color_3(t_rayon *r, t_minirt *s, int depth);
 
 /* DISPLAY SCENE MAT ******************************************************** */
 
-void	set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
-int		scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
-int scatter_light(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+void		set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
+int			scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int			scatter_light(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 t_vector	refract(const t_vector uv, const t_vector n, double etai_over_etat);
 t_vector	reflect(const t_vector v, const t_vector n);
-int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int			scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 double	reflectance(double cos, double ref_i);
 int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 int	near_zero(const t_vector *vec);

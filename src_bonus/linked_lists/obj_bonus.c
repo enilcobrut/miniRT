@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj_bonus.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:15:58 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:16:00 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
 t_obj	*lst_new_obj(int type)
 {
 	t_obj	*new;
-	
+
 	new = ft_calloc(1, sizeof(t_obj));
 	if (new == NULL)
 		exit(EXIT_FAILURE);
@@ -49,7 +60,7 @@ t_obj	*lst_last_obj(t_obj **lst)
 int	size_obj(t_obj *lst)
 {
 	t_obj	*current;
-	int			size;
+	int		size;
 
 	size = 0;
 	if (lst)

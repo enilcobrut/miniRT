@@ -1,17 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memory_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/12 21:04:02 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:06:44 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
-void	init_set(t_minirt *s)
-{
-	int null;
-	int width = 0;
-	int height = 0;
+void	init_set_next(t_minirt *s)
+{	
+	int	null;
+	int	width;
+	int	height;
 
 	s->hit_obj_xpm = mlx_xpm_file_to_image(s, "hit_obj.xpm", &width, &height);
 	if (!s->hit_obj_xpm)
-		exit_error(s, "Error with the xpm file" , 1);
-	s->hit_obj_xpm_addr = (int *)mlx_get_data_addr(s->hit_obj_xpm, &null, &null, &null);
+		exit_error(s, "Error with the xpm file", 1);
+	s->hit_obj_xpm_addr = (int *)mlx_get_data_addr(s->hit_obj_xpm, &null,
+			&null, &null);
 	s->hit_obj = NULL;
+}
+
+void	init_set(t_minirt *s)
+{
 	s->on = 0;
 	s->prompt_stat = 0;
 	s->samples_per_pixel = SAMPLE_P_PIX;

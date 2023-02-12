@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   deal_keys_display.c                                :+:      :+:    :+:   */
+/*   deal_keys_display_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/10 17:17:52 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/10 17:32:32 by flemaitr         ###   ########.fr       */
+/*   Created: 2023/02/12 21:20:52 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/12 21:20:54 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 void	itof_to_win(t_minirt *s, double n, int x, int y)
 {
