@@ -1,6 +1,6 @@
 #include "libft.h"
 
-static int	ft_recursive_counter(long n)
+int	ft_recursive_counter(long n)
 {
 	int	len;
 

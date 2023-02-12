@@ -30,53 +30,134 @@ void	display_prompt_status(t_minirt *s)
 		mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xF00020, "*");
 }
 
+int	ft_recursive_counter(long n);
+char	*ft_itof_print(double n)
+{
+	char	*str = NULL;
+	long	tmp;
+	int		len;
+	char	*integer;
+	char	*tmp_ = NULL;
+
+	if ((n < 0 && n > -1))
+		integer = ft_strdup("-0");
+	else
+		integer = ft_itoa(n);
+	n -= (int)n;
+	tmp = n * 10;
+	if (n < 0)
+		tmp = -tmp;
+	if (tmp == 0)
+		tmp_ = ft_strjoin(integer, ".0");
+	else
+	{
+		len = ft_recursive_counter(tmp) + 1;
+		str = ft_calloc(len + 1, sizeof(char));
+		if (str == NULL)
+			return (0);
+		while (len)
+		{
+			len--;
+			str[len] = tmp % 10 + '0';
+			tmp = tmp / 10;
+		}
+		str[len] = '.';
+		tmp_ = ft_strjoin(integer, str);
+	}
+	free(integer);
+	free(str);
+	return (tmp_);
+}
+
+
+void print_rgb(t_color color, int fd)
+{
+	ft_putnbr_fd(color.r * 255, fd);
+	ft_putstr_fd(",", fd);
+	ft_putnbr_fd(color.g * 255, fd);
+	ft_putstr_fd(",", fd);
+	ft_putnbr_fd(color.b * 255, fd);
+	ft_putstr_fd(" ", fd);
+}
+
+void print_axis(t_vector vec, int fd)
+{
+	ft_putstr_fd(ft_itof_print(vec.x), fd);
+	ft_putstr_fd(",", fd);
+	ft_putstr_fd(ft_itof_print(vec.y), fd);
+	ft_putstr_fd(",", fd);
+	ft_putstr_fd(ft_itof_print(vec.z), fd);
+	ft_putstr_fd(" ", fd);
+}
+
 void	write_params(t_minirt *s, int fd)
 {
-	(void)fd;
-	printf("C %0.1f,%0.1f,%0.1f %0.1f,%0.1f,%0.1f %d\n", s->cam_origin.x,
-			s->cam_origin.y, s->cam_origin.z,
-	s->cam_vec_dir.x, s->cam_vec_dir.y, s->cam_vec_dir.z, s->cam_fov);
-	printf("A %0.1f %0.1f,%0.1f,%0.1f\n", s->amb_light_ratio,
-			s->amb_light_color.r * 255, s->amb_light_color.g * 255,
-			s->amb_light_color.b * 255);
 	
-	while (s->li)
-	{
-		printf("L %0.1f,%0.1f,%0.1f %0.1f %0.1f,%0.1f,%0.1f\n", s->li->light_axis.x, s->li->light_axis.y, s->li->light_axis.z,
-			   s->li->light_brightness_ratio, s->li->light_color.r, s->li->light_color.g, s->li->light_color.b);
-		s->li = s->li->next;
-	}
 	while (s->obj)
 	{
 		if (s->obj->type == SPHERE)
 		{
-			printf("sp %0.1f,%0.1f,%0.1f %0.1f %0.1f,%0.1f,%0.1f\n", s->obj->u_.sp.center_axis.x, s->obj->u_.sp.center_axis.y,
-				   s->obj->u_.sp.center_axis.z, s->obj->u_.sp.diameter, s->obj->mat.albedo.r,
-				   s->obj->mat.albedo.g, s->obj->mat.albedo.b);
+			ft_putstr_fd("sp ", fd);
+			print_axis(s->obj->u_.sp.center_axis, fd);
+			ft_putnbr_fd(s->obj->u_.sp.diameter, fd);
+			ft_putstr_fd(" ", fd);
+			print_rgb(s->obj->mat.albedo, fd);			
 		}
 		else if (s->obj->type == CYLINDER)
 		{
-			printf("cy %0.1f,%0.1f,%0.1f %0.1f,%0.1f,%0.1f %0.1f %0.1f %0.1f,%0.1f,%0.1f\n", s->obj->u_.cy.center.x, s->obj->u_.cy.center.y, s->obj->u_.cy.center.z,
-			 s->obj->u_.cy.dir_ax.x, s->obj->u_.cy.dir_ax.y, s->obj->u_.cy.dir_ax.z, s->obj->u_.cy.diameter,
-			 s->obj->u_.cy.height, s->obj->mat.albedo.r, s->obj->mat.albedo.g, s->obj->mat.albedo.b);
+			ft_putstr_fd("cy ", fd);
+			print_axis(s->obj->u_.cy.center, fd);
+			print_axis(s->obj->u_.cy.dir_ax, fd);
+			ft_putnbr_fd(s->obj->u_.cy.diameter, fd);
+			ft_putstr_fd(" ", fd);
+			ft_putnbr_fd(s->obj->u_.cy.height, fd);
+			ft_putstr_fd(" ", fd);
+			print_rgb(s->obj->mat.albedo, fd);
 		}
 		else if (s->obj->type == CONE)
 		{
-			printf("co %0.1f,%0.1f,%0.1f %0.1f,%0.1f,%0.1f %0.1f %0.1f %0.1f,%0.1f,%0.1f\n", s->obj->u_.co.center.x, s->obj->u_.co.center.y, s->obj->u_.co.center.z,
-			 s->obj->u_.co.dir_ax.x, s->obj->u_.co.dir_ax.y, s->obj->u_.co.dir_ax.z, s->obj->u_.co.diameter,
-			 s->obj->u_.co.height, s->obj->mat.albedo.r, s->obj->mat.albedo.g, s->obj->mat.albedo.b);
+			ft_putstr_fd("co ", fd);
+			print_axis(s->obj->u_.co.center, fd);
+			print_axis(s->obj->u_.co.dir_ax, fd);
+			ft_putnbr_fd(s->obj->u_.co.diameter, fd);
+			ft_putstr_fd(" ", fd);
+			ft_putnbr_fd(s->obj->u_.co.height, fd);
+			ft_putstr_fd(" ", fd);
+			print_rgb(s->obj->mat.albedo, fd);
 		}
 		else if (s->obj->type == PLANE)
 		{
-			printf("pl %0.1f,%0.1f,%0.1f %0.1f,%0.1f,%0.1f %0.1f,%0.1f,%0.1f\n", s->obj->u_.pl.axis.x, s->obj->u_.pl.axis.y, s->obj->u_.pl.axis.z,
-			s->obj->u_.pl.dir_ax.x, s->obj->u_.pl.dir_ax.y, s->obj->u_.pl.dir_ax.z,
-			s->obj->mat.albedo.r, s->obj->mat.albedo.g, s->obj->mat.albedo.b);
+			ft_putstr_fd("pl ", fd);
+			print_axis(s->obj->u_.pl.axis, fd);
+			print_axis(s->obj->u_.pl.dir_ax, fd);
+			print_rgb(s->obj->mat.albedo, fd);
 		}
+		ft_putstr_fd("\n", fd);
 		s->obj = s->obj->next;
+	}
+	ft_putstr_fd("C ", fd);
+	print_axis(s->cam_origin, fd);
+	print_axis(s->cam_vec_dir, fd);
+	ft_putnbr_fd(s->cam_fov, fd);
+	ft_putstr_fd("\n", fd);
+	ft_putstr_fd("A ", fd);
+	ft_putstr_fd(ft_itof_print(s->amb_light_ratio), fd);
+	ft_putstr_fd(" ", fd);
+	print_rgb(s->amb_light_color, fd);
+	ft_putstr_fd("\n", fd);
+	while (s->li)
+	{
+		ft_putstr_fd("L ", fd);
+		print_axis(s->li->light_axis, fd);
+		ft_putstr_fd(ft_itof_print(s->li->light_brightness_ratio), fd);
+		ft_putstr_fd(" ", fd);
+		print_rgb(s->li->light_color, fd);
+		ft_putstr_fd("\n", fd);
+		s->li = s->li->next;
 	}
 }
 
-void	export_file_save(t_minirt *s)
+void	export_file_save(t_minirt *s, int opt)
 {
 	/*time_t t = time(NULL);
     struct tm *tm = localtime(&t);
@@ -84,10 +165,17 @@ void	export_file_save(t_minirt *s)
 	int date = tm->tm_sec + (tm->tm_min * 100) + (tm->tm_hour * 100) + (tm->tm_mon * 100) + ((tm->tm_year + 1900) * 10000);
 	printf("%d\n", date);
 	printf("%d\n", tm->tm_yday);*/
-	(void)s;
-	//int fd = open("save", O_WRONLY | O_CREAT | O_APPEND, 0777);
-	//printf("%d\n", fd);
-	write_params(s, 0);
+	
+	int fd;
+	if (opt == 1)
+		fd = open("save.rt", O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	else
+	{
+		fd = open("autosave.rt", O_WRONLY | O_CREAT | O_APPEND, 0777);
+		ft_putstr_fd("============\n", fd);
+	}
+	write_params(s, fd);
+	close(fd);
 
 }
 
@@ -124,7 +212,7 @@ int	key_enter(t_minirt *s)
 	else if (!ft_strncmp(s->prompt, "leaks", 6))
 		system("leaks miniRT");
 	else if (!ft_strncmp(s->prompt, "save", 5))
-		export_file_save(s);
+		export_file_save(s, 1);
 	else if (!ft_strncmp(s->prompt, "id", 3))
 		print_list_id();
 	ft_free(&s->prompt);

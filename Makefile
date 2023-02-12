@@ -160,7 +160,7 @@ re_bonus:
 run:
 	./$(NAME) pikachu.rt
 run_bonus:
-	./$(NAME)_bonus cylinder.rt
+	./$(NAME)_bonus save.rt
 
 rr:
 	make re

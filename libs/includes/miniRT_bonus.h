@@ -17,7 +17,7 @@
 # define LEAKS 0
 # define PRINT 1
 # define EXEC 1
-# define INTERVAL 0.5
+# define INTERVAL 1
 # define INTERVAL_VEC 0.3
 # define PI M_PI
 # define INF DBL_MAX
@@ -535,5 +535,6 @@ void get_no_multi_threading(t_minirt *s);
 int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
 int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_min, double t_max, t_hit_record *rec);
 void	hit_something(t_minirt *s, int x, int y);
+void	export_file_save(t_minirt *s, int opt);
 
 #endif
