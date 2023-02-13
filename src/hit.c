@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *obj)
+int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj)
 {
 	t_hit_record	temp_rec;
 	int				hit_anything;
@@ -10,7 +10,7 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 	closest_so_far = t_max;
 	while (obj)
 	{
-		if (obj->type == SPHERE && hit_sphere(&obj->u_.sp, r, &temp_rec, t_min, 
+		if (obj->type == SPHERE && hit_sphere(&obj->u_.sp, r, &temp_rec,
 			closest_so_far))
 		{
 			hit_anything = 1;
@@ -20,7 +20,7 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 			rec->hit_obj = obj;
 		}
 		else if (obj->type == PLANE && hit_plane(&obj->u_.pl, r, &temp_rec,
-			t_min, closest_so_far))
+			closest_so_far))
 		{
 			hit_anything = 1;
 			closest_so_far = temp_rec.t;
@@ -29,7 +29,7 @@ int	hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec, t_obj *
 			rec->hit_obj = obj;
 		}
 		else if (obj->type == CYLINDER && hit_cylinder(&obj->u_.cy, r,
-			&temp_rec, t_min, closest_so_far))
+			&temp_rec, closest_so_far))
 		{	
 			hit_anything = 1;
 			closest_so_far = temp_rec.t;

@@ -7,16 +7,7 @@ HEADER = 		libs/includes/miniRT.h \
 
 HEADER_BONUS = libs/includes/miniRT_bonus.h
 
-SRCS =			src/keyboard_mouse/deal_keys.c \
-				src/keyboard_mouse/deal_keys_cam_mov.c \
-				src/keyboard_mouse/deal_keys_display.c \
-				src/keyboard_mouse/deal_keys_obj_mov.c \
-				src/keyboard_mouse/deal_keys_obj_mov_2.c \
-				src/keyboard_mouse/deal_keys_prompt.c \
-				src/keyboard_mouse/deal_keys_tools.c \
-				src/keyboard_mouse/deal_mouse.c \
-				src/keyboard_mouse/deal_mouse_hit_obj.c \
-				src/linked_lists/cylinder.c \
+SRCS =			src/linked_lists/cylinder.c \
 				src/linked_lists/obj.c \
 				src/linked_lists/plane.c \
 				src/linked_lists/sphere.c \
@@ -42,9 +33,7 @@ SRCS =			src/keyboard_mouse/deal_keys.c \
 				src/main.c \
 				src/maths_random.c \
 				src/maths_tools.c \
-				src/print.c \
 				src/rayon.c \
-				src/tools.c \
 				src/vector_operation.c \
 				src/vector_random.c \
 				src/vector_tools.c \

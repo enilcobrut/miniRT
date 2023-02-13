@@ -10,7 +10,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 
 	r->direction = vec3_unit_vector(r->direction);
 	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
-	 if (hit(r, 0.001, INF, &rec, s->obj))
+	 if (hit(r, INF, &rec, s->obj))
 	 {
 		t_rayon	verif;
 		{
@@ -19,7 +19,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 
 			verif = init_rayon(rec.p, vec3_unit_vector(light_dir));
 
-			if (!hit(&verif, 0.001, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
+			if (!hit(&verif, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
 			{
 				double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
 				double light_distance = vec3_length(light_dir)/1000;

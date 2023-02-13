@@ -1,10 +1,16 @@
-#include "miniRT.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_objects.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 17:39:28 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/13 17:39:30 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int gi = 0;
-#define MATERIAL(obj) (gi++ % 2 ? &scatter_lambertian : &scatter_lambertian)
-#define FUZZ 0.5
-#define IR 1.5
-//#define MATERIAL scatter_metal
+#include "miniRT.h"
 
 int	get_sphere(t_minirt *s, t_list *p)
 {

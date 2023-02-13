@@ -13,16 +13,16 @@
 # include <float.h>
 # include <pthread.h>
 
-# define PARSING 0
-# define LEAKS 0
+# define LEAKS 1
 # define INTERVAL 0.1
 # define INTERVAL_VEC 0.01
 # define PI M_PI
 # define INF DBL_MAX
 # define HEIGHT 768
 # define WIDTH 1024
-# define SAMPLE_P_PIX 1
+# define SAMPLE_P_PIX 2
 # define DEPTH 5
+# define T_MIN 0.001
 typedef struct s_material	t_material;
 typedef struct s_obj		t_obj;
 
@@ -75,11 +75,11 @@ typedef struct s_quadratic_equation
 
 typedef struct s_data
 {
-	void	**img;
-	char	**add_r;
-	int		bits_ppix[2];
-	int		line_length[2];
-	int		endian[2];
+	void	*img;
+	char	*add_r;
+	int		bits_ppix;
+	int		line_length;
+	int		endian;
 }				t_data;
 
 typedef struct s_color
@@ -117,6 +117,13 @@ typedef struct s_material
 {
 	t_color	albedo;
 }			t_material;
+
+typedef struct s_disk
+{
+	t_vector	center;
+	t_vector	normal;
+	double		radius;
+} t_disk;
 
 typedef struct s_sphere
 {
@@ -321,7 +328,7 @@ void	display_hit_obj_params(t_minirt *s);
 void	hit_something(t_minirt *s, int x, int y);
 
 /* DISPLAY GENERAL*********************************************************** */
-int		push_img_to_win(t_minirt *s, int opt);
+int		push_img_to_win(t_minirt *s);
 void	init_rtx(t_minirt *s);
 void	start_ray_tracing(t_minirt *s);
 void	display_prompt_status(t_minirt *s);
@@ -350,22 +357,20 @@ void	get_no_multi_threading(t_minirt *s);
 int		get_pixels_to_img(t_minirt *s);
 
 /* HIT ********************************************************************** */
-int		hit(const t_rayon *r, double t_min, double t_max, t_hit_record *rec,
-		t_obj *obj);
+int		hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj);
 
 /* -- HIT CYLINDER -- */
 int		hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec,
-		double t_min, double t_max);
+		double t_max);
 
 /* -- HIT PLANE -- */
 int		hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec,
-		double t_min, double t_max);
+		double t_max);
 
 /* -- HIT SHPERE -- */
 int		hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec,
-		double t_min, double t_max);
-int		hit_sphere_2(t_sphere *sp, const t_rayon *r, t_hit_record *rec,
-		double t_min, double t_max);
+		double t_max);
+
 
 /* RAYON ***************************************************************** */
 t_rayon	init_rayon(t_vector origine, t_vector direction);

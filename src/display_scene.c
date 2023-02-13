@@ -3,7 +3,7 @@
 void	display_scene(t_minirt *s)
 {
 	get_pixels_to_img(s);
-	push_img_to_win(s, SCENE);
+	push_img_to_win(s);
 	if (s->cam_param_display == 1)
 		display_param_cam(s);
 	display_hit_obj_params(s);
@@ -24,8 +24,8 @@ void	get_prompt_color(t_minirt *s)
 		x = 0;
 		while (x < WIDTH)
 		{
-			dst = s->img.add_r[1] + (y * s->img.line_length[1]
-					+ x * (s->img.bits_ppix[1] / 8));
+			dst = s->img.add_r + (y * s->img.line_length
+					+ x * (s->img.bits_ppix / 8));
 			*(unsigned int *)dst = get_hexa_color(color);
 			x++;
 		}
@@ -64,8 +64,8 @@ void	get_no_multi_threading(t_minirt *s)
 				s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s, s->depth));
 				i++;
 			}
-			dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0]
-					+ x * (s->img.bits_ppix[0] / 8));
+			dst = s->img.add_r + ((HEIGHT - y - 1) * s->img.line_length
+					+ x * (s->img.bits_ppix / 8));
 			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
 			x++;
 		}

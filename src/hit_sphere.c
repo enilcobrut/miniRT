@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_max)
 {
 	t_vector				oc;
 	t_quadratic_equation	qe;
@@ -9,15 +9,15 @@ int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, 
 	oc = sub_(r->origine, sp->center_axis);
 	qe.a = length_squared(r->direction);
 	qe.half_b = dot(oc, r->direction);
-	qe.c = length_squared(oc) - sp->radius *  sp->radius;
+	qe.c = length_squared(oc) - sp->radius * sp->radius;
 	qe.delta = qe.half_b * qe.half_b - qe.a * qe.c;
 	if (qe.delta < 0)
 		return (0);
 	root = (-qe.half_b - sqrt(qe.delta)) / qe.a;
-	if (root < t_min || t_max < root)
+	if (root < T_MIN || t_max < root)
 	{
 		root = (-qe.half_b + sqrt(qe.delta)) / qe.a;
-		if (root < t_min || t_max < root)
+		if (root < T_MIN || t_max < root)
 			return (0);
 	}
 	rec->t = root;
