@@ -12,7 +12,8 @@
 
 #include "miniRT_bonus.h"
 
-t_vector	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green, unsigned char *blue)
+t_vector	hexa_to_rgb(int hexa, unsigned char *red, unsigned char *green,
+	unsigned char *blue)
 {
 	t_vector	v_color;
 
@@ -47,14 +48,14 @@ t_color	map_color(t_color color)
 	return ((t_color){color.r / 255.0, color.g / 255.0, color.b / 255.0});
 }
 
-int	write_color(t_color	 pixel_color, int sample_per_pixel)
+int	write_color(t_color	pixel_color, int sample_per_pixel)
 {
 	double	scale;
 	t_color	new_c;
-	
+
 	scale = 1.0 / (double)sample_per_pixel;
 	new_c.r = pixel_color.r * scale;
 	new_c.g = pixel_color.g * scale;
 	new_c.b = pixel_color.b * scale;
-	return (create_trgb(0, new_c.r  * 255,  new_c.g * 255,  new_c.b*255));
+	return (create_trgb(0, new_c.r * 255, new_c.g * 255, new_c.b * 255));
 }

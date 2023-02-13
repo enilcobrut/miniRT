@@ -539,7 +539,7 @@ void	write_params(t_minirt *s, int fd);
 void	export_file_save(t_minirt *s, int opt);
 
 void	print_list_id(void);
-char	*ft_itof_print(double n);
+char	*ft_itof_print(double n, char *str, char *integer, char *tmp_);
 int	ft_recursive_counter(long n);;
 void print_rgb(t_color color, int fd);
 void print_axis(t_vector vec, int fd);

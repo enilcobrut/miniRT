@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deal_keys_prompt_bonus.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 19:51:37 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/13 19:51:46 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
@@ -29,10 +40,6 @@ void	display_prompt_status(t_minirt *s)
 	else
 		mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xF00020, "*");
 }
-
-
-
-
 
 int	key_enter(t_minirt *s)
 {
