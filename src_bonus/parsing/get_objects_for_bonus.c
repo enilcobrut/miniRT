@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:12:39 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 12:21:24 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/13 16:21:15 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	get_cone(t_minirt *s, t_list *p)
 	check_float_format(s, p->content[3]);
 	co->diameter = ft_atof(s, p->content[3], 0, 0);
 	co->radius = co->diameter / 2;
+	co->ratio = co->height / co->diameter;
 	check_float_format(s, p->content[4]);
 	co->height = ft_atof(s, p->content[4], 0, 0);
 	//co->sin_angle = co->radius / co->height;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_keys_obj_mov_2_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:20:40 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:20:41 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:01:21 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,5 @@ void	move_co_vec(t_minirt *s, int key)
 		s->hit_obj->u_.co.dir_ax.y -= INTERVAL_VEC;
 	else if (key == THREE)
 		s->hit_obj->u_.co.dir_ax.y += INTERVAL_VEC;
+	s->hit_obj->u_.co.dir_ax = vec3_unit_vector(s->hit_obj->u_.co.dir_ax);
 }

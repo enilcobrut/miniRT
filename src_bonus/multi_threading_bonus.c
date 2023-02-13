@@ -48,15 +48,15 @@ void	rtx_test(t_minirt *s, int y)
 		r.pixel_color.r = 0;
 		r.pixel_color.g = 0;
 		r.pixel_color.b = 0;
-		i = 0;
-		while (i < s->samples_per_pixel)
-		{
-			r.mul_t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
-			r.mul_t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
+		// i = 0;
+		// while (i < s->samples_per_pixel)
+		// {
+		 	r.mul_t_u = 1 - (double)x  / (double)(WIDTH - 1);
+		 	r.mul_t_v = (double)y / (double)(HEIGHT - 1);
 			r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner, mul_(s->r.horizon, r.mul_t_u)), mul_(s->r.vertical, r.mul_t_v)), s->cam_origin));
 			r.pixel_color = color_add_(r.pixel_color, ray_color(&r.r, s, s->depth));
-			i++;
-		}
+			//i++;
+		//}
 		dst = s->img.add_r[0] + ((HEIGHT - y - 1) * s->img.line_length[0] + x * (s->img.bits_ppix[0] / 8));
 		*(unsigned int *)dst = write_color(r.pixel_color, s->samples_per_pixel);
 		x++;
