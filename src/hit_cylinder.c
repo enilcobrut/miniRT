@@ -69,7 +69,7 @@ int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_
 	double			closest_so_far;
 	t_hit_record	temp_rec;
 	t_disk			d;
-	
+
 	closest_so_far = t_max;
 	d.center = cyl->center;
 	d.normal = cyl->dir_ax;

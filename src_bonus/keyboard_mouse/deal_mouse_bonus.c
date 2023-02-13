@@ -50,7 +50,11 @@ void	scroll_on_sphere(t_minirt *s, int i)
 
 void	scroll_on_cone(t_minirt *s, int i)
 {
-	s->hit_obj->u_.co.ratio = s->hit_obj->u_.co.height / s->hit_obj->u_.co.diameter;
+	int	ratio;
+	int	tan;
+
+	ratio = s->hit_obj->u_.co.height / s->hit_obj->u_.co.diameter;
+	s->hit_obj->u_.co.ratio = ratio;
 	if (i == SCROLL_UP)
 	{
 		s->hit_obj->u_.co.height += INTERVAL * s->hit_obj->u_.co.ratio;
@@ -62,8 +66,8 @@ void	scroll_on_cone(t_minirt *s, int i)
 		s->hit_obj->u_.co.diameter -= INTERVAL;
 	}
 	s->hit_obj->u_.co.radius = s->hit_obj->u_.co.diameter / 2;
-	s->hit_obj->u_.co.tan_angle = s->hit_obj->u_.co.radius / s->hit_obj->u_.co.height;
-	
+	tan = s->hit_obj->u_.co.radius / s->hit_obj->u_.co.height;
+	s->hit_obj->u_.co.tan_angle = tan;
 }
 
 int	button_press(int i, int x, int y, t_minirt *s)

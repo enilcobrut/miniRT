@@ -14,7 +14,6 @@
 
 void	get_cone_next(t_minirt *s, t_cone *co, t_list *p, t_obj *new_obj)
 {
-	//co->sin_angle = co->radius / co->height;
 	co->cos_angle = cos(asin(co->sin_angle));
 	co->tan_angle = co->radius / co->height;
 	co->center = add_(co->center, mul_(co->dir_ax, co->height));
@@ -24,11 +23,8 @@ void	get_cone_next(t_minirt *s, t_cone *co, t_list *p, t_obj *new_obj)
 	new_obj->mat.scatter = MATERIAL(new_obj);
 }
 
-int	get_cone(t_minirt *s, t_list *p)
+void	get_cone(t_minirt *s, t_list *p, t_obj *new_obj, t_cone *co)
 {
-	t_obj		*new_obj;
-	t_cone		*co;
-
 	new_obj = NULL;
 	if (nb_arg_tab(p->content) != 6 && nb_arg_tab(p->content) != 7)
 		exit_error(s, "A cylinder parameters aren't compliant", 1);
@@ -44,18 +40,10 @@ int	get_cone(t_minirt *s, t_list *p)
 	co->ratio = co->height / co->diameter;
 	check_float_format(s, p->content[4]);
 	co->height = ft_atof(s, p->content[4], 0, 0);
-	//co->sin_angle = co->radius / co->height;
-	co->cos_angle = cos(asin(co->sin_angle));
-	co->tan_angle = co->radius / co->height;
-	co->center = add_(co->center, mul_(co->dir_ax, co->height));
-	co->dir_ax = mul_(co->dir_ax, -1);
-	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
-	new_obj->mat.albedo1 = new_obj->mat.albedo;
-	new_obj->mat.scatter = MATERIAL(new_obj);
+	get_cone_next(s, co, p, new_obj);
 	if (p->content[6])
 	{
 		new_obj->xpm = p->content[6];
 		check_xpm(s, new_obj);
 	}
-	return (1);
 }

@@ -47,6 +47,8 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 				src_bonus/keyboard_mouse/deal_keys_tools_bonus.c \
 				src_bonus/keyboard_mouse/deal_mouse_bonus.c \
 				src_bonus/keyboard_mouse/deal_mouse_hit_obj_bonus.c \
+				src_bonus/keyboard_mouse/file_backup.c \
+				src_bonus/keyboard_mouse/print.c \
 				src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/linked_lists/light_bonus.c \

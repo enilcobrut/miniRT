@@ -94,9 +94,9 @@ void	get_objects(t_minirt *s, t_list *p)
 	else if (!ft_strncmp(p->content[0], "sp", 3))
 		get_sphere(s, p);
 	else if (!ft_strncmp(p->content[0], "cy", 3))
-		get_cylinder(s, p);
+		get_cylinder(s, p, 0, 0);
 	else if (!ft_strncmp(p->content[0], "co", 3))
-		get_cone(s, p);
+		get_cone(s, p, 0, 0);
 	else
 		exit_error(s, p->content[0], 1);
 	curr = lst_last_obj(&s->obj);

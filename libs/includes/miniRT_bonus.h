@@ -289,8 +289,8 @@ void	get_objects(t_minirt *s, t_list *p);
 /* -- GET OBJECTS -- */
 int		get_sphere(t_minirt *s, t_list *p);
 int		get_plane(t_minirt *s, t_list *p);
-int		get_cylinder(t_minirt *s, t_list *p);
-int		get_cone(t_minirt *s, t_list *p);
+int		get_cylinder(t_minirt *s, t_list *p, t_cylinder *cy, t_obj *new_obj);
+void	get_cone(t_minirt *s, t_list *p, t_obj *new_obj, t_cone *co);
 void	check_xpm(t_minirt *s, t_obj *obj);
 
 /* -- GET PARAMETERS -- */
@@ -535,4 +535,12 @@ int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, 
 void	hit_something(t_minirt *s, int x, int y);
 void	export_file_save(t_minirt *s, int opt);
 int scatter_checkboard(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+void	write_params(t_minirt *s, int fd);
+void	export_file_save(t_minirt *s, int opt);
+
+void	print_list_id(void);
+char	*ft_itof_print(double n);
+int	ft_recursive_counter(long n);;
+void print_rgb(t_color color, int fd);
+void print_axis(t_vector vec, int fd);
 #endif
