@@ -13,15 +13,11 @@
 # include <float.h>
 # include <pthread.h>
 
-# define PARSING 0
-# define LEAKS 0
-# define PRINT 1
-# define EXEC 1
+# define LEAKS 1
 # define INTERVAL 1
 # define INTERVAL_VEC 0.3
 # define PI M_PI
 # define INF DBL_MAX
-
 # define T_MIN 0.001
 # define HEIGHT 768
 # define WIDTH 1024

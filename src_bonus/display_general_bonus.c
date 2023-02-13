@@ -45,6 +45,7 @@ void	start_ray_tracing(t_minirt *s)
 	init_rtx(s);
 	get_prompt_color(s);
 	get_pixels_to_img(s);
+	s->hit_obj = NULL;
 	push_img_to_win(s, ALL);
 	display_param_cam(s);
 	mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xF00020, "*");

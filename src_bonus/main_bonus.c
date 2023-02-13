@@ -62,19 +62,11 @@ int	main(int argc, char **argv)
 		exit_error(s, 0, 0);
 	s->argv = argv;
 	s->argc = argc;
-	if (PARSING == 1)
-	{
-		check_void(s, 0);
-		check_directory(s);
-		check_extension_rt(s);
-	}
+	check_void(s, 0);
+	check_directory(s);
+	check_extension_rt(s);
 	init_set(s);
 	get_params(s);
 	get_identifiers(s, 0, 0, 0);
-	if (PRINT == 1)
-		print_params(s);
-	printf("CPU %d\n", NUM_THREADS);
-	if (EXEC == 1)
-		start_ray_tracing(s);
-	exit(EXIT_SUCCESS);
+	start_ray_tracing(s);
 }
