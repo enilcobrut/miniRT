@@ -60,17 +60,17 @@ t_vector	reflect(const t_vector v, const t_vector n)
 	return (sub_(v, mul_(n, 2 * dot(v, n))));
 }
 
-int	scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
-{
-	t_vector	reflected;
+// int	scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+// {
+// 	t_vector	reflected;
 
-	reflected = reflect(vec3_unit_vector(r->direction),
-				vec3_unit_vector(rec->normal));
-	*scattered = init_rayon(rec->p, add_(reflected, mul_(random_in_unit_sphere(),
-				rec->mat_ptr->fuzz)));
-	*attenuation = rec->mat_ptr->albedo;
-	return (dot(scattered->direction, rec->normal) > 0);
-}
+// 	reflected = reflect(vec3_unit_vector(r->direction),
+// 				vec3_unit_vector(rec->normal));
+// 	*scattered = init_rayon(rec->p, add_(reflected, mul_(random_in_unit_sphere(),
+// 				rec->mat_ptr->fuzz)));
+// 	*attenuation = rec->mat_ptr->albedo;
+// 	return (dot(scattered->direction, rec->normal) > 0);
+// }
 
 double	reflectance(double cos, double ref_i)
 {
@@ -82,31 +82,31 @@ double	reflectance(double cos, double ref_i)
 }
 
 
-int	scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
-{
-	double		refraction_ratio;
-	t_vector	unit_dir;
-	double		cos_theta;
-	double		sin_theta;
-	int			cannot_refract;
-	t_vector	dir;
+// int	scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+// {
+// 	double		refraction_ratio;
+// 	t_vector	unit_dir;
+// 	double		cos_theta;
+// 	double		sin_theta;
+// 	int			cannot_refract;
+// 	t_vector	dir;
 
-	*attenuation = init_color(1.0, 1.0, 1.0);
-	if (rec->front_face)
-		refraction_ratio = 1.0 / rec->mat_ptr->ir;
-	else
-		refraction_ratio = rec->mat_ptr->ir;
-	unit_dir = vec3_unit_vector(r->direction);
-	cos_theta = fmin(dot(mul_(unit_dir, -1), rec->normal), 1.0);
-	sin_theta = sqrt(1.0 - cos_theta * cos_theta);
-	cannot_refract = refraction_ratio * sin_theta > 1.0;
-	if (cannot_refract || reflectance(cos_theta, refraction_ratio) > random_double())
-		dir = reflect(unit_dir, rec->normal);
-	else
-		dir = refract(unit_dir, rec->normal, refraction_ratio);
-	*scattered = init_rayon(rec->p, dir);
-	return (1);
-}
+// 	*attenuation = init_color(1.0, 1.0, 1.0);
+// 	if (rec->front_face)
+// 		refraction_ratio = 1.0 / rec->mat_ptr->ir;
+// 	else
+// 		refraction_ratio = rec->mat_ptr->ir;
+// 	unit_dir = vec3_unit_vector(r->direction);
+// 	cos_theta = fmin(dot(mul_(unit_dir, -1), rec->normal), 1.0);
+// 	sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+// 	cannot_refract = refraction_ratio * sin_theta > 1.0;
+// 	if (cannot_refract || reflectance(cos_theta, refraction_ratio) > random_double())
+// 		dir = reflect(unit_dir, rec->normal);
+// 	else
+// 		dir = refract(unit_dir, rec->normal, refraction_ratio);
+// 	*scattered = init_rayon(rec->p, dir);
+// 	return (1);
+// }
 
 int	near_zero(const t_vector *vec)
 {

@@ -113,20 +113,9 @@ typedef struct s_hit_record
 	t_material	*mat_ptr;
 }		t_hit_record;
 
-typedef struct s_light_scene
-{
-	t_vector	pos;
-	double		lum;
-}	t_light_scene;
-
 typedef struct s_material
 {
-	int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 	t_color	albedo;
-	double	specular;
-	t_color	albedo1;
-	double	fuzz;
-	double	ir;
 }			t_material;
 
 typedef struct s_sphere

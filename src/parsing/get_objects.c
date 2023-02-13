@@ -20,11 +20,6 @@ int	get_sphere(t_minirt *s, t_list *p)
 	sp->diameter = ft_atof(s, p->content[2], 0, 0);
 	sp->radius = sp->diameter / 2;
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
-	new_obj->mat.scatter = MATERIAL(new_obj);
-	new_obj->mat.fuzz = FUZZ;
-	new_obj->mat.ir = IR;
-	if (new_obj->mat.fuzz > 1)
-		new_obj->mat.fuzz = 1;
 	return (1);
 }
 
@@ -43,7 +38,6 @@ int	get_plane(t_minirt *s, t_list *p)
 	check_vector_range(s, &pl->dir_ax);
 	pl->dir_ax = vec3_unit_vector(pl->dir_ax);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
-	new_obj->mat.scatter = MATERIAL(new_obj);
 	return (1);
 }
 
@@ -67,7 +61,6 @@ int	get_cylinder(t_minirt *s, t_list *p)
 	check_float_format(s, p->content[4]);
 	cy->height = ft_atof(s, p->content[4], 0, 0);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
-	new_obj->mat.scatter = MATERIAL(new_obj);
 	cy->ratio = cy->height / cy->diameter;
 	return (1);
 }

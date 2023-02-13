@@ -82,58 +82,69 @@ void print_rgb(t_color color, int fd)
 
 void print_axis(t_vector vec, int fd)
 {
-	ft_putstr_fd(ft_itof_print(vec.x), fd);
+	char	*tmp;
+
+	tmp = ft_itof_print(vec.x);
+	ft_putstr_fd(tmp, fd);
+	free(tmp);
 	ft_putstr_fd(",", fd);
-	ft_putstr_fd(ft_itof_print(vec.y), fd);
+	tmp = ft_itof_print(vec.y);
+	ft_putstr_fd(tmp, fd);
+	free(tmp);
 	ft_putstr_fd(",", fd);
-	ft_putstr_fd(ft_itof_print(vec.z), fd);
+	tmp = ft_itof_print(vec.z);
+	ft_putstr_fd(tmp, fd);
+	free(tmp);
 	ft_putstr_fd(" ", fd);
 }
 
 void	write_params(t_minirt *s, int fd)
 {
-	
-	while (s->obj)
+	char	*tmp;
+
+	t_obj *obj = s->obj;
+
+	while (obj)
 	{
-		if (s->obj->type == SPHERE)
+		if (obj->type == SPHERE)
 		{
 			ft_putstr_fd("sp ", fd);
-			print_axis(s->obj->u_.sp.center_axis, fd);
-			ft_putnbr_fd(s->obj->u_.sp.diameter, fd);
+			print_axis(obj->u_.sp.center_axis, fd);
+			ft_putnbr_fd(obj->u_.sp.diameter, fd);
 			ft_putstr_fd(" ", fd);
-			print_rgb(s->obj->mat.albedo, fd);			
+			print_rgb(obj->mat.albedo, fd);			
 		}
-		else if (s->obj->type == CYLINDER)
+		else if (obj->type == CYLINDER)
 		{
 			ft_putstr_fd("cy ", fd);
-			print_axis(s->obj->u_.cy.center, fd);
-			print_axis(s->obj->u_.cy.dir_ax, fd);
-			ft_putnbr_fd(s->obj->u_.cy.diameter, fd);
+			print_axis(obj->u_.cy.center, fd);
+			print_axis(obj->u_.cy.dir_ax, fd);
+			ft_putnbr_fd(obj->u_.cy.diameter, fd);
 			ft_putstr_fd(" ", fd);
-			ft_putnbr_fd(s->obj->u_.cy.height, fd);
+			ft_putnbr_fd(obj->u_.cy.height, fd);
 			ft_putstr_fd(" ", fd);
-			print_rgb(s->obj->mat.albedo, fd);
+			print_rgb(obj->mat.albedo, fd);
 		}
-		else if (s->obj->type == CONE)
+		else if (obj->type == CONE)
 		{
 			ft_putstr_fd("co ", fd);
-			print_axis(s->obj->u_.co.center, fd);
-			print_axis(s->obj->u_.co.dir_ax, fd);
-			ft_putnbr_fd(s->obj->u_.co.diameter, fd);
+			print_axis(obj->u_.co.center, fd);
+			print_axis(obj->u_.co.dir_ax, fd);
+			ft_putnbr_fd(obj->u_.co.diameter, fd);
 			ft_putstr_fd(" ", fd);
-			ft_putnbr_fd(s->obj->u_.co.height, fd);
+			ft_putnbr_fd(obj->u_.co.height, fd);
 			ft_putstr_fd(" ", fd);
-			print_rgb(s->obj->mat.albedo, fd);
+			print_rgb(obj->mat.albedo, fd);
 		}
-		else if (s->obj->type == PLANE)
+		else if (obj->type == PLANE)
 		{
 			ft_putstr_fd("pl ", fd);
-			print_axis(s->obj->u_.pl.axis, fd);
-			print_axis(s->obj->u_.pl.dir_ax, fd);
-			print_rgb(s->obj->mat.albedo, fd);
+			print_axis(obj->u_.pl.axis, fd);
+			print_axis(obj->u_.pl.dir_ax, fd);
+			print_rgb(obj->mat.albedo, fd);
 		}
 		ft_putstr_fd("\n", fd);
-		s->obj = s->obj->next;
+		obj = obj->next;
 	}
 	ft_putstr_fd("C ", fd);
 	print_axis(s->cam_origin, fd);
@@ -141,19 +152,25 @@ void	write_params(t_minirt *s, int fd)
 	ft_putnbr_fd(s->cam_fov, fd);
 	ft_putstr_fd("\n", fd);
 	ft_putstr_fd("A ", fd);
-	ft_putstr_fd(ft_itof_print(s->amb_light_ratio), fd);
+	tmp = ft_itof_print(s->amb_light_ratio);
+	ft_putstr_fd(tmp, fd);
+	free(tmp);
 	ft_putstr_fd(" ", fd);
 	print_rgb(s->amb_light_color, fd);
 	ft_putstr_fd("\n", fd);
-	while (s->li)
+
+	t_light *li = s->li;
+	while (li)
 	{
 		ft_putstr_fd("L ", fd);
-		print_axis(s->li->light_axis, fd);
-		ft_putstr_fd(ft_itof_print(s->li->light_brightness_ratio), fd);
+		print_axis(li->light_axis, fd);
+		tmp = ft_itof_print(li->light_brightness_ratio);
+		ft_putstr_fd(tmp, fd);
+		free(tmp);
 		ft_putstr_fd(" ", fd);
-		print_rgb(s->li->light_color, fd);
+		print_rgb(li->light_color, fd);
 		ft_putstr_fd("\n", fd);
-		s->li = s->li->next;
+		li = li->next;
 	}
 }
 
