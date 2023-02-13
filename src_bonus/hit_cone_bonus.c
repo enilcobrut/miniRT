@@ -1,7 +1,6 @@
-
 #include "miniRT_bonus.h"
 
-int hit_cone_body(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+int hit_cone_body(t_cone *cone, const t_rayon *r, t_hit *rec, double t_max)
 {
   //  cone->dir_ax = mul_(cone->dir_ax, -1);
 	t_vector oc = sub_(r->origine, cone->center);
@@ -14,10 +13,10 @@ int hit_cone_body(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_mi
 		return (0);
 	double sqrtd = sqrt(delta);
 	double root = (-half_b - sqrtd) / a;
-	if (root < t_min || t_max < root)
+	if (root < T_MIN || t_max < root)
 	{
 		root = (-half_b + sqrtd) / a;
-		if (root < t_min || t_max < root)
+		if (root < T_MIN || t_max < root)
 			return (0);
 	}
 	rec->t = root;
@@ -35,28 +34,28 @@ int hit_cone_body(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_mi
 	return (1);
 }
 
-int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+int hit_cone(t_cone *cone, const t_rayon *r, t_hit *rec, double t_max)
 {
     int				hit_anything;
-	double			closest_so_far;
-	t_hit_record	temp_rec;
+	double			c;
+	t_hit	tp;
 	int				t;
 	
 	hit_anything = 0;
-	closest_so_far = t_max;
-	t = hit_disk(add_(cone->center, mul_(cone->dir_ax, cone->height)), cone->dir_ax, cone->radius, r, t_min, closest_so_far, &temp_rec);
+	c = t_max;
+	t = hit_disk(add_(cone->center, mul_(cone->dir_ax, cone->height)), cone->dir_ax, cone->radius, r, c, &tp);
     if (t)
     {
         hit_anything = 1;
-        closest_so_far = temp_rec.t;
-        *rec = temp_rec;
+        c = tp.t;
+        *rec = tp;
     }
-    t = hit_cone_body(cone, r, &temp_rec, t_min, closest_so_far);
+    t = hit_cone_body(cone, r, &tp, c);
     if (t)
     {
         hit_anything = 1;
-        closest_so_far = temp_rec.t;
-        *rec = temp_rec;
+        c = tp.t;
+        *rec = tp;
     }
     return (hit_anything);
 }

@@ -9,8 +9,8 @@ ray_color_next()
 
 t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 {
-	t_hit_record	rec;
-	t_hit_record	rec2;
+	t_hit	rec;
+	t_hit	rec2;
 	t_color			light;
 	t_rayon			verif;
 	t_vector 		light_dir;

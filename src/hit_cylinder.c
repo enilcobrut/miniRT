@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int	hit_disk(t_disk *d, const t_rayon *r, double t_max, t_hit_record *rec)
+int	hit_disk(t_disk *d, const t_rayon *r, double t_max, t_hit *rec)
 {
 	double		t;
 	t_vector	p;
@@ -19,7 +19,7 @@ int	hit_disk(t_disk *d, const t_rayon *r, double t_max, t_hit_record *rec)
 	return (1);
 }
 
-int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double root)
+int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double root)
 {
 	t_vector	p;
 	t_vector	normal;
@@ -38,7 +38,7 @@ int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec,
 	return (0);
 }
 
-int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_max)
+int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
 {
 	t_vector				oc;
 	t_quadratic_equation	qe;
@@ -63,11 +63,11 @@ int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, doub
 	return (1);
 }
 
-int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_max)
+int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
 {
 	int				hit_anything;
 	double			closest_so_far;
-	t_hit_record	temp_rec;
+	t_hit	temp_rec;
 	t_disk			d;
 
 	closest_so_far = t_max;

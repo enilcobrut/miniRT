@@ -117,7 +117,7 @@ typedef struct s_hit_record
 	int			front_face;
 	// t_color		color;
 	t_material	*mat_ptr;
-}		t_hit_record;
+}		t_hit;
 
 typedef struct s_light_scene
 {
@@ -127,7 +127,7 @@ typedef struct s_light_scene
 
 typedef struct s_material
 {
-	int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+	int	(*scatter)(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 	t_color		albedo;
 	double		specular;
 	t_color		albedo1;
@@ -400,15 +400,15 @@ t_vector	div_(t_vector v, float n);
 t_vector	mul_(t_vector v, double n);
 t_vector	vector_director(t_minirt *s, int *x, int *y);
 void		normalize_vector(t_vector v);
-t_color		ray_color(t_rayon *r, t_minirt *s, int depth);
+t_color		ray_color(t_rayon *r, t_minirt *s);
 t_vector	random_in_unit_sphere(void);
 float		intersection_sphere(t_rayon *r, t_sphere *sp, t_vector *p, t_vector *n);
 void		show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
 int			push_img_to_win(t_minirt *s, int opt);
 int			write_color(t_color	pixel_color, int sample_per_pixel);
-void		set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
-int			scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
-int			scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+void		set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal);
+int			scatter_lambertian(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
+int			scatter_metal(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 t_vector	reflect(const t_vector v, const t_vector n);
 int			super_mod(int div, int mod);
 t_color		clamp_color(t_color color);
@@ -416,15 +416,15 @@ void		get_prompt_color(t_minirt *s);
 void		get_no_multi_threading(t_minirt *s);
 
 /* HIT ********************************************************************** */
-int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj);
+int	hit(const t_rayon *r, double t_max, t_hit *rec, t_obj *obj);
 /* -- HIT CYLINDER -- */
-int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max);
 
 /* -- HIT PLANE -- */
-int hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int hit_plane(t_plane *p, const t_rayon *r, t_hit *rec, double t_max);
 
 /* -- HIT SHPERE -- */
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
+int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit *rec, double t_max);
 
 
 
@@ -447,7 +447,7 @@ t_color map_color(t_color color);
 int	get_hexa_color(t_color color);
 
 /* VECTOR TOOLS *************************************************************** */
-void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
+void set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal);
 t_color get_rgb(int color);
 double	vec3_length(t_vector a);
 t_vector	vec3_unit_vector(t_vector a);
@@ -456,7 +456,7 @@ t_vector vec_random_2(double min, double max);
 t_vector random_in_unit_sphere();
 t_vector random_in_unit_sphere_2();
 double length_squared(t_vector v);
-int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int scatter_dielectric(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 
 /* MATHS TOOLS *************************************************************** */
 double degrees_to_radians(double degrees);
@@ -530,11 +530,11 @@ void get_pixels(t_minirt *s, int min, int max);
 void *dispatch_thread(void *arg);
 void	get_multi_threading(t_minirt *s);
 void get_no_multi_threading(t_minirt *s);
-int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, double t_max);
-int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_min, double t_max, t_hit_record *rec);
+int hit_cone(t_cone *cone, const t_rayon *r, t_hit *rec, double t_max);
+int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_max, t_hit *rec);
 void	hit_something(t_minirt *s, int x, int y);
 void	export_file_save(t_minirt *s, int opt);
-int scatter_checkboard(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int scatter_checkboard(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 void	write_params(t_minirt *s, int fd);
 void	export_file_save(t_minirt *s, int opt);
 

@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-void	set_face_normal(const t_rayon *r, t_hit_record *rec,
+void	set_face_normal(const t_rayon *r, t_hit *rec,
 		t_vector outward_normal)
 {
 	rec->front_face = dot(r->direction, outward_normal) < 0;
@@ -16,7 +16,7 @@ void	set_face_normal(const t_rayon *r, t_hit_record *rec,
 	}
 }
 
-int	scatter_lambertian(const t_rayon *r, const t_hit_record *rec,
+int	scatter_lambertian(const t_rayon *r, const t_hit *rec,
 	t_color *attenuation, t_rayon *scattered)
 {
 	t_vector	scatter_dir;
@@ -29,7 +29,7 @@ int	scatter_lambertian(const t_rayon *r, const t_hit_record *rec,
 	return (1);
 }
 
-int	scatter_light(const t_rayon *r, const t_hit_record *rec,
+int	scatter_light(const t_rayon *r, const t_hit *rec,
 	t_color *attenuation, t_rayon *scattered)
 {
 	t_vector	scatter_dir;

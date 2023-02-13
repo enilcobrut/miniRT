@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   deal_mouse_hit_obj_bonus.c                         :+:      :+:    :+:   */
+/*   deal_mouse_hit_obj.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/13 19:14:06 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 19:14:08 by flemaitr         ###   ########.fr       */
+/*   Created: 2023/02/12 20:42:45 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/13 17:43:58 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT_bonus.h"
+#include "miniRT.h"
 
 void	display_hit_obj_params(t_minirt *s)
 {
@@ -26,8 +26,6 @@ void	display_hit_obj_params(t_minirt *s)
 		mlx_string_put(s->mlx, s->win, 250, HEIGHT + 2, 0xBA55D3, "SPHERE");
 	else if (s->hit_obj->type == CYLINDER)
 		mlx_string_put(s->mlx, s->win, 250, HEIGHT + 2, 0xBA55D3, "CYLINDER");
-	else if (s->hit_obj->type == CONE)
-		mlx_string_put(s->mlx, s->win, 250, HEIGHT + 2, 0xBA55D3, "CONE");
 }
 
 void	hit_something(t_minirt *s, int x, int y)
@@ -39,6 +37,6 @@ void	hit_something(t_minirt *s, int x, int y)
 	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner,
 						mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical,
 						s->r.mul_t_v)), s->cam_origin));
-	if (hit(&s->r.r, INF, &rec, s->obj))
+	if (hit(&s->r.r, 0.001, INF, &rec, s->obj))
 		s->hit_obj = rec.hit_obj;
 }

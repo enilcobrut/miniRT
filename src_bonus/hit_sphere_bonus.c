@@ -1,6 +1,6 @@
 #include "miniRT_bonus.h"
 
-int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit *rec, double t_max)
 {
 	t_vector				oc;
 	t_quadratic_equation	qe;
@@ -14,10 +14,10 @@ int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec, double t_min, 
 	if (qe.delta < 0)
 		return (0);
 	root = (-qe.half_b - sqrt(qe.delta)) / qe.a;
-	if (root < t_min || t_max < root)
+	if (root < T_MIN || t_max < root)
 	{
 		root = (-qe.half_b + sqrt(qe.delta)) / qe.a;
-		if (root < t_min || t_max < root)
+		if (root < T_MIN || t_max < root)
 			return (0);
 	}
 	rec->t = root;

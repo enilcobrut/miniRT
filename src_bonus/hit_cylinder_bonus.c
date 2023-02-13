@@ -1,13 +1,13 @@
 #include "miniRT_bonus.h"
 
-int	hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_min, double t_max, t_hit_record *rec)
+int	hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_max, t_hit *rec)
 {
 	double		t;
 	t_vector	p;
 	t_vector	distance;
 
 	t = dot(sub_(center, r->origine), normal) / dot(r->direction, normal);
-	if (t < t_min || t_max < t)
+	if (t < T_MIN || t_max < t)
 		return (0);
 	p = add_(r->origine, mul_(r->direction, t));
 	distance = sub_(p, center);
@@ -20,7 +20,7 @@ int	hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, 
 }
 
 
-int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double root)
+int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double root)
 {
 	t_vector	p;
 	t_vector	normal;
@@ -39,7 +39,7 @@ int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec,
 	return (0);
 }
 
-int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
 {
 	t_vector				oc;
 	t_quadratic_equation	qe;
@@ -53,10 +53,10 @@ int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, doub
 	if (qe.delta < 0)
 		return (0);
 	root = (-qe.half_b - sqrt(qe.delta)) / qe.a;
-	if (root < t_min || t_max < root)
+	if (root < T_MIN || t_max < root)
 	{
 		root = (-qe.half_b + sqrt(qe.delta)) / qe.a;
-		if (root < t_min || t_max < root)
+		if (root < T_MIN || t_max < root)
 			return (0);
 	}
 	if (hit_cylinder_body_next(cyl, r, rec, root))
@@ -64,35 +64,35 @@ int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, doub
 	return (1);
 }
 
-int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec, double t_min, double t_max)
+int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
 {
 	int				hit_anything;
-	double			closest_so_far;
-	t_hit_record	temp_rec;
+	double			c;
+	t_hit	tp;
 	int				t;
 
-	closest_so_far = t_max;
+	c = t_max;
 	hit_anything = 0;
-	t = hit_disk(cyl->center, cyl->dir_ax, cyl->radius, r, t_min, closest_so_far, &temp_rec);
+	t = hit_disk(cyl->center, cyl->dir_ax, cyl->radius, r, c, &tp);
 	if (t)
 	{
 		hit_anything = 1;
-		closest_so_far = temp_rec.t;
-		*rec = temp_rec;
+		c = tp.t;
+		*rec = tp;
 	}
-	t = hit_disk(add_(cyl->center, mul_(cyl->dir_ax, cyl->height)), cyl->dir_ax, cyl->radius, r, t_min, closest_so_far, &temp_rec);
+	t = hit_disk(add_(cyl->center, mul_(cyl->dir_ax, cyl->height)), cyl->dir_ax, cyl->radius, r, c, &tp);
 	if (t)
 	{
 		hit_anything = 1;
-		closest_so_far = temp_rec.t;
-		*rec = temp_rec;
+		c = tp.t;
+		*rec = tp;
 	}
-	t = hit_cylinder_body(cyl, r, &temp_rec, t_min, closest_so_far);
+	t = hit_cylinder_body(cyl, r, &tp, c);
 	if (t)
 	{
 		hit_anything = 1;
-		closest_so_far = temp_rec.t;
-		*rec = temp_rec;
+		c = tp.t;
+		*rec = tp;
 	}
 	return (hit_anything);
 }

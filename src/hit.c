@@ -1,8 +1,8 @@
 #include "miniRT.h"
 
-int	hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj)
+int	hit(const t_rayon *r, double t_max, t_hit *rec, t_obj *obj)
 {
-	t_hit_record	temp_rec;
+	t_hit	temp_rec;
 	int				hit_anything;
 	double			closest_so_far;
 	

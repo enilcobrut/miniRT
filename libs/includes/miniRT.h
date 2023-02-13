@@ -111,7 +111,7 @@ typedef struct s_hit_record
 	int			front_face;
 	t_color		color;
 	t_material	*mat_ptr;
-}		t_hit_record;
+}		t_hit;
 
 typedef struct s_material
 {
@@ -340,14 +340,14 @@ t_color	ray_color_3(t_rayon *r, t_minirt *s, int depth);
 
 /* DISPLAY SCENE MAT ******************************************************** */
 
-void		set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal);
-int			scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
-int			scatter_light(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+void		set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal);
+int			scatter_lambertian(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
+int			scatter_light(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 t_vector	refract(const t_vector uv, const t_vector n, double etai_over_etat);
 t_vector	reflect(const t_vector v, const t_vector n);
-int			scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int			scatter_metal(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 double	reflectance(double cos, double ref_i);
-int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
+int scatter_dielectric(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 int	near_zero(const t_vector *vec);
 
 /* DISPLAY SCENE ************************************************************ */
@@ -357,18 +357,18 @@ void	get_no_multi_threading(t_minirt *s);
 int		get_pixels_to_img(t_minirt *s);
 
 /* HIT ********************************************************************** */
-int		hit(const t_rayon *r, double t_max, t_hit_record *rec, t_obj *obj);
+int		hit(const t_rayon *r, double t_max, t_hit *rec, t_obj *obj);
 
 /* -- HIT CYLINDER -- */
-int		hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit_record *rec,
+int		hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit *rec,
 		double t_max);
 
 /* -- HIT PLANE -- */
-int		hit_plane(t_plane *p, const t_rayon *r, t_hit_record *rec,
+int		hit_plane(t_plane *p, const t_rayon *r, t_hit *rec,
 		double t_max);
 
 /* -- HIT SHPERE -- */
-int		hit_sphere(t_sphere *sp, const t_rayon *r, t_hit_record *rec,
+int		hit_sphere(t_sphere *sp, const t_rayon *r, t_hit *rec,
 		double t_max);
 
 

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_scene_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/13 17:46:22 by cjunker           #+#    #+#             */
+/*   Updated: 2023/02/13 20:03:12 by cjunker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT_bonus.h"
 
-void display_scene(t_minirt *s)
+void	display_scene(t_minirt *s)
 {
 	get_pixels_to_img(s);
 	push_img_to_win(s, SCENE);
@@ -9,58 +21,106 @@ void display_scene(t_minirt *s)
 	display_hit_obj_params(s);
 }
 
-t_color		clamp_color(t_color color)
+t_color	clamp_color(t_color color)
 {
-	return ((t_color) {clamp(color.r, 0, 1), clamp(color.g, 0, 1), clamp(color.b, 0, 1)});
+	return ((t_color)
+		{clamp(color.r, 0, 1), clamp(color.g, 0, 1), clamp(color.b, 0, 1)});
 }
 
-t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
-{
-	t_hit_record rec;
-	t_hit_record rec2;
 
-	if (depth <= 0)
-		return (init_color(0, 0, 0));
+static t_color	get_lighting(t_rayon *ray, t_hit *rec, t_minirt *scene)
+{
+	t_color		light;
+	t_hit		rec2;
+	t_rayon		shadow_ray;
+	double		specular;
+	double		diffuse;
+	double		light_distance;
+
+	light = color_mul_scalar(scene->amb_light_color, scene->amb_light_ratio);
+	for (t_light *light_ptr = scene->li; light_ptr; light_ptr = light_ptr->next)
+	{
+		t_vector light_dir = sub_(light_ptr->light_axis, rec->p);
+		shadow_ray = init_rayon(rec->p, vec3_unit_vector(light_dir));
+		if (!hit(&shadow_ray, vec3_length(light_dir), &rec2, scene->obj))
+		{
+			specular = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(ray->direction, rec->normal))));
+			light_distance = vec3_length(light_dir) / 1000;
+			diffuse = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec->normal))) / (1 + light_distance * light_distance);
+			light = color_add_(light, color_mul_scalar(color_mul_scalar(light_ptr->light_color, light_ptr->light_brightness_ratio), diffuse + pow(specular, 100)));
+		}
+	}
+	return (light);
+}
+
+t_color	ray_color1(t_rayon *ray, t_minirt *scene)
+{
+	t_hit	rec;
+	t_color	light;
+	t_rayon	scattered;
+	t_color	attenuation;
+
+	ray->direction = vec3_unit_vector(ray->direction);
+	light = init_color(0, 0, 0);
+	if (hit(ray, INF, &rec, scene->obj))
+	{
+		light = get_lighting(ray, &rec, scene);
+		if (rec.mat_ptr->scatter(ray, &rec, &attenuation, &scattered))
+		{
+			light = color_mul(attenuation, clamp_color(light));
+			if (rec.hit_obj == scene->hit_obj)
+				rec.mat_ptr->scatter = scatter_checkboard;
+			if (!rec.mat_ptr->scatter(ray, &rec, &attenuation, &scattered))
+				return (init_color(0, 0, 0));
+			light = color_mul(attenuation, clamp_color(light));
+		}
+	}
+	return (light);
+}
+
+t_color	compute_lighting(t_rayon *r, t_hit *rec, t_minirt *s)
+{
+	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
+	t_hit	rec2;
+	t_rayon	verif;
+
+	for (t_light *light1=s->li; light1; light1 = light1->next)
+	{
+		t_vector light_ax =light1->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
+		t_vector light_dir = sub_(light_ax, rec->p);
+		verif = init_rayon(rec->p, vec3_unit_vector(light_dir));
+		if (!hit(&verif, vec3_length(sub_(light_ax, rec->p)), &rec2, s->obj))
+		{
+			double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec->normal))));
+			double light_distance = vec3_length(light_dir)/1000;
+			double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec->normal))) / (1 + light_distance * light_distance);
+			light = color_add_(light, color_mul_scalar(light1->light_color, light1->light_brightness_ratio * (test + pow(speculaire, 20))));
+		}
+	}
+	return (light);
+}
+
+t_color	ray_color(t_rayon *r, t_minirt *s)
+{
+	t_hit	rec;
+	t_color light;
+	t_rayon scattered;
+	t_color attenuation;
 
 	r->direction = vec3_unit_vector(r->direction);
-	t_color light = color_mul_scalar(s->amb_light_color, s->amb_light_ratio);
-	 if (hit(r, INF, &rec, s->obj))
-	 {
-		t_rayon scattered;
-		t_color attenuation;
-		t_rayon	verif;
-		for (t_light *light1=s->li; light1; light1 = light1->next)
-		{
-			t_vector light_ax =light1->light_axis; //add_(s->light_axis, mul_(random_in_unit_sphere_2(), .4));
-			t_vector light_dir = sub_(light_ax, rec.p);
-
-			verif = init_rayon(rec.p, vec3_unit_vector(light_dir));
-
-			if (!hit(&verif, vec3_length(sub_(light_ax, rec.p)), &rec2, s->obj))
-			{
-				double speculaire = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(r->direction, rec.normal))));
-				double light_distance = vec3_length(light_dir)/1000;
-				//double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal)));
-				double test = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec.normal))) / (1 + light_distance * light_distance);
-				light = color_add_(light, color_mul_scalar(light1->light_color, light1->light_brightness_ratio * (test + pow(speculaire, 100))));
-
-				 // pour toute les lights
-			}
-		}
-		// if (s->hit_obj)
-		// 	printf("%p %p\n", rec.hit_obj, s->hit_obj);
-		int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered) = rec.mat_ptr->scatter;
-		if (rec.hit_obj == s->hit_obj)
-			scatter = scatter_checkboard;
-		if (scatter(r, &rec, &attenuation, &scattered))
-			return (/*color_mul(*/color_mul(attenuation, clamp_color(light)/*, ray_color(&scattered, s, depth - 1))*/));
+	 if (!hit(r, INF, &rec, s->obj))
+	 	return (init_color(0,0,0));
+	light = compute_lighting(r, &rec, s);
+	int	(*scatter)(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered) = rec.mat_ptr->scatter;
+	if (rec.hit_obj == s->hit_obj)
+		scatter = scatter_checkboard;
+	if (scatter(r, &rec, &attenuation, &scattered))
 		return (color_mul(attenuation, clamp_color(light)));
-	 }
-	 return (init_color(0,0,0));
+	return (color_mul(attenuation, clamp_color(light)));
 }
 
 
-void set_face_normal(const t_rayon *r, t_hit_record *rec, t_vector outward_normal)
+void set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal)
 {
 	rec->front_face = dot(r->direction, outward_normal) < 0;
 	if (rec->front_face)
@@ -81,7 +141,7 @@ int	super_mod(int div, int mod)
 
 }
 
-int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+int scatter_lambertian(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered)
 {
 	(void)r;
 	t_vector scatter_dir = add_(vec3_unit_vector(rec->normal), random_in_unit_sphere());
@@ -92,7 +152,7 @@ int scatter_lambertian(const t_rayon *r, const t_hit_record *rec, t_color *atten
 	return (1);
 }
 
-int scatter_light(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+int scatter_light(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered)
 {
 	(void)r;
 	t_vector scatter_dir = add_(vec3_unit_vector(rec->normal), random_in_unit_sphere());
@@ -116,7 +176,7 @@ t_vector	reflect(const t_vector v, const t_vector n)
 	return (sub_(v, mul_(n ,2*dot(v, n))));
 }
 
-int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+int scatter_metal(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered)
 {
 	t_vector reflected = reflect(vec3_unit_vector(r->direction), vec3_unit_vector(rec->normal));
 	*scattered = init_rayon(rec->p, add_(reflected, mul_(random_in_unit_sphere(), rec->mat_ptr->fuzz)));
@@ -126,7 +186,7 @@ int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuatio
 }
 
 
-int scatter_checkboard(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+int scatter_checkboard(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered)
 {
 	double size = 20;
 	if (rec->hit_obj->type == CYLINDER)
@@ -151,7 +211,7 @@ double	reflectance(double cos, double ref_i)
 	return (r0 + (1 - r0) * pow((1 - cos), 5));
 }
 
-int scatter_dielectric(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+int scatter_dielectric(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered)
 {
 	*attenuation = init_color(1.0, 1.0, 1.0);
 	double refraction_ratio;
