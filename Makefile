@@ -47,8 +47,8 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 				src_bonus/keyboard_mouse/deal_keys_tools_bonus.c \
 				src_bonus/keyboard_mouse/deal_mouse_bonus.c \
 				src_bonus/keyboard_mouse/deal_mouse_hit_obj_bonus.c \
-				src_bonus/keyboard_mouse/file_backup.c \
-				src_bonus/keyboard_mouse/print.c \
+				src_bonus/keyboard_mouse/file_backup_bonus.c \
+				src_bonus/keyboard_mouse/print_bonus.c \
 				src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/linked_lists/cylinder_bonus.c \
 				src_bonus/linked_lists/light_bonus.c \
@@ -80,7 +80,6 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 				src_bonus/multi_threading_bonus.c \
 				src_bonus/print_bonus.c \
 				src_bonus/rayon_bonus.c \
-				src_bonus/tools_bonus.c \
 				src_bonus/vector_operation_bonus.c \
 				src_bonus/vector_random_bonus.c \
 				src_bonus/vector_tools_bonus.c \
@@ -118,19 +117,6 @@ $(NAME): 		$(OBJS) $(HEADER)
 $(NAME)_bonus: 	$(OBJS_BONUS) 
 				@make all -C ./libs
 				@$(CC) $(OBJS_BONUS) ./libs/libft.a $(INCLUDES) $(FLAGS) $(FLAGS_MLX) -o $(NAME)_bonus
-
-#palmi:
-#		@echo
-#			@echo
-#			@echo  "  $(green)▄▀▀▀▄ $(green)▄▄    $(d1)██████$(bg)╗  $(d1)█████$(bg)╗ $(d1)██$(bg)╗     $(d1)███$(bg)╗   $(d1)███$(bg)╗$(d1)██$(bg)╗$(d1)███$(bg)╗   $(d1)██$(bg)╗$(d1)██$(bg)╗$(d1)███████$(bg)╗$(d1)██$(bg)╗  $(d1)██$(bg)╗$(d1)███████$(bg)╗$(d1)██$(bg)╗     $(d1)██$(bg)╗     $(RESET) "
-#			@echo  "   $(green)▄▀▀▄█▄ $(green)▀▄  $(d2)██$(bg)╔══$(d2)██$(bg)╗$(d2)██$(bg)╔══$(d2)██$(bg)╗$(d2)██$(bg)║     $(d2)████$(bg)╗ $(d2)████$(bg)║$(d2)██$(bg)║$(d2)████$(bg)╗  $(d2)██$(bg)║$(d2)██$(bg)║$(d2)██$(bg)╔════╝$(d2)██$(bg)║  $(d2)██$(bg)║$(d2)██$(bg)╔════╝$(d2)██$(bg)║     $(d2)██$(bg)║     $(RESET) "
-#			@echo  "  $(green)▀   $(brown)█ $(green)▀▄    $(d3)██████$(bg)╔╝$(d3)███████$(bg)║$(d3)██$(bg)║     $(d3)██$(bg)╔$(d3)████$(bg)╔$(d3)██$(bg)║$(d3)██$(bg)║$(d3)██$(bg)╔$(d3)██$(bg)╗ $(d3)██$(bg)║$(d3)██$(bg)║$(d3)███████$(bg)╗$(d3)███████$(bg)║$(d3)█████$(bg)╗  $(d3)██$(bg)║     $(d3)██$(bg)║     $(RESET) "
-#			@echo  "      $(brown)▐▌      $(d4)██$(bg)╔═══╝ $(d4)██$(bg)╔══$(d4)██$(bg)║$(d4)██$(bg)║     $(d4)██$(bg)║╚$(d4)██$(bg)╔╝$(d4)██$(bg)║$(d4)██$(bg)║$(d4)██$(bg)║╚$(d4)██$(bg)╗$(d4)██$(bg)║$(d4)██$(bg)║╚════$(d4)██$(bg)║$(d4)██$(bg)╔══$(d4)██$(bg)║$(d4)██$(bg)╔══╝  $(d4)██$(bg)║     $(d4)██$(bg)║     $(RESET) "
-#			@echo  "  $(yellow)▄██████▄    $(d5)██$(bg)║     $(d5)██$(bg)║  $(d5)██$(bg)║$(d5)███████$(bg)╗$(d5)██$(bg)║ ╚═╝ $(d5)██$(bg)║$(d5)██$(bg)║$(d5)██$(bg)║ ╚$(d5)████$(bg)║$(d5)██$(bg)║$(d5)███████$(bg)║$(d5)██$(bg)║  $(d5)██$(bg)║$(d5)███████$(bg)╗$(d5)███████$(bg)╗$(d5)███████$(bg)╗$(RESET) "
-#			@echo  "$(bg)              ╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝$(RESET)"
-#			@echo
-#			@cat palmi.txt
-#			@echo
 
 clean:
 				@rm -f $(OBJS) $(OBJS_BONUS)
