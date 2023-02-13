@@ -6,8 +6,7 @@ void display_scene(t_minirt *s)
 	push_img_to_win(s, SCENE);
 	if (s->cam_param_display == 1)
 		display_param_cam(s);
-	if (s->hit_obj)
-		display_hit_obj_params(s);
+	display_hit_obj_params(s);
 }
 
 t_color		clamp_color(t_color color)
@@ -48,7 +47,12 @@ t_color	ray_color(t_rayon *r, t_minirt *s, int depth)
 				 // pour toute les lights
 			}
 		}
-		if (rec.mat_ptr->scatter(r, &rec, &attenuation, &scattered))
+		// if (s->hit_obj)
+		// 	printf("%p %p\n", rec.hit_obj, s->hit_obj);
+		int	(*scatter)(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered) = rec.mat_ptr->scatter;
+		if (rec.hit_obj == s->hit_obj)
+			scatter = scatter_checkboard;
+		if (scatter(r, &rec, &attenuation, &scattered))
 			return (/*color_mul(*/color_mul(attenuation, clamp_color(light)/*, ray_color(&scattered, s, depth - 1))*/));
 		return (color_mul(attenuation, clamp_color(light)));
 	 }
@@ -119,6 +123,25 @@ int scatter_metal(const t_rayon *r, const t_hit_record *rec, t_color *attenuatio
 	*attenuation = rec->mat_ptr->albedo;
 	return (dot(scattered->direction, rec->normal) > 0);
 
+}
+
+
+int scatter_checkboard(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered)
+{
+	double size = 20;
+	if (rec->hit_obj->type == CYLINDER)
+		size = rec->hit_obj->u_.cy.radius / 20.0;
+	else if (rec->hit_obj->type == SPHERE)
+		size = rec->hit_obj->u_.sp.radius /  20.0;
+	else if (rec->hit_obj->type == CONE)
+		size = rec->hit_obj->u_.co.radius / 20.0;
+
+	if (sin((PI/size)*rec->p.x)*sin((PI/size)*rec->p.z) >= 0)
+	{
+		*attenuation = init_color(1,0.67843,0);
+		return 0;
+	}
+	return rec->mat_ptr->scatter(r, rec, attenuation, scattered);
 }
 
 double	reflectance(double cos, double ref_i)

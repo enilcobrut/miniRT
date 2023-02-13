@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_mouse_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:18:11 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:18:14 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/13 12:43:53 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	button_press(int i, int x, int y, t_minirt *s)
 			else if (s->hit_obj->type == CONE)
 				scroll_on_cone(s, i);
 		}
-		display_scene(s);
 	}
+	display_scene(s);
 	return (0);
 }

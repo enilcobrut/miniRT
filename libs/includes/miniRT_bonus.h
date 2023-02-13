@@ -119,7 +119,7 @@ typedef struct s_hit_record
 	t_vector	normal;
 	double		t;
 	int			front_face;
-	t_color		color;
+	// t_color		color;
 	t_material	*mat_ptr;
 }		t_hit_record;
 
@@ -204,6 +204,8 @@ typedef struct s_obj
 	int					bump_width;
 	void				*bump_map;
 	int					*bump_map_addr;
+	unsigned char		*checker_texture;
+	double		checker_size;
 	union
 	{
 		t_cylinder		cy;
@@ -536,5 +538,5 @@ int hit_cone(t_cone *cone, const t_rayon *r, t_hit_record *rec, double t_min, do
 int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_min, double t_max, t_hit_record *rec);
 void	hit_something(t_minirt *s, int x, int y);
 void	export_file_save(t_minirt *s, int opt);
-
+int scatter_checkboard(const t_rayon *r, const t_hit_record *rec, t_color *attenuation, t_rayon *scattered);
 #endif

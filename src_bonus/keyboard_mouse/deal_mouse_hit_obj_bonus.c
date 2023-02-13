@@ -7,6 +7,8 @@ void display_hit_obj_params(t_minirt *s)
 	// diam sp cy co
 	// height cy, co
 	push_img_to_win(s, PROMPT);
+	if (!s->hit_obj)
+		return ;
 	mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xBA55D3, "OBJECT SELECTED #");
 	itoa_to_win(s, s->hit_obj->n, 200, HEIGHT + 2);
 	if (s->hit_obj->type == PLANE)

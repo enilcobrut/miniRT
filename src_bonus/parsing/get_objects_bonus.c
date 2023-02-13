@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objects_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:13:10 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:14:11 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/13 12:20:41 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	get_sphere(t_minirt *s, t_list *p)
 	sp->diameter = ft_atof(s, p->content[2], 0, 0);
 	sp->radius = sp->diameter / 2;
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
+	new_obj->mat.albedo1 = new_obj->mat.albedo;
 	new_obj->mat.scatter = MATERIAL(new_obj);
 	new_obj->mat.fuzz = FUZZ;
 	new_obj->mat.ir = IR;
@@ -68,7 +69,9 @@ int	get_plane(t_minirt *s, t_list *p)
 	get_axis(s, &pl->axis, p->content[1], 0);
 	get_axis(s, &pl->dir_ax, p->content[2], 0);
 	check_vector_range(s, &pl->dir_ax);
+	pl->dir_ax = vec3_unit_vector(pl->dir_ax);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
+	new_obj->mat.albedo1 = new_obj->mat.albedo;
 	new_obj->mat.scatter = MATERIAL(new_obj);
 	if (p->content[4])
 	{
@@ -91,12 +94,14 @@ int	get_cylinder(t_minirt *s, t_list *p)
 	get_axis(s, &cy->center, p->content[1], 0);
 	get_axis(s, &cy->dir_ax, p->content[2], 0);
 	check_vector_range(s, &cy->dir_ax);
+	cy->dir_ax = vec3_unit_vector(cy->dir_ax);
 	check_float_format(s, p->content[3]);
 	cy->diameter = ft_atof(s, p->content[3], 0, 0);
 	cy->radius = cy->diameter / 2;
 	check_float_format(s, p->content[4]);
 	cy->height = ft_atof(s, p->content[4], 0, 0);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
+	new_obj->mat.albedo1 = new_obj->mat.albedo;
 	new_obj->mat.scatter = MATERIAL(new_obj);
 	cy->ratio = cy->height / cy->diameter;
 	if (p->content[6])

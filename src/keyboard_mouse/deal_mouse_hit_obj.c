@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_mouse_hit_obj.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 20:42:45 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 20:42:46 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/13 12:48:19 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	display_hit_obj_params(t_minirt *s)
 {
 	push_img_to_win(s, PROMPT);
+	if (!s->hit_obj)
+		return ;
 	mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xBA55D3,
 		"OBJECT SELECTED #");
 	itoa_to_win(s, s->hit_obj->n, 200, HEIGHT + 2);

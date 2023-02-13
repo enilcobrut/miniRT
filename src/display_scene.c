@@ -6,8 +6,7 @@ void	display_scene(t_minirt *s)
 	push_img_to_win(s, SCENE);
 	if (s->cam_param_display == 1)
 		display_param_cam(s);
-	if (s->hit_obj)
-		display_hit_obj_params(s);
+	display_hit_obj_params(s);
 }
 
 void	get_prompt_color(t_minirt *s)

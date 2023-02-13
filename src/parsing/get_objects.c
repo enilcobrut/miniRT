@@ -41,6 +41,7 @@ int	get_plane(t_minirt *s, t_list *p)
 	get_axis(s, &pl->axis, p->content[1], 0);
 	get_axis(s, &pl->dir_ax, p->content[2], 0);
 	check_vector_range(s, &pl->dir_ax);
+	pl->dir_ax = vec3_unit_vector(pl->dir_ax);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
 	new_obj->mat.scatter = MATERIAL(new_obj);
 	return (1);
@@ -59,6 +60,7 @@ int	get_cylinder(t_minirt *s, t_list *p)
 	get_axis(s, &cy->center, p->content[1], 0);
 	get_axis(s, &cy->dir_ax, p->content[2], 0);
 	check_vector_range(s, &cy->dir_ax);
+	cy->dir_ax = vec3_unit_vector(cy->dir_ax);
 	check_float_format(s, p->content[3]);
 	cy->diameter = ft_atof(s, p->content[3], 0, 0);
 	cy->radius = cy->diameter * 0.5;
