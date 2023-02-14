@@ -36,7 +36,7 @@ void	init_set(t_minirt *s)
 	s->prompt = NULL;
 	s->amb_light_ratio = 0;
 	s->cam_fov = 0;
-	s->cam_param_display = 1;
+	s->cam_param_display = 0;
 	s->obj = NULL;
 	s->mlx = NULL;
 	s->win = NULL;
