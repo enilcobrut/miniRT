@@ -55,6 +55,7 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 				src_bonus/linked_lists/obj_bonus.c \
 				src_bonus/linked_lists/plane_bonus.c \
 				src_bonus/linked_lists/sphere_bonus.c \
+				src_bonus/linked_lists/thread.c \
 				src_bonus/parsing/get_id_bonus.c \
 				src_bonus/parsing/get_objects_for_bonus.c \
 				src_bonus/parsing/get_objects_bonus.c \
@@ -96,7 +97,8 @@ CPUS :=			$(shell sysctl -n hw.ncpu)
 CC = 			gcc
 AR = 			ar rsc
 FLAGS =		 	-Wall -Wextra -Werror -DNUM_THREADS=$(CPUS) -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
-#FLAGS +=        -fsanitize=address -g #-fsanitize=thread #
+#FLAGS +=        -g -fsanitize=address
+#FLAGS +=        -g -fsanitize=thread
 FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -lpthread
 
 NAME =			miniRT

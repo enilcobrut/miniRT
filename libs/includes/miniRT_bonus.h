@@ -115,7 +115,6 @@ typedef struct s_hit_record
 	t_vector	normal;
 	double		t;
 	int			front_face;
-	// t_color		color;
 	t_material	*mat_ptr;
 }		t_hit;
 
@@ -233,6 +232,8 @@ typedef struct s_rtx
 
 typedef struct s_minirt
 {
+	int					y;
+	int					x;
 	void				*hit_obj_xpm;
 	void				*hit_obj_xpm_addr;
 	t_obj				*hit_obj;
@@ -240,6 +241,7 @@ typedef struct s_minirt
 	int					prompt_stat;
 	int					nt;
 	pthread_t			*t;
+	pthread_mutex_t		mutex;
 	t_rtx				r;
 	int					samples_per_pixel;
 	int					depth;
@@ -270,6 +272,9 @@ typedef struct s_th
 	t_minirt		*s;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	counter_mutex;
+	int				n;
+	struct s_th		*next;
+	struct s_th		*prev;
 }					t_th;
 
 void	print_spheres(t_minirt *s, int i);
@@ -520,6 +525,15 @@ t_cone	*lst_new_cone(void);
 t_cone	*lst_add_cone(t_cone **lst, t_cone *new);
 t_cone	*lst_last_cone(t_cone **lst);
 int		size_cone(t_cone *lst);
+
+
+/* -- THREAD -- */
+t_th	*init_th_lst(t_th *new);
+t_th	*lst_new_th(int n);
+t_th	*lst_add__th(t_th **lst, t_th *new);
+t_th	*lst_last_th(t_th **lst);
+int	size_th(t_th *lst);
+
 
 /* -- BONUS -- */
 
