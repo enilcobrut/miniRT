@@ -3,63 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 11:46:10 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/01/20 11:39:12 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 11:20:03 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	word_counter(char const *s, char c)
+static int	ft_pointer_counter(char const *s, char c)
 {
-	int count;
-	int i;
+	int	counter;
+	int	i;
 
-	count = 0;
+	counter = 0;
 	i = 0;
 	if (!s)
-		return (1);
+		return (0);
 	while (s[i])
 	{
 		while (s[i] && s[i] == c)
 			i++;
 		if (s[i] && s[i] != c)
-			count++;
+			counter++;
 		while (s[i] && s[i] != c)
 			i++;
 	}
-	return (count);
+	return (counter);
 }
 
-char **ft_split(char const *s, char c)
+static struct s_map	*ft_cut(struct s_map *map, char const *s, char c, int i)
 {
-	char **t;
-	int i;
-	int cursor;
-	int j;
+	int	t;
+	int	counter;
+
+	t = 0;
+	counter = 0;
+	while (s[i])
+	{
+		while (s[i] == c && s[i])
+			i++;
+		while (s[i] != c && s[i])
+		{
+			if (s[i] != c && counter == 0)
+			{
+				map[t].start = i;
+			}
+			counter++;
+			i++;
+		}
+		map[t++].len = counter;
+		counter = 0;
+	}
+	return (map);
+}
+
+static char	**ft_fill(char const *s, char **tab_2d, struct s_map *map, int n)
+{
+	int	t;
+
+	t = 0;
+	while (t < n)
+	{
+		tab_2d[t] = ft_substr(s, map[t].start, map[t].len);
+		t++;
+	}
+	tab_2d[t] = 0;
+	return (tab_2d);
+}
+
+char	**ft_split(char const *s, char c)
+{	
+	char			**tab_2d;
+	struct s_map	*map;
+	int				n;
+	int				i;
 
 	if (!s)
 		return (0);
-	t = ft_calloc(word_counter(s, c) + 1 , sizeof(char *));
-	if (!t)
-		return (0);
 	i = 0;
-	j = 0;
-	while (s[i])
+	n = ft_pointer_counter(s, c);
+	tab_2d = ft_calloc(n + 1, sizeof(char *));
+	map = ft_calloc(n + 1, sizeof(struct s_map));
+	if (map == NULL || tab_2d == NULL)
 	{
-		cursor = 0;
-		while (s[i] == c)
-			i++;
-		if (s[i] == 0)
-			break ;
-		while (s[i + cursor] && s[i + cursor] != c)
- 			cursor++;
-		t[j++] = ft_substr(&s[i], 0, cursor);
-		while (s[i] && s[i] != c)
-			i++;
+		free(map);
+		free(tab_2d);
+		return (0);
 	}
-	t[j++] = 0;
-	return (t);
-}	
+	map = ft_cut(map, s, c, i);
+	tab_2d = ft_fill(s, tab_2d, map, n);
+	free(map);
+	return (tab_2d);
+}

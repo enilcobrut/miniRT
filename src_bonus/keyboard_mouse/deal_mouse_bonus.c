@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_mouse_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:18:11 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/14 19:06:22 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 11:33:07 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	scroll_on_cylinder(t_minirt *s, int i)
 		s->hit_obj->u_.cy.diameter -= INTERVAL;
 	}
 	s->hit_obj->u_.cy.radius = s->hit_obj->u_.cy.diameter / 2;
-	
 }
 
 void	scroll_on_sphere(t_minirt *s, int i)
@@ -52,7 +51,7 @@ void	scroll_on_sphere(t_minirt *s, int i)
 void    scroll_on_cone(t_minirt *s, int i)
 {
     s->hit_obj->u_.co.ratio = s->hit_obj->u_.co.height
-            / s->hit_obj->u_.co.diameter;;
+            / s->hit_obj->u_.co.diameter;
     if (i == SCROLL_UP)
     {
         s->hit_obj->u_.co.height += INTERVAL * s->hit_obj->u_.co.ratio;

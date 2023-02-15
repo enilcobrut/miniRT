@@ -113,8 +113,9 @@ void	export_file_save(t_minirt *s, int opt)
 		fd = open("save.rt", O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	else
 	{
-		fd = open("autosave.rt", O_WRONLY | O_CREAT | O_APPEND, 0777);
-		ft_putstr_fd("===========================================\n", fd);
+		fd = open(s->argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		//fd = open("autosave.rt", O_WRONLY | O_CREAT | O_APPEND, 0777);
+		//ft_putstr_fd("===========================================\n", fd);
 	}
 	write_params(s, fd);
 	close(fd);

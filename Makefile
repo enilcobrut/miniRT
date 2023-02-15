@@ -139,7 +139,11 @@ re_bonus:
 run:
 	./$(NAME) pikachu.rt
 run_bonus:
-	./$(NAME)_bonus save.rt
+	./$(NAME)_bonus king_chess.rt
+
+
+m:
+	./$(NAME)_bonus king_chess.rt
 
 rr:
 	make re

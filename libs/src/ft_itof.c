@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itof.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/15 11:11:42 by flemaitr          #+#    #+#             */
+/*   Updated: 2023/02/15 11:17:38 by flemaitr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 int	ft_recursive_counter(long n)
@@ -19,14 +31,35 @@ int	ft_recursive_counter(long n)
 	return (len);
 }
 
+char	*ft_itof_next(char *integer, char *tmp_, long tmp)
+{
+	int		len;
+	char	*str;
+
+	len = ft_recursive_counter(tmp) + 1;
+	str = ft_calloc(len + 1, sizeof(char));
+	if (str == NULL)
+		return (0);
+	while (len)
+	{
+		len--;
+		str[len] = tmp % 10 + '0';
+		tmp = tmp / 10;
+	}
+	str[len] = '.';
+	tmp_ = ft_strjoin(integer, str);
+	return (str);
+}
+
 char	*ft_itof(double n)
 {
-	char	*str = NULL;
+	char	*str;
 	long	tmp;
-	int		len;
 	char	*integer;
-	char	*tmp_ = NULL;
+	char	*tmp_;
 
+	str = NULL;
+	tmp_ = NULL;
 	if ((n < 0 && n > -1))
 		integer = ft_strdup("-0");
 	else
@@ -39,18 +72,7 @@ char	*ft_itof(double n)
 		tmp_ = ft_strjoin(integer, ".000");
 	else
 	{
-		len = ft_recursive_counter(tmp) + 1;
-		str = ft_calloc(len + 1, sizeof(char));
-		if (str == NULL)
-			return (0);
-		while (len)
-		{
-			len--;
-			str[len] = tmp % 10 + '0';
-			tmp = tmp / 10;
-		}
-		str[len] = '.';
-		tmp_ = ft_strjoin(integer, str);
+		ft_itof_next(integer, tmp_, tmp);
 	}
 	free(integer);
 	free(str);
