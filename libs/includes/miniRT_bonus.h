@@ -216,14 +216,14 @@ typedef struct s_rtx
 {
 	t_vector	horizon;
 	t_vector	vertical;
-	t_vector	lower_left_corner;
+	t_vector	start;
 	t_vector	w;
 	t_vector	u;
 	t_vector	v;
 	double		theta;
 	double		h;
-	double		mul_t_u;
-	double		mul_t_v;
+	double		t_u;
+	double		t_v;
 	double		viewport_height;
 	double		viewport_width;
 	t_rayon		r;
@@ -243,7 +243,7 @@ typedef struct s_minirt
 	pthread_t			*t;
 	pthread_mutex_t		mutex;
 	t_rtx				r;
-	int					samples_per_pixel;
+	int					s_pixel;
 	int					depth;
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;

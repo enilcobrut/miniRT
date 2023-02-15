@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:12:39 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 16:21:15 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/14 18:59:38 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	get_cone_next(t_minirt *s, t_cone *co, t_list *p, t_obj *new_obj)
 {
-	co->cos_angle = cos(asin(co->sin_angle));
+	//co->cos_angle = cos(asin(co->sin_angle));
 	co->tan_angle = co->radius / co->height;
-	co->center = add_(co->center, mul_(co->dir_ax, co->height));
+ co->center = add_(co->center, mul_(co->dir_ax, co->height));
 	co->dir_ax = mul_(co->dir_ax, -1);
 	co->ratio = co->height / co->diameter;
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));

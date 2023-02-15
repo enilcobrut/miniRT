@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:04:02 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:06:44 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/14 17:02:45 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_set(t_minirt *s)
 {
 	s->on = 0;
 	s->prompt_stat = 0;
-	s->samples_per_pixel = SAMPLE_P_PIX;
+	s->s_pixel = SAMPLE_P_PIX;
 	s->depth = DEPTH;
 	s->params = NULL;
 	s->prompt = NULL;

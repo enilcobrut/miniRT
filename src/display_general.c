@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_general.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 17:37:43 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/10 17:37:45 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 11:16:41 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	init_rtx(t_minirt *s)
 	s->img.img = mlx_new_image(s->mlx, WIDTH, HEIGHT);
 	s->img.add_r = mlx_get_data_addr(s->img.img, &s->img.bits_ppix,
 			&s->img.line_length, &s->img.endian);
-
 }
 
 void	start_ray_tracing(t_minirt *s)

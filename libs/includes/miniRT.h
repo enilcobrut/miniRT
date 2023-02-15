@@ -21,7 +21,6 @@
 # define HEIGHT 768
 # define WIDTH 1024
 # define SAMPLE_P_PIX 2
-# define DEPTH 5
 # define T_MIN 0.001
 typedef struct s_material	t_material;
 typedef struct s_obj		t_obj;
@@ -174,14 +173,14 @@ typedef struct s_rtx
 {
 	t_vector	horizon;
 	t_vector	vertical;
-	t_vector	lower_left_corner;
+	t_vector	start;
 	t_vector	w;
 	t_vector	u;
 	t_vector	v;
 	double		theta;
 	double		h;
-	double		mul_t_u;
-	double		mul_t_v;
+	double		t_u;
+	double		t_v;
 	double		viewport_height;
 	double		viewport_width;
 	t_rayon		r;
@@ -193,8 +192,7 @@ typedef struct s_minirt
 	int					prompt_stat;
 	t_obj				*hit_obj;
 	t_rtx				r;
-	int					samples_per_pixel;
-	int					depth;
+	int					s_pixel;
 	int					buf[HEIGHT + 32][WIDTH];
 	t_data				img;
 	t_list				*params;
@@ -216,6 +214,9 @@ typedef struct s_minirt
 	void				*mlx;
 	void				*win;
 	char				*title;
+	double				ambiante;
+	double				speculaire;
+	double				light_dist;
 }	t_minirt;
 
 void	print_spheres(t_minirt *s, int i);
@@ -334,22 +335,14 @@ void	start_ray_tracing(t_minirt *s);
 void	display_prompt_status(t_minirt *s);
 
 /* DISPLAY SCENE RAY COLOR*************************************************** */
-t_color	ray_color_1(t_rayon *r, t_minirt *s, int depth);
-t_color	ray_color(t_rayon *r, t_minirt *s, int depth);
-t_color	ray_color_3(t_rayon *r, t_minirt *s, int depth);
+t_color	ray_color(t_rayon *r, t_minirt *s);
+
 
 /* DISPLAY SCENE MAT ******************************************************** */
 
 void		set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal);
-int			scatter_lambertian(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
-int			scatter_light(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
-t_vector	refract(const t_vector uv, const t_vector n, double etai_over_etat);
 t_vector	reflect(const t_vector v, const t_vector n);
-int			scatter_metal(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
-double	reflectance(double cos, double ref_i);
-int scatter_dielectric(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
-int	near_zero(const t_vector *vec);
-
+int scatter_lambertian(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 /* DISPLAY SCENE ************************************************************ */
 void	display_scene(t_minirt *s);
 void	get_prompt_color(t_minirt *s);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_keys_display_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:20:52 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:20:54 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/14 17:02:45 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	display_param_cam(t_minirt *s)
 	mlx_string_put(s->mlx, s->win, 10, 110, 0xFFFFFF, "CAM.DIR.Z :");
 	itof_to_win(s, s->cam_vec_dir.z, 125, 110);
 	mlx_string_put(s->mlx, s->win, 10, 130, 0xFFFFFF, "S/PIX :");
-	itoa_to_win(s, s->samples_per_pixel, 125, 130);
+	itoa_to_win(s, s->s_pixel, 125, 130);
 	mlx_string_put(s->mlx, s->win, 10, 150, 0xFFFFFF, "DEPTH :");
 	itoa_to_win(s, s->depth, 125, 150);
 }

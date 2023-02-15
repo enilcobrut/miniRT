@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:46:03 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/13 17:46:06 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 11:10:58 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	hit(const t_rayon *r, double t_max, t_hit *rec, t_obj *obj)
 			|| (obj->type == CYLINDER && hit_cylinder(&obj->u_.cy, r, &tp, c))
 			|| (obj->type == CONE && hit_cone(&obj->u_.co, r, &tp, c)))
 			register_hit(&hit_anything, &c, rec, &tp, obj);
-
 		obj = obj->next;
 	}
 	if (hit_anything && (rec->hit_obj->bump_map))

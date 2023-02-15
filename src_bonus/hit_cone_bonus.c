@@ -24,10 +24,13 @@ int hit_cone_body(t_cone *cone, const t_rayon *r, t_hit *rec, double t_max)
 	t_vector p = sub_(rec->p, cone->center);
 	double v = dot(p, cone->dir_ax);
 	if (v < 0 || cone->height < v)
+	{
 		return (0);
+	}
 	double d = vec3_length(p) * cone->tan_angle;
-	if (d * d > v * v)
+	if (d * d > v * v && cone->tan_angle < 1)
 		return (0);
+	//puts("lala");
 	t_vector normal = sub_(p, mul_(cone->dir_ax, v));
 	normal = div_(normal, d);
 	set_face_normal(r, rec, normal);

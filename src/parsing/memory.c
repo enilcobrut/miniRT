@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:51:21 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 17:38:06 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/14 17:02:45 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ void	init_set(t_minirt *s)
 {
 	s->hit_obj = NULL;
 	s->prompt_stat = 1;
-	s->samples_per_pixel = SAMPLE_P_PIX;
-	s->depth = DEPTH;
+	s->s_pixel = SAMPLE_P_PIX;
 	s->params = NULL;
 	s->prompt = NULL;
 	s->amb_light_ratio = 0;

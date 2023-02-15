@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:46:22 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/13 20:03:12 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/14 16:52:36 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,57 +25,6 @@ t_color	clamp_color(t_color color)
 {
 	return ((t_color)
 		{clamp(color.r, 0, 1), clamp(color.g, 0, 1), clamp(color.b, 0, 1)});
-}
-
-
-static t_color	get_lighting(t_rayon *ray, t_hit *rec, t_minirt *scene)
-{
-	t_color		light;
-	t_hit		rec2;
-	t_rayon		shadow_ray;
-	double		specular;
-	double		diffuse;
-	double		light_distance;
-
-	light = color_mul_scalar(scene->amb_light_color, scene->amb_light_ratio);
-	for (t_light *light_ptr = scene->li; light_ptr; light_ptr = light_ptr->next)
-	{
-		t_vector light_dir = sub_(light_ptr->light_axis, rec->p);
-		shadow_ray = init_rayon(rec->p, vec3_unit_vector(light_dir));
-		if (!hit(&shadow_ray, vec3_length(light_dir), &rec2, scene->obj))
-		{
-			specular = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(reflect(ray->direction, rec->normal))));
-			light_distance = vec3_length(light_dir) / 1000;
-			diffuse = fmax(0, dot(vec3_unit_vector(light_dir), vec3_unit_vector(rec->normal))) / (1 + light_distance * light_distance);
-			light = color_add_(light, color_mul_scalar(color_mul_scalar(light_ptr->light_color, light_ptr->light_brightness_ratio), diffuse + pow(specular, 100)));
-		}
-	}
-	return (light);
-}
-
-t_color	ray_color1(t_rayon *ray, t_minirt *scene)
-{
-	t_hit	rec;
-	t_color	light;
-	t_rayon	scattered;
-	t_color	attenuation;
-
-	ray->direction = vec3_unit_vector(ray->direction);
-	light = init_color(0, 0, 0);
-	if (hit(ray, INF, &rec, scene->obj))
-	{
-		light = get_lighting(ray, &rec, scene);
-		if (rec.mat_ptr->scatter(ray, &rec, &attenuation, &scattered))
-		{
-			light = color_mul(attenuation, clamp_color(light));
-			if (rec.hit_obj == scene->hit_obj)
-				rec.mat_ptr->scatter = scatter_checkboard;
-			if (!rec.mat_ptr->scatter(ray, &rec, &attenuation, &scattered))
-				return (init_color(0, 0, 0));
-			light = color_mul(attenuation, clamp_color(light));
-		}
-	}
-	return (light);
 }
 
 t_color	compute_lighting(t_rayon *r, t_hit *rec, t_minirt *s)
@@ -282,7 +231,7 @@ void	get_pixels_to_img(t_minirt *s)
 	s->r.viewport_width = ((double)WIDTH/HEIGHT) * s->r.viewport_height;
 	s->r.horizon = mul_(s->r.u, s->r.viewport_width);
 	s->r.vertical = mul_(s->r.v, s->r.viewport_height);
-	s->r.lower_left_corner = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)), mul_(s->r.vertical, 0.5)), s->r.w);
+	s->r.start = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)), mul_(s->r.vertical, 0.5)), s->r.w);
 	get_multi_threading(s);
 	end = clock();
    	elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;

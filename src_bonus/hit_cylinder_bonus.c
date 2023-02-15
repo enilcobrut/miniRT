@@ -20,7 +20,7 @@ int	hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, 
 }
 
 
-int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double root)
+int	hit_cylinder2(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double root)
 {
 	t_vector	p;
 	t_vector	normal;
@@ -39,7 +39,7 @@ int	hit_cylinder_body_next(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double
 	return (0);
 }
 
-int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
+int	hit_cyl_body(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
 {
 	t_vector				oc;
 	t_quadratic_equation	qe;
@@ -59,7 +59,7 @@ int	hit_cylinder_body(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_ma
 		if (root < T_MIN || t_max < root)
 			return (0);
 	}
-	if (hit_cylinder_body_next(cyl, r, rec, root))
+	if (hit_cylinder2(cyl, r, rec, root))
 		return (0);
 	return (1);
 }
@@ -87,7 +87,7 @@ int hit_cylinder(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
 		c = tp.t;
 		*rec = tp;
 	}
-	t = hit_cylinder_body(cyl, r, &tp, c);
+	t = hit_cyl_body(cyl, r, &tp, c);
 	if (t)
 	{
 		hit_anything = 1;

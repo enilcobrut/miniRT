@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_mouse_hit_obj_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:14:06 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 19:14:08 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/14 17:03:49 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ void	hit_something(t_minirt *s, int x, int y)
 {
 	t_hit	rec;
 
-	s->r.mul_t_u = 1 - (double)x / (double)(WIDTH - 1);
-	s->r.mul_t_v = 1 - (double)y / (double)(HEIGHT - 1);
-	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner,
-						mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical,
-						s->r.mul_t_v)), s->cam_origin));
+	s->r.t_u = 1 - (double)x / (double)(WIDTH - 1);
+	s->r.t_v = 1 - (double)y / (double)(HEIGHT - 1);
+	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.start,
+						mul_(s->r.horizon, s->r.t_u)), mul_(s->r.vertical,
+						s->r.t_v)), s->cam_origin));
 	if (hit(&s->r.r, INF, &rec, s->obj))
 		s->hit_obj = rec.hit_obj;
 }

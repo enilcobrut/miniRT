@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_scene.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/14 16:49:10 by cjunker           #+#    #+#             */
+/*   Updated: 2023/02/15 11:17:31 by cjunker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT.h"
 
 void	display_scene(t_minirt *s)
@@ -36,6 +48,16 @@ void	get_prompt_color(t_minirt *s)
 	}
 }
 
+void	init_windows(t_minirt *s, double x, double y)
+{
+	s->r.t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
+	s->r.t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
+	s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.start,
+						mul_(s->r.horizon, s->r.t_u)),
+					mul_(s->r.vertical, s->r.t_v)), s->cam_origin));
+	s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s));
+}
+
 void	get_no_multi_threading(t_minirt *s)
 {
 	char	*dst;
@@ -43,33 +65,20 @@ void	get_no_multi_threading(t_minirt *s)
 	int		x;
 	int		i;
 
-	y = HEIGHT - 1;
-	x = 0;
-	i = 0;
-	while (y >= 0)
+	y = HEIGHT;
+	while (--y >= 0)
 	{
-		x = 0;
-		while (x < WIDTH)
+		x = -1;
+		while (++x < WIDTH)
 		{
-			s->r.pixel_color.r = 0;
-			s->r.pixel_color.g = 0;
-			s->r.pixel_color.b = 0;
-			i = 0;
-			while (i < s->samples_per_pixel)
-			{
-				s->r.mul_t_u = 1 - ((double)x + random_double()) / (double)(WIDTH - 1);
-				s->r.mul_t_v = ((double)y + random_double()) / (double)(HEIGHT - 1);
-				s->r.r = init_rayon(s->cam_origin, sub_(add_(add_(s->r.lower_left_corner,
-							mul_(s->r.horizon, s->r.mul_t_u)), mul_(s->r.vertical, s->r.mul_t_v)), s->cam_origin));
-				s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s, s->depth));
-				i++;
-			}
+			s->r.pixel_color = init_color(0, 0, 0);
+			i = -1;
+			while (++i < s->s_pixel)
+				init_windows(s, x, y);
 			dst = s->img.add_r + ((HEIGHT - y - 1) * s->img.line_length
 					+ x * (s->img.bits_ppix / 8));
-			*(unsigned int *)dst = write_color(s->r.pixel_color, s->samples_per_pixel);
-			x++;
+			*(unsigned int *)dst = write_color(s->r.pixel_color, s->s_pixel);
 		}
-		y--;
 	}
 }
 
@@ -86,7 +95,7 @@ int	get_pixels_to_img(t_minirt *s)
 	s->r.viewport_width = ((double)WIDTH / HEIGHT) * s->r.viewport_height;
 	s->r.horizon = mul_(s->r.u, s->r.viewport_width);
 	s->r.vertical = mul_(s->r.v, s->r.viewport_height);
-	s->r.lower_left_corner = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)),
+	s->r.start = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)),
 				mul_(s->r.vertical, 0.5)), s->r.w);
 	get_no_multi_threading(s);
 	return (0);
