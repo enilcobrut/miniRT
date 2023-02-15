@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:01:30 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 13:16:32 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 17:34:15 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ void	check_integer_format(t_minirt *s, char *str)
 
 void	check_format_rgb(t_minirt *s, char *str)
 {
-	int		i;
-	int		c;
+	int	i;
+	int	c;
 
-	i = 0;
+	i = -1;
 	c = 0;
 	while (str[++i])
 	{

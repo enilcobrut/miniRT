@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:04:02 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/14 17:02:45 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 17:35:22 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	init_set(t_minirt *s)
 	s->win = NULL;
 	s->img.img = ft_calloc(2, sizeof(void *));
 	s->img.add_r = ft_calloc(2, sizeof(char *));
-	s->title = ft_strdup("miniRT_bonus");
+	s->title = ft_strjoin("Happy Tree miniRT - ", s->argv[1]);
 	s->k = "asdfhgzxcv\0bqweryt123465+97-80]ou[ip\0lj'k;\\,/nm.\0 `\0";
 }
 

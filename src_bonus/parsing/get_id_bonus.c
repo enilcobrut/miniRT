@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:14:21 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 17:35:02 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	get_camera_par(t_minirt *s, t_list *p)
 	s->cam_fov = ft_atoi(p->content[3]);
 	if (ft_strncmp(p->content[3], "0", 2) && !s->cam_fov)
 		exit_error(s, "A number is > INT_MAX", 1);
-	if (s->cam_fov >= 180 || s->cam_fov <= 0)
+	if (s->cam_fov > 180 || s->cam_fov < 0)
 		exit_error(s, "Horizontal field of view not in range [0,180]", 1);
 	return (1);
 }

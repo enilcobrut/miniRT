@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_general_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:22:56 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:24:11 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 14:24:17 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	start_ray_tracing(t_minirt *s)
 	get_pixels_to_img(s);
 	s->hit_obj = NULL;
 	push_img_to_win(s, ALL);
-	display_param_cam(s);
 	mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xF00020, "*");
 	mlx_hook(s->win, 2, 1L << 0, key_press, s);
 	mlx_mouse_hook(s->win, button_press, s);
