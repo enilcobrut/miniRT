@@ -70,7 +70,7 @@ typedef struct s_quadratic_equation
 	double half_b;
 	double c;
 	double delta;
-}	t_quadratic_equation;
+}	t_quadra;
 
 typedef struct s_data
 {
@@ -342,7 +342,7 @@ t_color	ray_color(t_rayon *r, t_minirt *s);
 
 void		set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal);
 t_vector	reflect(const t_vector v, const t_vector n);
-int scatter_lambertian(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
+int scat_lamb(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 /* DISPLAY SCENE ************************************************************ */
 void	display_scene(t_minirt *s);
 void	get_prompt_color(t_minirt *s);
@@ -388,7 +388,7 @@ t_vector random_in_unit_sphere_2(void);
 t_vector	get_normalize_vector(t_vector v);
 float	get_norme_vector(t_vector v);
 t_vector init_vector(float x, float y, float z);
-t_vector	vec3_unit_vector(t_vector a);
+t_vector	norm_(t_vector a);
 double	vec3_length(t_vector a);
 
 /* MATHS RANDOM *************************************************************** */

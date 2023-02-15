@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 11:15:32 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 11:15:34 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:06 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_vector	init_vector(float x, float y, float z)
 	return ((t_vector){x, y, z});
 }
 
-t_vector	vec3_unit_vector(t_vector a)
+t_vector	norm_(t_vector a)
 {
 	double	length;
 

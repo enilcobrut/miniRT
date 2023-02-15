@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:02:28 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:02:36 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 13:13:41 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ double	ft_atof(t_minirt *s, char *str, double res, double res2)
 	len = ft_strlen(&str[i]);
 	while (len--)
 		res2 /= 10;
-	if (res >= 0)
+	if (str[0] != '-')
 		return (res + res2);
 	else
 		return (res + -res2);

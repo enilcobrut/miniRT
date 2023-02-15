@@ -6,26 +6,24 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:46:03 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 11:10:58 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 14:13:09 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
-void	register_hit(int *h, double *c, t_hit *r, t_hit *t, t_obj *o)
+static void	register_hit(int *h, double *c, t_hit *rec, t_hit *t)
 {
 	*h = 1;
 	*c = t->t;
-	*r = *t;
-	r->mat_ptr = &o->mat;
-	r->hit_obj = o;
+	*rec = *t;
 }
 
 void	apply_bump_map(t_hit *rec)
 {
 	int	col;
 
-	rec->normal = vec3_unit_vector(rec->normal);
+	rec->normal = norm_(rec->normal);
 	col = rec->hit_obj->bump_map_addr[
 		(super_mod(rec->p.x * 100.0, rec->hit_obj->bump_height))
 		* rec->hit_obj->bump_width
@@ -48,7 +46,11 @@ int	hit(const t_rayon *r, double t_max, t_hit *rec, t_obj *obj)
 			|| (obj->type == PLANE && hit_plane(&obj->u_.pl, r, &tp, c))
 			|| (obj->type == CYLINDER && hit_cylinder(&obj->u_.cy, r, &tp, c))
 			|| (obj->type == CONE && hit_cone(&obj->u_.co, r, &tp, c)))
-			register_hit(&hit_anything, &c, rec, &tp, obj);
+		{
+			register_hit(&hit_anything, &c, rec, &tp);
+			rec->mat_ptr = &obj->mat;
+			rec->hit_obj = obj;
+		}
 		obj = obj->next;
 	}
 	if (hit_anything && (rec->hit_obj->bump_map))

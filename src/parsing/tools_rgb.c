@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_rgb.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:48:34 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/10 11:50:10 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 13:16:28 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,6 @@ t_color	get_rgb_str_to_color(t_minirt *s, char *str, char *tmp)
 			break ;
 	}
 	if (!is_rgb(rgb[0]) || !is_rgb(rgb[1]) || !is_rgb(rgb[2]))
-		exit_error(0, "RGB out of range [0,255].", 1);
+		exit_error(s, "RGB out of range [0,255].", 1);
 	return ((t_color){rgb[0], rgb[1], rgb[2]});
 }

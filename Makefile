@@ -84,6 +84,8 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 				src_bonus/vector_operation_bonus.c \
 				src_bonus/vector_random_bonus.c \
 				src_bonus/vector_tools_bonus.c \
+				src_bonus/display_scene_raycolor_bonus.c \
+				src_bonus/display_scene_mat_bonus.c \
 
 
 OBJS =          $(SRCS:.c=.o)

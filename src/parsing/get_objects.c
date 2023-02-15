@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:39:28 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/14 17:55:28 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	get_plane(t_minirt *s, t_list *p)
 	get_axis(s, &pl->axis, p->content[1], 0);
 	get_axis(s, &pl->dir_ax, p->content[2], 0);
 	check_vector_range(s, &pl->dir_ax);
-	pl->dir_ax = vec3_unit_vector(pl->dir_ax);
+	pl->dir_ax = norm_(pl->dir_ax);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
 	return (1);
 }
@@ -60,7 +60,7 @@ int	get_cylinder(t_minirt *s, t_list *p)
 	get_axis(s, &cy->center, p->content[1], 0);
 	get_axis(s, &cy->dir_ax, p->content[2], 0);
 	check_vector_range(s, &cy->dir_ax);
-	cy->dir_ax = vec3_unit_vector(cy->dir_ax);
+	cy->dir_ax = norm_(cy->dir_ax);
 	check_float_format(s, p->content[3]);
 	cy->diameter = ft_atof(s, p->content[3], 0, 0);
 	cy->radius = cy->diameter * 0.5;

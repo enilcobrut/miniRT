@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_tools_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:25:40 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:25:42 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 11:40:29 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,10 @@ int	write_color(t_color	pixel_color, int sample_per_pixel)
 	new_c.g = pixel_color.g * scale;
 	new_c.b = pixel_color.b * scale;
 	return (create_trgb(0, new_c.r * 255, new_c.g * 255, new_c.b * 255));
+}
+
+t_color	clamp_color(t_color color)
+{
+	return ((t_color)
+		{clamp(color.r, 0, 1), clamp(color.g, 0, 1), clamp(color.b, 0, 1)});
 }

@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 11:14:44 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 11:21:17 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:06 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,6 @@ int	hit(const t_rayon *r, double t_max, t_hit *rec, t_obj *obj)
 		obj = obj->next;
 	}
 	if (hit_anything)
-		rec->normal = vec3_unit_vector(rec->normal);
+		rec->normal = norm_(rec->normal);
 	return (hit_anything);
 }

@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hit_plane_bonus.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/15 13:32:10 by cjunker           #+#    #+#             */
+/*   Updated: 2023/02/15 13:32:17 by cjunker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT_bonus.h"
 
-int hit_plane(t_plane *p, const t_rayon *r, t_hit *rec, double t_max)
+int	hit_plane(t_plane *p, const t_rayon *r, t_hit *rec, double t_max)
 {
 	t_vector	norm;
 	double		t;
 
-	norm = vec3_unit_vector(p->dir_ax);
+	norm = norm_(p->dir_ax);
 	t = dot(norm, sub_(p->axis, r->origine)) / dot(norm, r->direction);
 	if (t < T_MIN || t > t_max)
 		return (0);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector_tools_bonus.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/15 13:46:45 by cjunker           #+#    #+#             */
+/*   Updated: 2023/02/15 13:46:46 by cjunker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "miniRT_bonus.h"
 
 t_vector	get_normalize_vector(t_vector v)
@@ -23,7 +35,7 @@ t_vector	init_vector(float x, float y, float z)
 	return ((t_vector){x, y, z});
 }
 
-t_vector	vec3_unit_vector(t_vector a)
+t_vector	norm_(t_vector a)
 {
 	double	length;
 

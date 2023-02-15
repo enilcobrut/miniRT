@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:20:40 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 16:01:21 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	move_cy_vec(t_minirt *s, int key)
 		s->hit_obj->u_.cy.dir_ax.y -= INTERVAL_VEC;
 	else if (key == THREE)
 		s->hit_obj->u_.cy.dir_ax.y += INTERVAL_VEC;
-	s->hit_obj->u_.cy.dir_ax = vec3_unit_vector(s->hit_obj->u_.cy.dir_ax);
+	s->hit_obj->u_.cy.dir_ax = norm_(s->hit_obj->u_.cy.dir_ax);
 }
 
 void	move_co_or(t_minirt *s, int key)
@@ -75,5 +75,5 @@ void	move_co_vec(t_minirt *s, int key)
 		s->hit_obj->u_.co.dir_ax.y -= INTERVAL_VEC;
 	else if (key == THREE)
 		s->hit_obj->u_.co.dir_ax.y += INTERVAL_VEC;
-	s->hit_obj->u_.co.dir_ax = vec3_unit_vector(s->hit_obj->u_.co.dir_ax);
+	s->hit_obj->u_.co.dir_ax = norm_(s->hit_obj->u_.co.dir_ax);
 }

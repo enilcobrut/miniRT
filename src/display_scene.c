@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:49:10 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 11:17:31 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	get_pixels_to_img(t_minirt *s)
 {
 	const t_vector	vup = init_vector(0, 1, 0);
 
-	s->r.w = vec3_unit_vector(mul_(s->cam_vec_dir, -1));
-	s->r.u = vec3_unit_vector(vec_cross(vup, s->r.w));
+	s->r.w = norm_(mul_(s->cam_vec_dir, -1));
+	s->r.u = norm_(vec_cross(vup, s->r.w));
 	s->r.v = vec_cross(s->r.w, s->r.u);
 	s->r.theta = degrees_to_radians(s->cam_fov);
 	s->r.h = tan(s->r.theta / 2);

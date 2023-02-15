@@ -23,7 +23,7 @@
 # define WIDTH 1024
 # define SAMPLE_P_PIX 1
 # define DEPTH 1
-# define MATERIAL(obj) (scatter_lambertian)
+# define MATERIAL(obj) (scat_lamb)
 #ifndef NUM_THREADS
 # define NUM_THREADS 1
 #endif
@@ -82,11 +82,12 @@ typedef struct s_data
 
 typedef struct s_quadratic_equation
 {
-	double a;
-	double half_b;
-	double c;
-	double delta;
-}	t_quadratic_equation;
+	double	a;
+	double	half_b;
+	double	c;
+	double	delta;
+	double	k;
+}	t_quadra;
 
 typedef struct s_color
 {
@@ -101,6 +102,13 @@ typedef struct s_vector
 	double	y;
 	double	z;
 }				t_vector;
+
+typedef struct s_disk
+{
+	t_vector	center;
+	t_vector	normal;
+	double		radius;
+} t_disk;
 
 typedef struct s_rayon
 {
@@ -264,6 +272,12 @@ typedef struct s_minirt
 	void				*mlx;
 	void				*win;
 	char				*title;
+	double				speculaire;
+	double				ambiante;
+	double				light_dist;
+	
+	//t_vector			light_ax;
+	//t_vector			light_dir;
 }	t_minirt;
 
 typedef struct s_th
@@ -412,8 +426,7 @@ void		show_sphere(t_minirt *s, t_sphere *sp, int *x, int *y);
 int			push_img_to_win(t_minirt *s, int opt);
 int			write_color(t_color	pixel_color, int sample_per_pixel);
 void		set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal);
-int			scatter_lambertian(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
-int			scatter_metal(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
+int			scat_lamb(const t_rayon *r, const t_hit *rec, t_color *a, t_rayon *s);
 t_vector	reflect(const t_vector v, const t_vector n);
 int			super_mod(int div, int mod);
 t_color		clamp_color(t_color color);
@@ -455,7 +468,7 @@ int	get_hexa_color(t_color color);
 void set_face_normal(const t_rayon *r, t_hit *rec, t_vector outward_normal);
 t_color get_rgb(int color);
 double	vec3_length(t_vector a);
-t_vector	vec3_unit_vector(t_vector a);
+t_vector	norm_(t_vector a);
 t_vector vec_random();
 t_vector vec_random_2(double min, double max);
 t_vector random_in_unit_sphere();
@@ -545,10 +558,10 @@ void *dispatch_thread(void *arg);
 void	get_multi_threading(t_minirt *s);
 void get_no_multi_threading(t_minirt *s);
 int hit_cone(t_cone *cone, const t_rayon *r, t_hit *rec, double t_max);
-int hit_disk(t_vector center, t_vector normal, double radius, const t_rayon *r, double t_max, t_hit *rec);
+int	hit_disk(t_disk *disk, const t_rayon *r, double t_max, t_hit *rec);
 void	hit_something(t_minirt *s, int x, int y);
 void	export_file_save(t_minirt *s, int opt);
-int scatter_checkboard(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
+int scat_check(const t_rayon *r, const t_hit *rec, t_color *attenuation, t_rayon *scattered);
 void	write_params(t_minirt *s, int fd);
 void	export_file_save(t_minirt *s, int opt);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_mouse_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:18:11 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 11:33:07 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 13:49:21 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,25 @@ void	scroll_on_sphere(t_minirt *s, int i)
 	s->hit_obj->u_.sp.radius = s->hit_obj->u_.sp.diameter / 2;
 }
 
-void    scroll_on_cone(t_minirt *s, int i)
+void	scroll_on_cone(t_minirt *s, int i)
 {
-    s->hit_obj->u_.co.ratio = s->hit_obj->u_.co.height
-            / s->hit_obj->u_.co.diameter;
-    if (i == SCROLL_UP)
-    {
-        s->hit_obj->u_.co.height += INTERVAL * s->hit_obj->u_.co.ratio;
-        s->hit_obj->u_.co.diameter += INTERVAL;
-    }
-    else if (i == SCROLL_DOWN && s->hit_obj->u_.co.radius > 0)
-    {
-        s->hit_obj->u_.co.height -= INTERVAL * s->hit_obj->u_.co.ratio;
-        s->hit_obj->u_.co.diameter -= INTERVAL;
-    }
-    s->hit_obj->u_.co.radius = s->hit_obj->u_.co.diameter / 2;
-    s->hit_obj->u_.co.tan_angle = s->hit_obj->u_.co.radius
-            / s->hit_obj->u_.co.height;
+	s->hit_obj->u_.co.ratio = s->hit_obj->u_.co.height
+		/ s->hit_obj->u_.co.diameter;
+	if (i == SCROLL_UP)
+	{
+		s->hit_obj->u_.co.height += INTERVAL * s->hit_obj->u_.co.ratio;
+		s->hit_obj->u_.co.diameter += INTERVAL;
+	}
+	else if (i == SCROLL_DOWN && s->hit_obj->u_.co.radius > 0)
+	{
+		s->hit_obj->u_.co.height -= INTERVAL * s->hit_obj->u_.co.ratio;
+		s->hit_obj->u_.co.diameter -= INTERVAL;
+	}
+	s->hit_obj->u_.co.radius = s->hit_obj->u_.co.diameter / 2;
+	s->hit_obj->u_.co.tan_angle = s->hit_obj->u_.co.radius
+		/ s->hit_obj->u_.co.height;
 }
+
 int	button_press(int i, int x, int y, t_minirt *s)
 {
 	if (s->prompt_stat == 0 && (i == RIGHT_MOUSE || i == LEFT_MOUSE))

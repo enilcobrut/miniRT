@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_id.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:57:25 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/10 11:57:56 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	get_camera_par(t_minirt *s, t_list *p)
 	get_axis(s, &s->cam_origin, p->content[1], 0);
 	get_axis(s, &s->cam_vec_dir, p->content[2], 0);
 	check_vector_range(s, &s->cam_vec_dir);
-	s->cam_vec_dir = vec3_unit_vector(s->cam_vec_dir);
+	s->cam_vec_dir = norm_(s->cam_vec_dir);
 	check_integer_format(s, p->content[3]);
 	s->cam_fov = ft_atoi(p->content[3]);
 	if (ft_strncmp(p->content[3], "0", 2) && !s->cam_fov)
