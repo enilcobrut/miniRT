@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_axis.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:50:38 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/10 11:50:45 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 12:23:03 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	check_axis_format(t_minirt *s, char *axis, char *tmp)
 			i[1]++;
 			tmp = ft_substr(axis, 0, i[0]);
 			check_float_format(s, tmp);
-			free(tmp);
+			ft_free(&tmp);
 			axis = &axis[i[0]] + 1;
 			i[0] = 0;
 		}
@@ -34,7 +34,7 @@ void	check_axis_format(t_minirt *s, char *axis, char *tmp)
 	}
 	tmp = ft_substr(axis, 0, i[0]);
 	check_float_format(s, tmp);
-	free(tmp);
+	ft_free(&tmp);
 	i[1]++;
 	if (i[1] > 3)
 		exit_error(s, "Axis format aren't compliant", 1);
@@ -82,7 +82,7 @@ void	get_axis(t_minirt *s, t_vector *p, char *str, char *tmp)
 		tmp = ft_substr_gnl(str, i[0], i[1]);
 		s->f[i[2]] = ft_atof(s, tmp, 0, 0);
 		i[2]++;
-		free(tmp);
+		ft_free(&tmp);
 		if (str[i[1]] == 0)
 			break ;
 	}

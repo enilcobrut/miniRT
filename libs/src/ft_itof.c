@@ -6,7 +6,7 @@
 /*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 11:11:42 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 11:17:38 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/16 12:15:15 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ char	*ft_itof_next(char *integer, char *tmp_, long tmp)
 	}
 	str[len] = '.';
 	tmp_ = ft_strjoin(integer, str);
-	return (str);
+	free(str);
+	return (tmp_);
 }
 
 char	*ft_itof(double n)
@@ -71,9 +72,7 @@ char	*ft_itof(double n)
 	if (tmp == 0)
 		tmp_ = ft_strjoin(integer, ".000");
 	else
-	{
-		ft_itof_next(integer, tmp_, tmp);
-	}
+		tmp_ = ft_itof_next(integer, tmp_, tmp);
 	free(integer);
 	free(str);
 	return (tmp_);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_params.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:51:33 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/10 11:51:36 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/16 10:12:19 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	get_params_loop(t_minirt *s, char *tmp, int fd_params)
 {
 	while (tmp)
 	{
-		free(tmp);
+		ft_free(&tmp);
 		tmp = get_next_line(fd_params);
 		if (tmp && tmp[0])
 		{
@@ -27,7 +27,7 @@ void	get_params_loop(t_minirt *s, char *tmp, int fd_params)
 				ft_lstadd_back(&s->params, ft_lstnew(ft_split(tmp, ' ')));
 		}
 	}
-	free(tmp);
+	ft_free(&tmp);
 	close(fd_params);
 }
 

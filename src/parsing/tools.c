@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:48:35 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 17:48:37 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 14:27:30 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	is_void(char *str, int end)
 
 int	check_float_atof(t_minirt *s, char *str, int i)
 {
+	if (ft_strlen(str) > 10)
+		exit_error(s, "Error float format. > 10", 1);
 	if (str[ft_strlen(str) - 1] == '.')
 		exit_error(s, "Error float format.", 1);
 	while (str[i])
@@ -64,7 +66,7 @@ double	ft_atof(t_minirt *s, char *str, double res, double res2)
 	int		i;
 
 	i = check_float_atof(s, str, 0);
-	res = (double)ft_atoi(str);
+	res = ft_atoi(str);
 	len = i;
 	while (str[i])
 	{
@@ -79,7 +81,7 @@ double	ft_atof(t_minirt *s, char *str, double res, double res2)
 	len = ft_strlen(&str[i]);
 	while (len--)
 		res2 /= 10;
-	if (res >= 0)
+	if (str[0] != '-')
 		return (res + res2);
 	else
 		return (res + -res2);

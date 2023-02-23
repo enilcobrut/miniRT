@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit_cylinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 11:01:57 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 13:10:36 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 11:32:57 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	hit_cylinder2(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double root)
 int	hit_cyl_body(t_cylinder *cyl, const t_rayon *r, t_hit *rec, double t_max)
 {
 	t_vector				oc;
-	t_quadra	qe;
+	t_quadratic_equation	qe;
 	double					root;
 
 	oc = sub_(r->origine, cyl->center);

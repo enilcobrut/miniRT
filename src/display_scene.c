@@ -3,50 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   display_scene.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:49:10 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 19:12:21 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-void	display_scene(t_minirt *s)
-{
-	get_pixels_to_img(s);
-	push_img_to_win(s);
-	if (s->cam_param_display == 1)
-		display_param_cam(s);
-	display_hit_obj_params(s);
-}
-
-void	get_prompt_color(t_minirt *s)
-{
-	int		x;
-	int		y;
-	char	*dst;
-	t_color	color;
-
-	x = 0;
-	y = 0;
-	color = init_color(100, 100, 100);
-	while (y < 32)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			dst = s->img.add_r + (y * s->img.line_length
-					+ x * (s->img.bits_ppix / 8));
-			*(unsigned int *)dst = get_hexa_color(color);
-			x++;
-		}
-		y++;
-		color.r = color.r - 2;
-		color.g = color.g - 2;
-		color.b = color.b - 2;
-	}
-}
 
 void	init_windows(t_minirt *s, double x, double y)
 {
@@ -58,7 +22,7 @@ void	init_windows(t_minirt *s, double x, double y)
 	s->r.pixel_color = color_add_(s->r.pixel_color, ray_color(&s->r.r, s));
 }
 
-void	get_no_multi_threading(t_minirt *s)
+void	get_pixels(t_minirt *s)
 {
 	char	*dst;
 	int		y;
@@ -97,6 +61,6 @@ int	get_pixels_to_img(t_minirt *s)
 	s->r.vertical = mul_(s->r.v, s->r.viewport_height);
 	s->r.start = sub_(sub_(sub_(s->cam_origin, mul_(s->r.horizon, 0.5)),
 				mul_(s->r.vertical, 0.5)), s->r.w);
-	get_no_multi_threading(s);
+	get_pixels(s);
 	return (0);
 }

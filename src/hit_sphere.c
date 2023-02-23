@@ -6,7 +6,7 @@
 /*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 11:04:50 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 13:10:36 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 11:04:52 by cjunker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	hit_sphere(t_sphere *sp, const t_rayon *r, t_hit *rec, double t_max)
 {
 	t_vector				oc;
-	t_quadra	qe;
+	t_quadratic_equation	qe;
 	double					root;
 
 	oc = sub_(r->origine, sp->center_axis);

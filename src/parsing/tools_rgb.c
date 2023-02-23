@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_rgb.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:48:34 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 13:16:28 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 16:49:15 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	check_format_rgb(t_minirt *s, char *str)
 	int		i;
 	int		c;
 
-	i = 0;
+	i = -1;
 	c = 0;
 	while (str[++i])
 	{
@@ -86,7 +86,7 @@ t_color	get_rgb_str_to_color(t_minirt *s, char *str, char *tmp)
 		tmp = ft_substr_gnl(str, i[0], i[1]);
 		rgb[i[2]] = ft_atoi(tmp);
 		i[2]++;
-		free(tmp);
+		ft_free(&tmp);
 		if (str[i[1]] == 0)
 			break ;
 	}

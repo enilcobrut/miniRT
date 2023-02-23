@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+         #
+#    By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/23 14:42:57 by flemaitr          #+#    #+#              #
-#    Updated: 2023/01/21 11:37:04 by cjunker          ###   ########.fr        #
+#    Updated: 2023/02/15 12:02:49 by flemaitr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,8 +55,6 @@ SRCS =		src/ft_printf_fd.c \
 			src/ft_lstsize.c \
 			src/ft_lstlast.c \
 			src/ft_lstadd_back.c \
-
-
 			
 OBJS =		$(SRCS:.c=.o)
 

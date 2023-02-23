@@ -47,7 +47,8 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 				src_bonus/keyboard_mouse/deal_keys_tools_bonus.c \
 				src_bonus/keyboard_mouse/deal_mouse_bonus.c \
 				src_bonus/keyboard_mouse/deal_mouse_hit_obj_bonus.c \
-				src_bonus/keyboard_mouse/file_backup_bonus.c \
+				src_bonus/keyboard_mouse/file_back_up_bonus.c \
+				src_bonus/keyboard_mouse/file_back_up2_bonus.c \
 				src_bonus/keyboard_mouse/print_bonus.c \
 				src_bonus/linked_lists/cone_bonus.c \
 				src_bonus/linked_lists/cylinder_bonus.c \
@@ -55,7 +56,6 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 				src_bonus/linked_lists/obj_bonus.c \
 				src_bonus/linked_lists/plane_bonus.c \
 				src_bonus/linked_lists/sphere_bonus.c \
-				src_bonus/linked_lists/thread.c \
 				src_bonus/parsing/get_id_bonus.c \
 				src_bonus/parsing/get_objects_for_bonus.c \
 				src_bonus/parsing/get_objects_bonus.c \
@@ -91,8 +91,6 @@ SRCS_BONUS =	src_bonus/keyboard_mouse/deal_keys_bonus.c \
 OBJS =          $(SRCS:.c=.o)
 OBJS_BONUS =	$(SRCS_BONUS:.c=.o)
 
-
-
 INCLUDES =		-I./libs/includes
 
 CPUS :=			$(shell sysctl -n hw.ncpu)
@@ -108,19 +106,22 @@ NAME =			miniRT
 %.o:			%.c $(HEADER) $(HEADER_BONUS)
 				@printf '\033[1m\033[38;95;13;64m'"\r\033[KCompiling miniRT objects... ⏳ "'\033[1m\033[38;217;0;83m'"<$<>"'\033[0m'
 				@$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
-
-all: 			$(NAME)
 				
+all: 			$(NAME)
 
 bonus: 			$(NAME)_bonus
 
 $(NAME): 		$(OBJS) $(HEADER)
 				@make all -C ./libs
 				@$(CC) $(OBJS) ./libs/libft.a $(INCLUDES) $(FLAGS) $(FLAGS_MLX) -o $(NAME) 
+				@echo "\n"
+				@cat ./libs/hrtf
 					
 $(NAME)_bonus: 	$(OBJS_BONUS) 
 				@make all -C ./libs
 				@$(CC) $(OBJS_BONUS) ./libs/libft.a $(INCLUDES) $(FLAGS) $(FLAGS_MLX) -o $(NAME)_bonus
+				@echo "\n"
+				@cat ./libs/hrtf
 
 clean:
 				@rm -f $(OBJS) $(OBJS_BONUS)
@@ -139,13 +140,12 @@ re_bonus:
 	make bonus
 
 run:
-	./$(NAME) pikachu.rt
+	./$(NAME) ./scenes/cylinder.rt
 run_bonus:
-	./$(NAME)_bonus king_chess.rt
-
+	./$(NAME)_bonus ./scenes/cylinder.rt
 
 m:
-	./$(NAME)_bonus king_chess.rt
+	./$(NAME)_bonus ./scenes/cylinder.rt
 
 rr:
 	make re

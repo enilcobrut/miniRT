@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_id.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:57:25 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 19:12:21 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	get_ambient_light_scene_par(t_minirt *s, t_list *p)
 		exit_error(s, "Ambient light parameters not compliant", 1);
 	check_float_format(s, p->content[1]);
 	s->amb_light_ratio = ft_atof(s, p->content[1], 0, 0);
-	if (s->amb_light_ratio < 0 || s->amb_light_ratio > 1)
+	if (s->amb_light_ratio < 0.0 || s->amb_light_ratio > 1.0)
 		exit_error(s, "Ambient lighting ratio is not in range [0,1]", 1);
 	s->amb_light_color = map_color(get_rgb_str_to_color(s, p->content[2], 0));
 	return (1);
@@ -60,7 +60,7 @@ int	get_camera_par(t_minirt *s, t_list *p)
 	s->cam_fov = ft_atoi(p->content[3]);
 	if (ft_strncmp(p->content[3], "0", 2) && !s->cam_fov)
 		exit_error(s, "A number is > INT_MAX", 1);
-	if (s->cam_fov >= 180 || s->cam_fov <= 0)
+	if (s->cam_fov > 180 || s->cam_fov < 0)
 		exit_error(s, "Horizontal field of view not in range [0,180]", 1);
 	return (1);
 }
