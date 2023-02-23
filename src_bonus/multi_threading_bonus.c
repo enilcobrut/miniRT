@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   multi_threading_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:33:56 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 13:45:56 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 19:25:53 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
-void	rtx_test(t_minirt *s, int y, t_th *t)
+void	get_pixel_line(t_minirt *s, int y, t_th *t)
 {
 	int		x;
 	char	*dst;
@@ -37,7 +37,7 @@ void	rtx_test(t_minirt *s, int y, t_th *t)
 	}
 }
 
-void	*test2(void *arg)
+void	*get_y(void *arg)
 {
 	t_th	*t;
 	int		y_tmp;
@@ -55,7 +55,7 @@ void	*test2(void *arg)
 			t->s->y--;
 		y_tmp = t->s->y;
 		pthread_mutex_unlock(&t->s->mutex);
-		rtx_test(t->s, y_tmp, t);
+		get_pixel_line(t->s, y_tmp, t);
 	}
 	return (NULL);
 }
@@ -67,15 +67,15 @@ void	get_multi_threading(t_minirt *s)
 
 	i = -1;
 	t = ft_calloc(NUM_THREADS, sizeof(t_th));
+	if (!t)
+		exit_error(s, "Error with malloc", 1);
 	pthread_mutex_init(&s->mutex, NULL);
 	s->y = HEIGHT - 1;
-	s->x = 0;
-	s->on = 0;
 	while (++i < NUM_THREADS)
 		t[i].s = s;
 	i = -1;
 	while (++i < NUM_THREADS)
-		pthread_create(&t[i].thread, NULL, &test2, &t[i]);
+		pthread_create(&t[i].thread, NULL, &get_y, &t[i]);
 	i = -1;
 	while (++i < NUM_THREADS)
 		pthread_join(t[i].thread, NULL);

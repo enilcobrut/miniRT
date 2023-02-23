@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_scene_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:46:22 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 14:11:41 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/16 10:25:29 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,7 @@ void	get_prompt_color(t_minirt *s)
 void	get_pixels_to_img(t_minirt *s)
 {
 	const t_vector	vup = init_vector(0, 1, 0);
-	clock_t			start;
-	clock_t			end;
-	double			elapsed;
 
-	start = clock();
 	s->r.w = norm_(mul_(s->cam_vec_dir, -1));
 	s->r.u = norm_(vec_cross(vup, s->r.w));
 	s->r.v = vec_cross(s->r.w, s->r.u);
@@ -84,7 +80,4 @@ void	get_pixels_to_img(t_minirt *s)
 					mul_(s->r.horizon, 0.5)),
 				mul_(s->r.vertical, 0.5)), s->r.w);
 	get_multi_threading(s);
-	end = clock();
-	elapsed = ((double)(end - start)) / CLOCKS_PER_SEC;
-	printf("Temps d'exécution : %lf secondes\n", elapsed);
 }

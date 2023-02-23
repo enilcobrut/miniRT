@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   print_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:56:52 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 19:56:56 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/15 19:22:58 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT_bonus.h"
+
+int	ft_recursive_counter(long n);
 
 void	print_list_id(void)
 {

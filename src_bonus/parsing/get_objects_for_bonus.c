@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objects_for_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:12:39 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 13:47:08 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 18:41:06 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	get_cone_next(t_minirt *s, t_cone *co, t_list *p, t_obj *new_obj)
 	co->dir_ax = mul_(co->dir_ax, -1);
 	co->ratio = co->height / co->diameter;
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
-	new_obj->mat.scatter = MATERIAL(new_obj);
+	new_obj->mat.scatter = scat_lamb;
 }
 
 void	get_cone(t_minirt *s, t_list *p, t_obj *new_obj, t_cone *co)

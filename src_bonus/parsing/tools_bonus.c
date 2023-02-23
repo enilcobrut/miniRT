@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:02:28 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 17:33:05 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/15 18:15:34 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,27 +38,28 @@ int	is_void(char *str, int end)
 	return (1);
 }
 
-int check_float_atof(t_minirt *s, char *str, int i)
+int	check_float_atof(t_minirt *s, char *str, int i)
 {
-    if (ft_strlen(str) > 10)
-        exit_error(s, "Error float format. > 10", 1);
-    if (str[ft_strlen(str) - 1] == '.')
-        exit_error(s, "Error float format.", 1);
-    while (str[i])
-    {
-        if (str[0] == '.')
-            exit_error(s, "Error float format.", 1);
-        else if (str[i] == '.')
-        {
-            i++;
-            break ;
-        }
-        else if (str[i] != '-' && !ft_isdigit(str[i]))
-            exit_error(s, "Error float format.", 1);
-        i++;
-    }
-    return (i);
+	if (ft_strlen(str) > 10)
+		exit_error(s, "Error float format. > 10", 1);
+	if (str[ft_strlen(str) - 1] == '.')
+		exit_error(s, "Error float format.", 1);
+	while (str[i])
+	{
+		if (str[0] == '.')
+			exit_error(s, "Error float format.", 1);
+		else if (str[i] == '.')
+		{
+			i++;
+			break ;
+		}
+		else if (str[i] != '-' && !ft_isdigit(str[i]))
+			exit_error(s, "Error float format.", 1);
+		i++;
+	}
+	return (i);
 }
+
 double	ft_atof(t_minirt *s, char *str, double res, double res2)
 {
 	int		len;

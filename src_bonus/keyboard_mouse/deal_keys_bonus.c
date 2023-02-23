@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_keys_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:21:10 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:21:12 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/16 12:07:32 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int	key_press(int key, t_minirt *s)
 		red_cross(s);
 	else if (key == F1 || key == F2)
 		function_keys(key, s);
+	else if (key == ENTER && s->prompt_stat == 0)
+		export_file_save(s, 1);
 	else if (is_key_move(key) && s->prompt_stat == 0)
 	{
 		move_cam_or_obj(s, key);

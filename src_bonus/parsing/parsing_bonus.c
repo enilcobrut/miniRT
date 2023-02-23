@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:03:04 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/12 21:03:08 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/16 13:16:51 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	exit_error(t_minirt *s, char *message, int opt)
 		ft_putstr_fd(message, 2);
 		ft_putstr_fd("\n", 2);
 	}
-	if (LEAKS == 1)
-		system("leaks miniRT");
 	exit (EXIT_FAILURE);
 }
 
@@ -59,30 +57,16 @@ void	check_void(t_minirt *s, size_t i)
 		exit_error(s, "No scene selected.", 1);
 	else if (s->argc > 2)
 		exit_error(s, "Too much scenes selected.", 1);
-	while (s->argv[1][i] && s->argv[1][i] == ' ')
-	{
-		if (s->argv[1][i] != ' ')
-			i = -1;
+	while (s->argv[1][i] == ' ')
 		i++;
-	}
 	if (i == ft_strlen(s->argv[1]))
 		exit_error(s, "Empty name.", 1);
 }
 
 void	check_extension_rt(t_minirt *s)
 {
-	size_t	start;
-
-	start = ft_strlen(s->argv[1]);
-	while (start > 0)
-	{
-		if (s->argv[1][start - 1] == '/')
-			break ;
-		start--;
-	}
-	if (ft_strncmp(&s->argv[1][ft_strlen(s->argv[1]) - 3], ".rt", 4) != 0
-		|| !ft_strncmp(s->argv[1], ".rt", 4))
-		exit_error(s, "Invalid extension.", 1);
-	if (ft_strlen(s->argv[1]) - 3 - start == 0)
+	if (ft_strlen(s->argv[1]) < 4)
 		exit_error(s, "Invalid file \".rt\".", 1);
+	if (ft_strncmp(&s->argv[1][ft_strlen(s->argv[1]) - 3], ".rt", 4) != 0)
+		exit_error(s, "Invalid extension.", 1);
 }

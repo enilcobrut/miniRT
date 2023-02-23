@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:13:40 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 14:13:43 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/16 12:08:17 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	red_cross(t_minirt *s)
 {
 	mlx_destroy_window(s->mlx, s->win);
-	export_file_save(s, 2);
+	export_file_save(s, 1);
 	exit_error(s, 0, -1);
 	return (0);
 }
@@ -82,6 +82,9 @@ int	main(int argc, char **argv)
 		exit_error(s, 0, 0);
 	s->argv = argv;
 	s->argc = argc;
+	s->mlx = mlx_init();
+	if (s->mlx == NULL)
+		exit_error(s, 0, -1);
 	check_void(s, 0);
 	check_directory(s);
 	check_extension_rt(s);

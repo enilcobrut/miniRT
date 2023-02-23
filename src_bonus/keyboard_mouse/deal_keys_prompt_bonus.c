@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   deal_keys_prompt_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flemaitr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:51:37 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/13 19:51:46 by flemaitr         ###   ########.fr       */
+/*   Updated: 2023/02/16 13:28:32 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ int	key_enter(t_minirt *s)
 		print_params(s);
 	else if (!ft_strncmp(s->prompt, "help", 5))
 	{
-		mlx_string_put(s->mlx, s->win, 60, HEIGHT + 2, 0xFF0000, help1);
+		mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2 - 30, 0xFF0000, help1);
 		mlx_string_put(s->mlx, s->win, 30, HEIGHT + 2, 0xFF0000, help2);
 	}
 	else if (!ft_strncmp(s->prompt, "leaks", 6))
 		system("leaks miniRT");
 	else if (!ft_strncmp(s->prompt, "save", 5))
-		export_file_save(s, 1);
+		export_file_save(s, 2);
 	else if (!ft_strncmp(s->prompt, "id", 3))
 		print_list_id();
 	ft_free(&s->prompt);

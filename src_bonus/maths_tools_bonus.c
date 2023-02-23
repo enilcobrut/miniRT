@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   maths_tools_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:33:43 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 13:33:45 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/16 11:26:56 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 double	clamp(double x, double min, double max)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_general_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:22:56 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 14:24:17 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/16 11:34:27 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ int	push_img_to_win(t_minirt *s, int opt)
 
 void	init_rtx(t_minirt *s)
 {
-	s->mlx = mlx_init();
-	if (s->mlx == NULL)
-		exit_error(s, 0, -1);
 	s->win = mlx_new_window(s->mlx, WIDTH, HEIGHT + 32, s->title);
 	if (s->win == NULL)
 		exit_error(s, 0, -1);
@@ -45,7 +42,6 @@ void	start_ray_tracing(t_minirt *s)
 	init_rtx(s);
 	get_prompt_color(s);
 	get_pixels_to_img(s);
-	s->hit_obj = NULL;
 	push_img_to_win(s, ALL);
 	mlx_string_put(s->mlx, s->win, 10, HEIGHT + 2, 0xF00020, "*");
 	mlx_hook(s->win, 2, 1L << 0, key_press, s);

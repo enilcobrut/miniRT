@@ -3,23 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_objects_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 21:13:10 by flemaitr          #+#    #+#             */
-/*   Updated: 2023/02/15 12:46:07 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/16 11:54:08 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT_bonus.h"
 
-#define FUZZ 0.5
-#define IR 1.5
-
 void	check_xpm(t_minirt *s, t_obj *obj)
 {
 	int	null;
 
-	obj->bump_map = mlx_xpm_file_to_image(s, obj->xpm, &obj->bump_width,
+	obj->bump_map = mlx_xpm_file_to_image(s->mlx, obj->xpm, &obj->bump_width,
 			&obj->bump_height);
 	if (!obj->bump_map)
 		exit_error(s, "Error with the xpm file", 1);
@@ -42,7 +39,7 @@ int	get_sphere(t_minirt *s, t_list *p)
 	sp->radius = sp->diameter / 2;
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
 	new_obj->mat.albedo1 = new_obj->mat.albedo;
-	new_obj->mat.scatter = MATERIAL(new_obj);
+	new_obj->mat.scatter = scat_lamb;
 	new_obj->mat.fuzz = FUZZ;
 	new_obj->mat.ir = IR;
 	if (new_obj->mat.fuzz > 1)
@@ -71,7 +68,7 @@ int	get_plane(t_minirt *s, t_list *p)
 	pl->dir_ax = norm_(pl->dir_ax);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[3], 0));
 	new_obj->mat.albedo1 = new_obj->mat.albedo;
-	new_obj->mat.scatter = MATERIAL(new_obj);
+	new_obj->mat.scatter = scat_lamb;
 	if (p->content[4])
 	{
 		new_obj->xpm = p->content[4];
@@ -98,7 +95,7 @@ int	get_cylinder(t_minirt *s, t_list *p, t_cylinder *cy, t_obj *new_obj)
 	cy->height = ft_atof(s, p->content[4], 0, 0);
 	new_obj->mat.albedo = map_color(get_rgb_str_to_color(s, p->content[5], 0));
 	new_obj->mat.albedo1 = new_obj->mat.albedo;
-	new_obj->mat.scatter = MATERIAL(new_obj);
+	new_obj->mat.scatter = scat_lamb;
 	cy->ratio = cy->height / cy->diameter;
 	if (p->content[6])
 	{

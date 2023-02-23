@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   maths_random_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjunker <cjunker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: flemaitr <flemaitr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:33:37 by cjunker           #+#    #+#             */
-/*   Updated: 2023/02/15 14:14:01 by cjunker          ###   ########.fr       */
+/*   Updated: 2023/02/16 11:26:47 by flemaitr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "miniRT_bonus.h"
 
 // Returns a random real in [0,1).
 double	random_double(void)
