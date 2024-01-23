@@ -96,10 +96,10 @@ INCLUDES =		-I./libs/includes
 CPUS :=			$(shell sysctl -n hw.ncpu)
 CC = 			gcc
 AR = 			ar rsc
-FLAGS =		 	-Wall -Wextra -Werror -DNUM_THREADS=$(CPUS) -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -msse4.2 -mfpmath=sse -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions
+FLAGS =		 	-Wall -Wextra -Werror -DNUM_THREADS=$(CPUS) -Ofast -fno-strict-aliasing -fomit-frame-pointer -mtune=native -march=native -funsafe-math-optimizations -funroll-loops -ffast-math -flto -finline-functions -I ~/minilibX/minilibX 
 #FLAGS +=        -g -fsanitize=address
 #FLAGS +=        -g -fsanitize=thread
-FLAGS_MLX = 	-L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit -lpthread
+FLAGS_MLX = 	-L /usr/local/lib/ -framework OpenGL -framework AppKit -lpthread ~/minilibX/minilibX/libmlx.a
 
 NAME =			miniRT
 
